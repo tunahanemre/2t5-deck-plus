@@ -10,7 +10,7 @@
 **by 2T5 Film.** A free, open-source Mac app that turns a Loupedeck+ into one deck for every app: whatever app is in front, the deck switches to that app's controls.
 
 <p align="center">
-  <img src="docs/screenshots/editor.webp" alt="The 2T5 DECK+ editor showing the Loupedeck+ with the DaVinci Resolve colour-page layout" width="860">
+  <img src="docs/screenshots/editor.webp" alt="The 2T5 DECK+ editor showing the Loupedeck+ with the DaVinci Resolve color-page layout" width="860">
 </p>
 
 We built it in our own grading suite and share it freely.
@@ -20,7 +20,7 @@ We built it in our own grading suite and share it freely.
 - **Follows the app in front.** Switch apps and the deck switches its controls with you. Each app gets its own preset; anything you leave unset falls back to the Global one.
 - **Map any app yourself.** An editor on a real image of your deck, with starter templates (Chrome, Safari, Blender, Photoshop, Terminal and more).
 - **Feel every knob.** Live visuals for keys and knobs, and a sensitivity curve you can tune per control. Every control is assignable in the editor.
-- **A DaVinci Resolve preset** with an on-screen HUD, Clean Feed on/off and colour controls (Resolve's external scripting must be switched on).
+- **A DaVinci Resolve preset** with an on-screen HUD, Clean Feed on/off and color controls (Resolve's external scripting must be switched on).
 - **Your AI agent can set it up.** AI access is off until you switch it on. An agent (Claude Code, Codex, Gemini CLI, Cursor, anything that speaks MCP) can then assign controls for you; every change is one undo step. See [AGENTS.md](AGENTS.md).
 - **Safe by design.** It starts disarmed on first launch, so nothing fires until you arm it. You can also put a "Panic: disarm the deck" action on a spare button (it is not assigned by default).
 
