@@ -24,7 +24,7 @@ func ApplyStartPolicy(st *preset.Store, arm ArmProvider, getenv func(string) str
 	if arm == nil || st == nil {
 		return ArmStart{Armed: true}
 	}
-	// Tunahan 2026-11-04 "just make it armed by default": the deck always starts
+	// Armed by default: the deck always starts
 	// armed. A disarmed start only happens when asked for with
 	// the start-disarmed env var; the old reasons (first run, outside changes,
 	// disarmed last session) no longer keep the deck off.

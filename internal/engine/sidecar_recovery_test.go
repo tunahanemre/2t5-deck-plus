@@ -262,7 +262,7 @@ func TestSidecarRecovery_IsSingleFlighted(t *testing.T) {
 // which (before this fix) ALSO never killed the previous sidecar before
 // spawning a replacement. Together this meant a single slow "status" round
 // trip (DaVinci Resolve's scripting API going briefly unresponsive during
-// playback -- reliably reproduced on the user's large DODEE EP15 timeline)
+// playback -- reliably reproduced on a very large timeline)
 // spawned a duplicate sidecar.py process on top of the still-alive original
 // every time the user pressed Space. Live evidence: three sidecar.py
 // processes found running simultaneously.

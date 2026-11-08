@@ -100,7 +100,7 @@ mk(CHR, "Google Chrome", ["browser", "generic"], { base: {
 let RC_DONE = false;
 let ARMED = !P.has("extstart"), FIXED = false;
 const PEND = P.has("pending") ? [
-  { id: "3fa9c1e07b21", preset: "com.google.Chrome", file: "com.google.Chrome.json", kind: "change", changes: ["C1 in Google Chrome (base) would run a program", "setting dodeeMostGuard would switch off the DODEE / MOST project guard", "the panic key C8 in Global (base) would be removed or changed"], risks: ["shell", "guard-settings", "panic-removed"], detectedAt: Date.now() - 240e3 },
+  { id: "3fa9c1e07b21", preset: "com.google.Chrome", file: "com.google.Chrome.json", kind: "change", changes: ["C1 in Google Chrome (base) would run a program", "setting dodeeMostGuard would switch off the project-name guard", "the panic key C8 in Global (base) would be removed or changed"], risks: ["shell", "guard-settings", "panic-removed"], detectedAt: Date.now() - 240e3 },
   { id: "7b21e07c3fa9", preset: "com.apple.finder", file: "com.apple.finder.json", kind: "removal", changes: ["Finder would lose all 7 assignments", "C2 in Finder (base) ran a command that deletes files"], risks: ["destructive"], detectedAt: Date.now() - 90e3 }] : [];
 let FRONT = P.get("front") === "resolve" ? RES : CHR;
 const RUNNING = [["com.apple.Safari", "Safari"], [CHR, "Google Chrome"], ["com.apple.finder", "Finder"], ["com.figma.Desktop", "Figma"], ["com.apple.Terminal", "Terminal"], ["com.microsoft.VSCode", "Visual Studio Code"], ["company.thebrowser.Browser", "Arc"], [RES, "DaVinci Resolve"]].map(([id, name]) => ({ id, name }));
@@ -255,7 +255,7 @@ export async function handle(method, path, body) {
     return { ok: true, items, counts: {}, requiredMissing: [] };
   }
   if (method === "POST" && p === "/api/open-settings") return { ok: true, pane: body && body.pane };
-  if (method === "GET" && p === "/api/about") return { name: "2T5 DECK+", by: "2T5 Film", version: "1.0.0", canOpen: false, links: [{ id: "site", label: "2t5.co", url: "https://2t5.co" }, { id: "instagram", label: "instagram.com/tunahanemre", url: "https://instagram.com/tunahanemre" }, { id: "sponsors", label: "Donate", url: "https://github.com/sponsors/tunahanemre" }] };
+  if (method === "GET" && p === "/api/about") return { name: "2T5 DECK+", by: "2T5 Film", version: "0.1.1", canOpen: false, links: [{ id: "site", label: "2t5.co", url: "https://2t5.co" }, { id: "instagram", label: "instagram.com/tunahanemre", url: "https://instagram.com/tunahanemre" }, { id: "sponsors", label: "Donate", url: "https://github.com/sponsors/tunahanemre" }] };
   if (method === "POST" && p === "/api/open-link") return { ok: true, id: body && body.id };
   if (method === "GET" && p === "/api/running") return clone(RUNNING);
   if (method === "GET" && p === "/api/live") { const f = presets[FRONT]; return { frontmost: { id: f.id, name: f.name }, activeApp: f.id, engineRunning: true, sidecar: "connected", seq: 0, armed: ARMED, ...(P.has("extstart") ? { armedAtStart: false, startReason: "external-changes" } : {}), ...(P.get("cov") === "none" ? {} : { armCoverage: P.get("cov") === "partial" ? ["keys", "mouse", "scroll"] : ["keys", "mouse", "scroll", "shell", "sidecar-writes"] }), permissions: P.has("noperm") ? { accessibility: false, inputMonitoring: true } : { accessibility: true, inputMonitoring: true }, engine: { applied: 1, saved: P.has("diverge") ? 2 : 1, readonly: P.has("readonly"), composeError: P.has("composeerr") ? "preset Chrome: unknown bank col-9" : "" } }; }

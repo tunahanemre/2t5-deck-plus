@@ -1,4 +1,4 @@
-/* The stage background drawn with per-pixel dithering (Tunahan 2026-11-05: "background lights are low textured" · "still i can see bandings").
+/* The stage background drawn with per-pixel dithering (a plain CSS gradient shows visible banding).
    A CSS radial gradient this dark is quantised to ~16 grey steps before anything is composited on top, so the steps show as rings;
    here every device pixel gets the exact float value plus sub-level noise before rounding, so there are no steps to see.
    Same shape as the old CSS: ellipse 70% x 60% of the stage at 50% / 42%, --stage-lift at the centre to --stage at 72% of the ray. */

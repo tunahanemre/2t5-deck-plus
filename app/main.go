@@ -1,8 +1,7 @@
 // Command app is the Wails v2 entry point for the 2T5 DECK+ Status app — a
 // signed, double-click-launchable macOS Dock app that wraps the existing
 // internal/engine.Engine (unchanged grading logic) with a Start/Stop + live
-// status window. See app.go for the bound App struct/methods and
-// docs/plans/2026-07-01-ld-resolve-app-phase1.md for the full Phase 1 plan.
+// status window. See app.go for the bound App struct/methods.
 //
 // Build with `wails build` from this directory (app/). The Go module is the
 // repo-root module "2t5-deck-plus" — this directory has no go.mod of its own,
@@ -41,7 +40,7 @@ func main() {
 	// made live engine debugging (MIDI decode, drain dispatch, sidecar
 	// client state, page resolution) effectively blind. A tail-able file at
 	// a fixed path restores that visibility with zero UI cost.
-	// Lives in the WS-01 data root alongside config/ and state/ (see
+	// Lives in the data root alongside config/ and state/ (see
 	// internal/datadir). If the volume is not mounted, datadir.Dir returns
 	// an error instead of creating the path, and the log simply stays on
 	// stderr -- a missing log file is never a reason to fail startup.
@@ -118,7 +117,7 @@ func main() {
 			Handler: app.APIHandler(),
 		},
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-		// Tunahan 2026-11-04 "full screen available app": without Mac options Wails disables the zoom button, so the green button could not go full screen
+		// Full screen must be available: without Mac options Wails disables the zoom button, so the green button could not go full screen
 		Mac:        &mac.Options{},
 		OnStartup:  app.startup,
 		OnShutdown: app.shutdown,

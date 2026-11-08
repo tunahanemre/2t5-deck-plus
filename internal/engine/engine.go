@@ -529,7 +529,7 @@ type clipSelection struct {
 // shutdown. The file has no offset data in v8 (scrubs are stateless); it exists
 // purely for forward-compatibility and to record the last-shutdown timestamp.
 //
-// It resolves under the datadir root (WS-01 by default), NOT $HOME any more.
+// It resolves under the datadir root (an external studio drive by default), NOT $HOME any more.
 // That move is what lets TestMain point the whole package at a temp dir via
 // DECKPLUS_DATA_DIR and finally close the inherited coupling documented on
 // stubStateFile in marker_test.go -- before this, every test that called
@@ -539,7 +539,7 @@ type clipSelection struct {
 // write time, in saveSentinel.
 var stateFilePath = datadir.Path(datadir.State, "2t5-deck-plus-state.json")
 
-// dodeeMostRe matches project names that must not receive balance drag events.
+// dodeeMostRe matches the protected project names that must not receive balance drag events.
 var dodeeMostRe = regexp.MustCompile(`(?i)(DODEE|MOST\s*PRODUCTION)`)
 
 // mouseClickFn is used for single-click resets. Tests can replace this.
@@ -830,7 +830,7 @@ func saveSentinel(lastFolder string, pmode string) {
 		return
 	}
 	// Guarded: EnsureDirFor refuses to create the directory when the path
-	// is inside an unmounted data root, so a missing WS-01 can never cause
+	// is inside an unmounted data root, so a missing external data drive can never cause
 	// the root to be materialised on the boot disk. Losing a sentinel write
 	// is harmless (it is a forward-compat timestamp), so this only logs.
 	if err := datadir.EnsureDirFor(stateFilePath); err != nil {
@@ -4705,7 +4705,7 @@ func (e *Engine) Start(ctx context.Context) error {
 	// build's live trace): C1/Space never actually double-fired. The
 	// sidecar's "status" op does real work proportional to timeline size
 	// (timecode, the full clip map, per-clip offline checks, edit_clip_
-	// info) -- on a large timeline (live evidence: DODEE EP15) a cache-miss
+	// info) -- on a large timeline (live evidence: a very large timeline) a cache-miss
 	// round trip can take SECONDS. Before this fix, queryPage() called this
 	// function directly, and the MIDI-callback goroutine calls queryPage()
 	// up to a dozen times per note_on (every direct-intercept check below).
@@ -4759,7 +4759,7 @@ func (e *Engine) Start(ctx context.Context) error {
 			// goes briefly unresponsive while PLAYING BACK, and the
 			// "status" op's own cost scales with timeline size (see this
 			// function's doc comment on the 8.3s stall) -- on the user's
-			// large DODEE EP15 timeline this fired reliably ~sendTimeout
+			// very large timeline this fired reliably ~sendTimeout
 			// after every Space/C1 press, diagnosing a perfectly
 			// healthy, merely-busy sidecar as dead on the single most-
 			// used button on the deck, and piling up duplicate sidecar
@@ -5304,7 +5304,7 @@ func (e *Engine) Start(ctx context.Context) error {
 					}
 					// toggleHud (Fn + C6) and the modifier hold that pairs with it post
 					// nothing into the editor, so they work with the editor frontmost too
-					// (Tunahan 2026-11-05: Fn+C6 "its not" while the editor had focus: the Fn
+					// (with the editor focused the Fn
 					// press was swallowed, so C6 never saw the Fn bank).
 					if typ, modName := ad.PressType(fid, hmod, layerState.Get(), control); typ == "toggleHud" || typ == "layer" || (typ == "modifierHold" && modName != "") {
 						res := ad.Handle(appdeck.Input{PMode: e.getPMode(), Bundle: fid, Mod: hmod, Layer: layerState.Get(), Control: control, Kind: appdeck.KindPress})
@@ -6461,8 +6461,8 @@ func (e *Engine) Start(ctx context.Context) error {
 				if !windowStart.IsZero() && now.Sub(windowStart) >= coalesceWindow {
 					tl := cfg.TopLevel
 
-					// DODEE/MOST window-title guard.
-					// DODEE/MOST guard DISABLED per user request (2026-07-02).
+					// Project-name window-title guard.
+					// Guard currently DISABLED.
 					// To restore, revert to:
 					//   dodeeMostGuard := tl.DodeeMostGuard == nil || *tl.DodeeMostGuard
 					dodeeMostGuard := false
@@ -6470,7 +6470,7 @@ func (e *Engine) Start(ctx context.Context) error {
 					if dodeeMostGuard {
 						title := macapp.ResolveWindowTitle()
 						if dodeeMostRe.MatchString(title) {
-							log.Printf("[balance] [refused-dodeemost] window title=%q matches guard — refusing all balance events", title)
+							log.Printf("[balance] [refused-protected-project] window title=%q matches guard — refusing all balance events", title)
 							balanceAccum = map[string]int{}
 							windowStart = time.Time{}
 							continue

@@ -110,7 +110,7 @@ var keysArmFn = keys.Arm
 
 // finderArmFn arms internal/finder's tag WRITER. Same placement and the same
 // reasoning as mouseArmFn/keysArmFn above -- and if anything a stronger case:
-// a colour tag is an irreversible edit to the user's own files, with four
+// a colour tag is an irreversible edit to the user's own files, with
 // downstream consumers and no undo, where a stray CGEvent is merely a stray
 // keystroke. NEVER call the real finder.Arm from a test.
 var finderArmFn = finder.Arm

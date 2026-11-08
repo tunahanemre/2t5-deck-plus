@@ -1,4 +1,4 @@
-// hotspots.js — hotspot table for the real Loupedeck+ photo (assets/deck-cutout.png (alpha cut-out of deck.jpg), 1500x1500).
+// hotspots.js — hotspot table for the deck image (assets/deck-cutout.png, 1500x1500).
 // Positions are photo pixels, calibrated by eye with ?calib=1. Keyed by the device-map control ids.
 // Format: id: [cx, cy, w, h, shape]. The deck body occupies about x 33-1467, y 470-1028.
 export const PHOTO = { w: 1500, h: 1500, src: "../assets/deck-cutout.png", viewBox: "20 455 1460 585" };

@@ -109,7 +109,7 @@ func (s *Store) seed() ([]*Preset, error) {
 		rp := build(rbanks, rcfg)
 		if fromBundled {
 			// Only a Resolve preset built from the shipped default carries the
-			// standard slider-mode mapping. One built from the owner's live
+			// standard slider-mode mapping. One built from a user's live
 			// ld-resolve bindings has no per-mode slots: they opt in later
 			// (Store.ApplyStandardModes).
 			withStandardModes(rp)

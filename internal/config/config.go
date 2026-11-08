@@ -733,8 +733,7 @@ func (b Binding) IsQuickExport() bool { return b.effectiveType() == "quickexport
 // this type/predicate is never actually reached via the real config file:
 // its dispatch machinery (engine.go's dispatchSelectClip/nextTrackIndex/
 // selectClipDetent/dispatchSelectClipRelease) is kept, unreachable in
-// production but still directly unit-tested, rather than deleted — see
-// this repo's backend-developer memory for the "Free D1" build note.
+// production but still directly unit-tested, rather than deleted.
 func (b Binding) IsSelectClip() bool { return b.effectiveType() == "selectClip" }
 
 // IsSelectClipVert returns true if this is the Up/Down button's
@@ -835,7 +834,7 @@ const defaultFineFactor = 0.5
 // defaultStartupReset is the default startup-reset policy.
 const defaultStartupReset = "never"
 
-// defaultDodeeMostGuard enables the DODEE/MOST window-title guard by default.
+// defaultDodeeMostGuard enables the project-name window-title guard by default.
 const defaultDodeeMostGuard = true
 
 // defaultHUDWithoutResolve: the HUD may show without Resolve running.
@@ -972,9 +971,9 @@ type TopLevel struct {
 	//   "always" – always reset on launch.
 	StartupReset string `json:"startupReset"`
 
-	// DodeeMostGuard enables the DODEE/MOST window-title guard. When true,
+	// DodeeMostGuard enables the project-name window-title guard. When true,
 	// ALL balance/wheel events are refused if the frontmost Resolve window title
-	// matches /(DODEE|MOST\s*PRODUCTION)/i.
+	// matches the protected project names.
 	// Default true.
 	DodeeMostGuard *bool `json:"dodeeMostGuard"`
 

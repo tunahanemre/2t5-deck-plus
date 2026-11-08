@@ -329,7 +329,7 @@ func (w *editorWiring) toggleHUDEnabled() (bool, error) {
 }
 
 // ensureGlobalHUDToggle gives the Global preset the deck keys every app needs: what
-// Fn + C6 = Toggle HUD needs in every app (Tunahan 2026-11-05: "fn + c6 must toggle hud"): C6 in the fn bank, and
+// Fn + C6 = Toggle HUD needs in every app : C6 in the fn bank, and
 // Fn itself as a modifier hold (outside Resolve nothing else makes Fn raise the fn
 // bank, so C6 never paired). One-time, each only when absent: a marker in the state
 // folder keeps it from coming back after he removes or changes it in the editor.
@@ -437,7 +437,7 @@ func (w *editorWiring) Frontmost() editorapi.AppRef {
 	w.mu.Unlock()
 	if changed && w.bus != nil {
 		// push it: the editor repaints the status at once instead of on its next
-		// 1-2 s /api/live poll (Tunahan 2026-11-05: "shows the frontmost app very late")
+		// 1-2 s /api/live poll (the status otherwise shows the frontmost app late)
 		// PresetID is the preset the engine now uses (the front app's, else Global) so the editor can
 		// switch to it from the event itself, without a round trip.
 		active := preset.GlobalID
@@ -524,14 +524,15 @@ func (w *editorWiring) Live() editorapi.LiveState {
 	return editorapi.LiveState{EngineRunning: st.Running, Sidecar: side, Project: st.Project, SliderMode: w.eng.SliderMode(), CustomMode: w.eng.CustomMode(), Layer: st.Layer}
 }
 
-// WS01 implements editorapi.EnvProvider (preflight): read-only mount test.
+// WS01 implements editorapi.EnvProvider (preflight): read-only mount test of the data drive.
 func (w *editorWiring) WS01() (bool, string) {
+	// studio default; override with DECKPLUS_DATA_DIR
 	return editorapi.MountState("/Volumes/2T5-WS-01", ".2t5-mount-sentinel")
 }
 
-// WS01Applicable implements the optional preflight check: the WS-01 row only
+// WS01Applicable implements the optional preflight check: the data-drive row only
 // belongs on a Mac whose data folder is on an external volume. On any other Mac
-// (data under ~/Library) there is no WS-01 to be missing.
+// (data under ~/Library) there is no such drive to be missing.
 func (w *editorWiring) WS01Applicable() bool { return strings.HasPrefix(datadir.Root(), "/Volumes/") }
 
 // ldResolveBundleID is the old LD-RESOLVE app (it contends for the same MIDI port).

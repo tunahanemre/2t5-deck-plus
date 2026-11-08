@@ -551,4 +551,4 @@ body.is-editor { overflow: hidden; }
 #editorView { flex: 1; min-height: 0; }
 #editorFrame { width: 100%; height: 100%; border: 0; display: block; background: var(--bg); }
 #statusView { display: flex; flex-direction: column; gap: 18px; }
-#statusView[hidden], #editorView[hidden], .tabbar[hidden] { display: none; } /* author display:flex beat the UA [hidden] rule, so Status stayed on screen over the Editor (Tunahan 2026-11-04 "cant see editor") */
+#statusView[hidden], #editorView[hidden], .tabbar[hidden] { display: none; } /* author display:flex beat the UA [hidden] rule, so Status stayed on screen over the Editor */

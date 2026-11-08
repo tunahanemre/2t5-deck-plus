@@ -1,4 +1,4 @@
-// PROVENANCE: copied 2026-11-03 from /Volumes/2T5-WS-01/01-APPS/deckmap/code/app/frontend/src/deckmap.js (DECKMAP is unchanged).
+// PROVENANCE: copied 2026-11-03 from the DECKMAP app's frontend/src/deckmap.js (DECKMAP is unchanged).
 // Everything above the '2T5 DECK+ EDITOR EXTENSIONS' marker is the DECKMAP original; the extensions add live-test overlays.
 // deckmap.js — pure rendering module. Knows how to draw a device.Profile as
 // an SVG map and how to update the visual state of individual controls. It

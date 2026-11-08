@@ -100,13 +100,12 @@
 //
 // *** CHANGE 5: virtual-screen placement (2026-07-24) ***
 //
-// Replaces the ffmpeg/BetterDisplay/VLC CAPTURE chain the user explicitly
-// rejected ("i just want hud monitor in the controller, nothing else") with
+// Replaces the ffmpeg/BetterDisplay/VLC CAPTURE chain rejected as too heavy with
 // the simplest possible thing: relocate this ALREADY-SHIPPED panel onto a
 // BetterDisplay virtual display instead of mainScreen. The virtual display
-// (~/.claude/scripts/karma-stream.sh, a pre-existing general-purpose
-// screen-mirror tool, NOT built for this feature) is what actually streams
-// that screen's pixels to the salvaged Karma controller over WiFi -- this
+// (a pre-existing general-purpose
+// screen-mirror tool, not built for this feature) is what actually streams
+// that screen's pixels to an external controller over WiFi -- this
 // file has zero awareness of ffmpeg/VLC/networking, it only decides WHERE
 // on-screen the panel draws itself. Zero new process, zero new package,
 // zero new sidecar/Resolve API surface.
@@ -131,7 +130,7 @@
 // menu bar/dock a virtual display doesn't have) when resolveHUDVirtualScreen
 // finds one, else the ORIGINAL mainScreen/top-right/inset fallback,
 // UNCHANGED from before this change. The virtual display is connected/
-// disconnected ON DEMAND by karma-stream.sh -- absent is the NORMAL resting
+// disconnected ON DEMAND by the mirror script -- absent is the NORMAL resting
 // state, not an error -- so the fallback path is exercised far more often
 // in practice, and must never regress (it doesn't: this is the exact same
 // computation that ran before this change, just moved into a named
@@ -460,7 +459,7 @@ static NSString * const kVirtualScreenName = @"Virtual 16:9";
 // initial panel creation AND on every screen-configuration change, not
 // just once), and returns the one matching kVirtualScreenName, or nil if
 // none does. nil is the NORMAL/common case (the virtual display is
-// connected/disconnected on demand by karma-stream.sh), never treated as
+// connected/disconnected on demand by the mirror script), never treated as
 // an error by any caller.
 static NSScreen *resolveHUDVirtualScreen(void) {
     NSArray<NSScreen *> *screens = [NSScreen screens];
@@ -544,7 +543,7 @@ static NSRect hudComputeFrame(void) {
         hudOnFixedPlacement = YES;
         // Fill the virtual display's FULL frame (not visibleFrame -- a
         // virtual display has no menu bar/dock to exclude), expected to be
-        // 720x1280 portrait per karma-stream.sh's configured resolution
+        // 720x1280 portrait per the mirror script's configured resolution
         // (read dynamically here, never hardcoded, so a future resolution
         // change doesn't silently mis-size the panel).
         NSRect frame = [virtualScreen frame];
@@ -553,8 +552,8 @@ static NSRect hudComputeFrame(void) {
     }
     // Named-display strip (lower third). Precedence is deliberate:
     // virtual screen > named display > mainScreen corner. The virtual screen
-    // feeds the physical Karma controller during ACTIVE use via
-    // karma-stream.sh; the named display is a passive glance monitor, so the
+    // feeds the external controller during ACTIVE use via
+    // the mirror script; the named display is a passive glance monitor, so the
     // active tool wins.
     NSScreen *named = resolveHUDNamedScreen();
     if (named != nil) {
@@ -595,7 +594,7 @@ static NSRect hudComputeFrame(void) {
 // level was considered and rejected. NSFloatingWindowLevel (3) is returned
 // unchanged for the ordinary mainScreen path -- the daily driver, where
 // covering the real menu bar was never wanted.
-// 2026-11-03 (Tunahan: "when clean feed is enabled on resolve" · "hud sits behind it"):
+// Clean Feed:
 // Resolve's Clean Feed is a borderless window at NSScreenSaverWindowLevel (measured live:
 // kCGWindowLayer = 1000, 3840x2160 on the PB287Q) and it covered the HUD (layer 3). On a
 // NAMED fixed display (bindings.json hud.display) the HUD now sits one step above it.
@@ -691,7 +690,7 @@ static void _ensurePanel(NSString *html) {
     [hudWebView addSubview:hudDragOverlay];
 
     // CHANGE 5: relocate the panel live when the virtual screen connects/
-    // disconnects (karma-stream.sh does this on demand, not this app) --
+    // disconnects (the mirror script does this on demand, not this app) --
     // registered exactly once, lazily, here (guarded by
     // hudScreenObserverInstalled, the same "static BOOL checked once"
     // shape as this whole function's own hudPanel != nil guard).

@@ -2,10 +2,8 @@
 // it. It backs 2T5 DECK+'s Finder profile: with a Finder window frontmost the 8
 // P-buttons become colour-tag buttons (see docs/specs/2026-09-03-finder-tag-profile.md).
 //
-// These tags are not decoration. On this machine they are production approval
-// decisions with four downstream consumers (dodee-review-sync,
-// dodee-episode/lib/review.py, the Dodee Status Service, and the
-// Finder->Resolve clip mirror) across ~1929 tagged files, there is no undo,
+// These tags are not decoration. For some users they are production approval
+// decisions that other tools read downstream, there is no undo,
 // and Finder's own Cmd+Z cannot see a write made from outside Finder. Hence
 // the arm guard below and the caller-side logging requirement.
 package finder

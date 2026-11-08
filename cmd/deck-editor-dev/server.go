@@ -86,9 +86,9 @@ func (d *DevState) WS01() (bool, string) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	if d.envNoWS01 {
-		return false, "/Volumes/2T5-WS-01 does not exist: not mounted (dev fake)"
+		return false, "the data drive does not exist: not mounted (dev fake)"
 	}
-	return true, "/Volumes/2T5-WS-01 is mounted (dev fake)"
+	return true, "the data drive is mounted (dev fake)"
 }
 
 // LDResolveRunning implements editorapi.EnvProvider: not running unless flipped.
@@ -525,8 +525,9 @@ func loopbackOnly(addr string) error {
 	return fmt.Errorf("--addr %q is not loopback: the editor API may only listen on 127.0.0.1", addr)
 }
 
-// tempDataDir prefers the shared WS-01 sandbox (scratch rule), else the OS temp dir.
+// tempDataDir prefers the shared studio sandbox (scratch rule), else the OS temp dir.
 func tempDataDir() (string, error) {
+	// studio default; override with DECKPLUS_DATA_DIR
 	const sb = "/Volumes/2T5-WS-01/02-AI-PROJECTS/00-SANDBOX"
 	if st, err := os.Stat(sb); err == nil && st.IsDir() {
 		base := filepath.Join(sb, "_tmp")

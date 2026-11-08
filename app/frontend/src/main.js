@@ -8,8 +8,8 @@
 // classList / hidden on every status tick — never innerHTML-rebuild the
 // whole tree. Avoids the "flash on rebuild" class of bugs documented from
 // the Command Center SSE work (non-deterministic HTML / transition replay on
-// DOM reconstruction). See frontend-developer memory: "SSE Anti-Flicker:
-// Patch-Based DOM Updates".
+// DOM reconstruction). The technique is patch-based DOM updates
+// (anti-flicker).
 import {
     GetStatus,
     StartEngine,
@@ -80,9 +80,9 @@ let midiHistory = [];
 // --- Helpers ----------------------------------------------------------
 
 function isGuardedProject(name) {
-    // SAFETY badge disabled per user request (2026-07-02). To restore, return:
-    //   const n = (name || "").toLowerCase();
-    //   return n.includes("dodee") || n.includes("most");
+    // SAFETY badge disabled. To restore, return:
+    //   check the project name against the protected project names
+    //   (see the project-name guard in the engine)
     return false;
 }
 
@@ -372,7 +372,7 @@ init();
     }
     tabStatus.addEventListener("click", () => show(false));
     tabEditor.addEventListener("click", () => show(true));
-    // Tunahan 2026-11-04 "no need old ld-resolve layout in the app anymore": the app opens straight into the Editor, the old Status page and the tab bar are not shown
+    // The old layout is gone: the app opens straight into the Editor, the old Status page and the tab bar are not shown
     document.querySelector(".tabbar").hidden = true;
     show(true);
 })();

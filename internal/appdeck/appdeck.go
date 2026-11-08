@@ -7,8 +7,6 @@
 // modifierHold, toggleHud and none. Every other verb (all Resolve verbs,
 // finderTag) is reported as not handled so the caller decides; the engine
 // never lets those reach Resolve from a foreign app.
-//
-// Plan: plans/2026-11-03-app-manager-ld-deck-global-editor.md (spec 4.2).
 package appdeck
 
 import (

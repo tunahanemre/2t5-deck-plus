@@ -20,7 +20,7 @@ import (
 const bundleMarker = ".app/Contents/MacOS/"
 
 // seedConfigFiles are the config files a bundled .app seeds into the
-// WS-01 data root's config/ directory on first run. Order doesn't
+// data root's config/ directory on first run. Order doesn't
 // matter; each is copied independently.
 var seedConfigFiles = []string{"device-map.json", "bindings.json", "calibration.json"}
 
@@ -52,7 +52,7 @@ var executableFn = os.Executable
 // must not be relied on):
 //   - resourcesDir = <bundle>.app/Contents/Resources
 //   - cfgDir       = datadir.Dir(datadir.Config) — i.e. <data root>/config,
-//     WS-01 by default and overridable via DECKPLUS_DATA_DIR — seeded from
+//     the studio drive by default and overridable via DECKPLUS_DATA_DIR — seeded from
 //     Contents/Resources/config/*.json on first run, and ADDITIVELY MERGED
 //     against that same bundled default on every subsequent run — see
 //     seedOrMergeConfig. A file the user already has is never clobbered;
@@ -77,8 +77,8 @@ func resolveAppDirs() (cfgDir, resourcesDir string, err error) {
 	resourcesDir = bundleResourcesDir(exe)
 
 	// The one place bundle-mode config location is decided. On a Mac that has
-	// no WS-01 volume and never used it, datadir falls back to the per-user
-	// folder (see internal/datadir). On a Mac that DID use WS-01, an unreachable
+	// no external data drive and never used one, datadir falls back to the per-user
+	// folder (see internal/datadir). On a Mac that DID use the external drive, an unreachable
 	// data root (volume not mounted) is returned as an error rather than
 	// swallowed: NewApp logs it and falls back to the dev-mode literals,
 	// which is the honest degradation — better than silently seeding a

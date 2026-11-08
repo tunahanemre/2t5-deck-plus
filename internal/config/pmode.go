@@ -6,8 +6,8 @@ import (
 )
 
 // The slider mode (Hue / Sat / Lum) is a LAYER of the P1-P8 sliders and the
-// P1-P8 buttons (Tunahan, 2026-11-04: "hue sat and lum must be layers for p1-p8
-// sliders and buttons"). It is not a layer number: it is a second, independent
+// P1-P8 buttons (Hue / Sat / Lum are layers for the
+// P1-P8 sliders and buttons). It is not a layer number: it is a second, independent
 // dimension, shaped like the held-modifier overlay.
 //
 // Bank names follow the overlay family: "{root}-pm-{mode}", where root is the

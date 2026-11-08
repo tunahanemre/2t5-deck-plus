@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"os"
 	"testing"
+
+	"2t5-deck-plus/internal/aiaccess"
 )
 
 func TestAppVersionMatchesWailsJSON(t *testing.T) {
@@ -21,5 +23,8 @@ func TestAppVersionMatchesWailsJSON(t *testing.T) {
 	}
 	if w.Info.ProductVersion == "" || w.Info.ProductVersion != appVersion {
 		t.Fatalf("appVersion %q != wails.json productVersion %q: change both together", appVersion, w.Info.ProductVersion)
+	}
+	if aiaccess.Version != appVersion {
+		t.Fatalf("aiaccess.Version %q != appVersion %q: change both together", aiaccess.Version, appVersion)
 	}
 }

@@ -32,6 +32,7 @@ APP_BUNDLE="$REPO_ROOT/app/build/bin/2t5-deck-plus.app"
 # signs and verifies only (step 5 is skipped, nothing outside the repo is
 # touched). Both default to the old behaviour.
 # Default install location: the studio's applications volume when it is mounted, otherwise /Applications.
+# studio default; override with DECKPLUS_INSTALL_PATH
 if [ -d "/Volumes/2T5-WS-01/05-APPLICATIONs" ]; then
   DEFAULT_INSTALL_PATH="/Volumes/2T5-WS-01/05-APPLICATIONs/2T5 DECK+.app"
 else

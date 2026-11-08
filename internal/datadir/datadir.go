@@ -6,22 +6,21 @@
 // Before this package those three lived in three unrelated places under the
 // user's home directory (~/Library/Application Support/2t5-deck-plus/,
 // ~/Library/Logs/2t5-deck-plus.log, $HOME/.2t5-deck-plus-*.json), which meant a
-// "self-contained on WS-01" install was impossible and every `go test` run
+// "self-contained on the studio drive" install was impossible and every `go test` run
 // that constructed an Engine wrote the SAME state file the production app
 // reads at startup. One resolved root fixes both: production points at
-// WS-01, tests point at a temp dir via EnvVar, and nothing hardcodes a
+// the studio drive, tests point at a temp dir via EnvVar, and nothing hardcodes a
 // literal anywhere else in the tree.
 //
 // # The mount guard (load-bearing, not defensive padding)
 //
-// DefaultRoot lives on an external volume. When 2T5-WS-01 is not mounted,
-// /Volumes/2T5-WS-01 is an ordinary missing path — and a plain
+// DefaultRoot lives on an external volume. When the studio drive is not mounted,
+// its mount point is an ordinary missing path — and a plain
 // os.MkdirAll(DefaultRoot) would cheerfully CREATE that whole chain on the
-// boot disk, then fill it. That is not hypothetical: an rsync at an unmounted
-// mount point put 162 GB on this Mac's internal SSD on 2026-08-27 and broke
-// unrelated tooling. So every directory-creating call in this package first
+// boot disk, then fill it. That is not hypothetical: a copy aimed at an unmounted
+// mount point once filled an internal SSD and broke unrelated tooling. So every directory-creating call in this package first
 // requires the root's PARENT to already exist (for the default root that is
-// /Volumes/2T5-WS-01/01-APPS/2t5-deck-plus, or .../ld-deck before the folder is
+// the app folder on the studio drive (DefaultRoot's parent), or its older name before the folder is
 // renamed — a directory that can only exist on the real volume, i.e. a mount
 // sentinel) and returns *UnreachableError naming the
 // volume otherwise. Nothing here ever creates the root's parent.
@@ -29,14 +28,14 @@
 // # Resolution order, and the home fallback
 //
 //  1. DECKPLUS_DATA_DIR, then LD_DECK_DATA_DIR: always wins.
-//  2. The WS-01 root (DefaultRoot, else LegacyDefaultRoot, else DefaultRoot when
+//  2. The studio drive's root (DefaultRoot, else LegacyDefaultRoot, else DefaultRoot when
 //     its parent folder exists), when that volume is there.
 //  3. Otherwise, a Mac that has never used the external root gets
 //     ~/Library/Application Support/2t5-deck-plus/data (config/, logs/, state/
-//     below it), so the app works on a machine with no 2T5-WS-01 volume.
+//     below it), so the app works on a machine with no studio drive.
 //
-// Step 3 is deliberately not a plain "if missing, use home": on the owner's Mac
-// WS-01 can be unmounted at login, and a silent fallback would seed a second
+// Step 3 is deliberately not a plain "if missing, use home": on a Mac that uses it
+// the studio drive can be unmounted at login, and a silent fallback would seed a second
 // config tree on the boot disk. So the choice is sticky. The first time the
 // external root is reachable, Dir/EnsureDirFor record it in the marker file
 // ~/Library/Application Support/2t5-deck-plus/data-root (kind + path, written
@@ -58,17 +57,19 @@ import (
 // EnvVar overrides the data root. Tests MUST set it (see internal/engine's
 // TestMain) so no test run can reach the production root; it is also the
 // supported escape hatch for running 2T5 DECK+ on a machine that has no
-// 2T5-WS-01 volume.
+// studio drive.
 const EnvVar = "DECKPLUS_DATA_DIR"
 
 // LegacyEnvVar is the name EnvVar had before the rename to 2T5 DECK+. It is
 // still read when EnvVar is unset or empty.
 const LegacyEnvVar = "LD_DECK_DATA_DIR"
 
-// DefaultRoot is the WS-01 data root. Its parent, /Volumes/2T5-WS-01/01-APPS/2t5-deck-plus,
+// studio default; override with DECKPLUS_DATA_DIR
+// DefaultRoot is the studio's external data root. Its parent folder
 // is the mount guard for the default root (see the package doc).
 const DefaultRoot = "/Volumes/2T5-WS-01/01-APPS/2t5-deck-plus/data"
 
+// studio default; override with DECKPLUS_DATA_DIR
 // LegacyDefaultRoot is where the data lived before the app folder was renamed.
 // Root falls back to it while DefaultRoot does not exist, so the app works
 // both before and after the folder is moved.

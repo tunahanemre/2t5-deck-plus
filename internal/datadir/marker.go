@@ -18,7 +18,7 @@ const (
 	markerHome     = "home"
 )
 
-// The external (WS-01) roots. Variables only so tests can point them at a temp
+// The external (studio drive) roots. Variables only so tests can point them at a temp
 // dir; production never changes them.
 var (
 	extDefault = DefaultRoot
@@ -35,7 +35,7 @@ type kind int
 
 const (
 	kindEnv         kind = iota // DECKPLUS_DATA_DIR / LD_DECK_DATA_DIR
-	kindExternal                // the WS-01 root, reachable now
+	kindExternal                // the external root, reachable now
 	kindHome                    // ~/Library/Application Support/2t5-deck-plus/data
 	kindUnreachable             // this Mac uses the external root, which is not there: refuse
 )
@@ -64,7 +64,7 @@ func HomeRoot() (string, error) {
 	return filepath.Join(d, "data"), nil
 }
 
-// externalRoot returns the WS-01 root when that volume's app folder is there:
+// externalRoot returns the external root when that volume's app folder is there:
 // the new data folder, else the old (ld-deck) one, else the new root whose
 // parent exists (first run on the mounted volume). Stat only.
 func externalRoot() (string, bool) {
@@ -101,7 +101,7 @@ func readMarker() (k, root string) {
 }
 
 // priorInstall reports whether the per-user folder already exists without a
-// marker: an older build ran here, and every older build used the WS-01 root.
+// marker: an older build ran here, and every older build used the external root.
 // A Mac like that must not silently grow a second tree at home.
 func priorInstall() bool {
 	d, err := perUserDir()

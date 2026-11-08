@@ -1,7 +1,7 @@
 """
 Tests for resolve_driver.data_root() / ensure_data_dir(): the Python mirror of
 Go's internal/datadir resolution, including the home-folder fallback and the
-"data-root" marker. Hermetic: HOME is a tmp_path, the WS-01 constants are
+"data-root" marker. Hermetic: HOME is a tmp_path, the external-root constants are
 monkeypatched to tmp_path, nothing touches /Volumes or the real ~/Library.
 """
 import os

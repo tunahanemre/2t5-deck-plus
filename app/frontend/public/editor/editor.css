@@ -753,7 +753,7 @@ body.test-mode .empty-app { top: auto; bottom: calc(var(--live-h) + 40px); }
 .tour h3 { font: 600 14px/20px var(--font-ui); color: var(--t1); } .tour p { font: 400 13px/20px var(--font-ui); color: var(--t2); }
 .tour-foot { display: flex; align-items: center; gap: 8px; margin-top: 8px; } .tour-foot .sp { flex: 1; } .tour-step { font: 500 11px/16px var(--font-mono); color: var(--t3); }
 .tour-scrim { position: fixed; inset: 0; z-index: 79; }
-.tour-hole { position: absolute; border-radius: var(--r-md); box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .6); pointer-events: none; transition: none; /* no travel between tour steps (Tunahan 2026-11-04) */ }
+.tour-hole { position: absolute; border-radius: var(--r-md); box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .6); pointer-events: none; transition: none; /* no travel between tour steps */ }
 .btn.light { background: var(--t1); color: var(--accent-ink); box-shadow: var(--e1); } .btn.light:hover { background: #fff; } .btn.light:active { background: var(--t2); }
 /* help drawer */
 .help h3 { font: 600 13px/20px var(--font-ui); color: var(--t1); margin: 16px 0 4px; } .help h3:first-child { margin-top: 0; } .help p, .help li { font: 400 13px/20px var(--font-ui); color: var(--t2); } .help ul { margin: 0; padding-left: 16px; }
@@ -1228,19 +1228,19 @@ html[data-accent="c"], html[data-accent="b"] .stage, html[data-accent="b"] .draw
 .app-act { gap: 6px; height: 28px; padding: 0 10px; color: var(--t2); white-space: nowrap; box-shadow: inset 0 0 0 1px var(--hl-1); }
 .app-act:hover { color: var(--t1); }
 @media (max-width: 1200px) { .app-act span { display: none; } .app-act { padding: 0 7px; } }
-/* engine status lives at the stage's bottom-right (Tunahan 2026-11-05: "this is too wide" · "lets find different spot for it" · "bottom right"); the inspector and drawers never cover it because it belongs to the stage */
+/* engine status lives at the stage's bottom-right (narrow, so it takes the bottom-right corner); the inspector and drawers never cover it because it belongs to the stage */
 .status-dock { position: absolute; right: 16px; bottom: 14px; z-index: 6; display: flex; pointer-events: none; }
 .status-dock .status { pointer-events: auto; margin: 0; background: color-mix(in srgb, var(--s1) 88%, transparent); backdrop-filter: blur(8px); }
 
 /* ghost callouts (normal mode): the intro and the hover callout are read-only drawings; they never take the pointer from the deck. A fading copy never takes it either. */
 .callouts.ghost .co-chip { pointer-events: none; cursor: default; }
 .callouts.co-dying, .callouts.co-dying * { pointer-events: none !important; }
-/* company mark, top left (Tunahan 2026-11-05: "there must be a logo on top left" · "use same logo we use in company"): the 2T5 mark (same file as 2t5.co and the client documents) + DECK+ */
+/* company mark, top left (the company logo sits top left): the 2T5 mark (same file as 2t5.co and the client documents) + DECK+ */
 .brand-mark { display: inline-flex; align-items: center; gap: 10px; flex: none; height: 44px; padding: 0 10px 0 6px; margin-left: -6px; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--t1); user-select: none; cursor: pointer; transition: background-color var(--d-fast) var(--ease-out); }
 .brand-mark:hover { background: var(--s2); } .brand-mark:active { background: var(--s3); }
 .brand-mark img { display: block; height: 40px; width: auto; }
 .brand-word { font: 700 19px/1 var(--font-ui); letter-spacing: .04em; color: var(--t1); }
-/* brand round (Tunahan 2026-11-08: "make sure our company logos very visible on the apps"): a 56 px bar carries the 40 px mark */
+/* brand round (the company logo must stay clearly visible): a 56 px bar carries the 40 px mark */
 #shell > .top { height: 56px; }
 /* About 2T5 DECK+ (drawer body) and the first-run logo block share one lockup */
 .brandlock { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 8px 0 4px; text-align: center; }
@@ -1256,17 +1256,17 @@ html[data-accent="c"], html[data-accent="b"] .stage, html[data-accent="b"] .draw
 .about-link:hover { background: var(--s2); box-shadow: inset 0 0 0 1px var(--hl-2); }
 .about-link .ic { color: var(--t3); } .about-link span { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
 .about-copy { color: var(--t3); margin: 0; text-align: center; }
-/* the stage's dark radial gradient banded into visible steps on 8-bit panels (Tunahan 2026-11-05: "background lights are low textured"): a faint tiled grain on top dithers the steps away */
+/* the stage's dark radial gradient banded into visible steps on 8-bit panels (banding is visible otherwise): a faint tiled grain on top dithers the steps away */
 .stage-bg { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none; display: block; }
 .stage.has-bg { background: var(--stage); isolation: isolate; }
-/* no bars in callout boxes at all (Tunahan 2026-11-05: "remove red lines as well" · "no lines in callout boxes") */
+/* no bars in callout boxes at all (no lines in callout boxes) */
 /* Callouts intro: the strong route and the data flow wait until the set has arrived */
 .callouts.co-intro .co-route, .callouts.co-intro .co-flow { opacity: 0 !important; }
 /* key caps in the list view's press column */
 .tc-keys { display: inline-flex; align-items: center; gap: 4px; min-width: 64px; } .tc-plus { color: var(--t3); font: 400 12px/16px var(--font-ui); }
 .tc-keys .cap.sm { min-width: 24px; height: 24px; font-size: 13px; } .tc-keys .cap.sm.word { font-size: 12px; }
 
-/* AI Agent setup button: the blue highlight (the accent token) as a filled button, left of the search icon (Tunahan 2026-11-05) */
+/* AI Agent setup button: the blue highlight (the accent token) as a filled button, left of the search icon */
 .ai-setup-btn { flex: none; gap: 6px; height: 28px; padding: 0 12px; margin-right: 8px; white-space: nowrap; background: var(--accent); color: var(--accent-ink); box-shadow: var(--e1); font-weight: 600; transition: background-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
 .ai-setup-btn:hover { background: var(--accent-hi); box-shadow: var(--e1), 0 0 0 3px var(--accent-wash); }
 .ai-setup-btn:active { background: var(--accent-lo); box-shadow: var(--e1); transform: translateY(1px); }

@@ -452,7 +452,7 @@ async function loadCal() {
     if (my === calSeq && S.control) { const hn = $("#panel .cal-chip"); if (hn || ctx.calChip(S.bank, S.control)) renderPanel(false); }
 }
 /** inspector chip for a control that uses a mouse target: its worst status */
-ctx.calChip = () => null; /* no per-control calibration chip either: the status is shown only in Mouse calibration (Tunahan 2026-11-05) */
+ctx.calChip = () => null; /* no per-control calibration chip either: the status is shown only in Mouse calibration */
 ctx._calChipUnused = (bank, control) => {
     const ov = ctx.calOv; if (!ov || ov.app.id !== S.app) return null;
     const ts = (ov.targets || []).filter((t) => (t.usedBy || []).some((u) => u.control === control && (u.bank === bank || bank.startsWith(u.bank))));
@@ -773,7 +773,7 @@ function openViewMenu() {
 /** Callouts are on by default whenever the stage has room for them; a manual choice (S.coUser) always wins and is remembered per viewer. */
 const roomForCallouts = () => { const z = $("#zone"); return !!z && z.clientWidth >= 860 && z.clientHeight >= 520 && (!ctx.stage || ctx.stage.fitsCallouts(S.flags.callouts ? 0 : 40)); };
 /** the stage cannot give the deck its minimum readable scale with the bands: Callouts drop to off by themselves (the labelled toggle brings them back), and return when there is room again unless the viewer chose */
-function onStageFit() { /* Callouts only ever change with the toggle (Tunahan 2026-11-04: "callouts only shows when callouts button toggled on"): no automatic on or off */ }
+function onStageFit() { /* Callouts only ever change with the toggle: no automatic on or off */ }
 let coOffT = 0;
 /** Callouts on: the deck scales to its callout size (one ease-out, 280 ms, no overshoot) while the callout layer stays hidden; the boxes are already at their final places when the whole layer fades in (opacity only, 160 ms). Off is the reverse: the layer fades out completely, then the deck scales back. Reduced motion: instant. */
 function applyCallouts(v) {
@@ -1600,12 +1600,12 @@ $("#viewMenuBtn").addEventListener("click", openViewMenu);
 /* notices.external is the held-change list; S.pending is also the unsaved-edit slot and selection clears it */
 picker = createAppPicker({ button: $("#appPick"), getApps: () => S.apps, getCurrent: () => S.app, getFront: () => S.live?.frontmost?.id, getHeld: (id) => ((notices.external) || []).some((x) => x.preset === id), onCalibrate: (app, el) => ctx.drawers.open("calibration", el), onSelect: (id) => selectApp(id), onAdd: (btn) => openAddApp(btn) });
 $("#appMenuBtn").addEventListener("click", (e) => openAppMenu(e.currentTarget));
-/* the app menu's options as visible buttons in the top bar (Tunahan 2026-11-05: "make those options more visible" · "we have plenty room between arm box and search icon") */
+/* the app menu's options as visible buttons in the top bar, between the arm box and the search icon */
 $("#calBtn").addEventListener("click", (e) => ctx.drawers.open("calibration", e.currentTarget));
 $("#profileBtn").addEventListener("click", (e) => ctx.drawers.open("profile", e.currentTarget));
 $("#ioBtn").addEventListener("click", (e) => ctx.drawers.open("io", e.currentTarget));
-/* AI Agent setup: the existing AI access drawer (enable switch, connection line, config block) opened from the top bar, left of the search icon (Tunahan 2026-11-05) */
-/* HUD on/off in the top bar, left of AI Agent (Tunahan 2026-11-05: "add a toggle button for hud"). The same persisted setting as More > HUD > "Show the HUD" (the Resolve preset's hudEnabled, written with api.setting) and Fn+C6 (the store); it follows every change through the reload that the live seq / mutated event already trigger. */
+/* AI Agent setup: the existing AI access drawer (enable switch, connection line, config block) opened from the top bar, left of the search icon */
+/* HUD on/off in the top bar, left of AI Agent. The same persisted setting as More > HUD > "Show the HUD" (the Resolve preset's hudEnabled, written with api.setting) and Fn+C6 (the store); it follows every change through the reload that the live seq / mutated event already trigger. */
 const hudRid = () => (S.apps.find((a) => String(a.id).includes("DaVinciResolve") || (a.packs || []).includes("resolve")) || {}).id;
 function paintHud(on) { const b = $("#hudBtn"); b.hidden = on == null; if (on == null) return; S.hudOn = on; b.setAttribute("aria-pressed", String(on)); }
 let hudReq = 0;

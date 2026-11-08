@@ -126,8 +126,8 @@ type Deps struct {
 	// app's ArmMarkerWriter): warnings and preflight show "could not save the
 	// disarmed state". nil = nothing to report.
 	ArmMark interface{ LastError() string }
-	// Env answers the preflight checks the store and the engine cannot (WS-01
-	// mount, the old app running). nil = those checks are "unknown".
+	// Env answers the preflight checks the store and the engine cannot (the data
+	// drive mount, the old app running). nil = those checks are "unknown".
 	Env EnvProvider
 	// Events is the events ring behind GET /api/events-log (nil = the handler
 	// keeps its own, which still records what the handler itself does).

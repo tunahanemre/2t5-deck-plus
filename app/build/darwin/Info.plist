@@ -27,9 +27,9 @@
              NSAppleEventsUsageDescription is MANDATORY, not cosmetic: without
              it TCC terminates the process on the first Apple Event instead of
              denying it gracefully. The four folder/volume keys cover where
-             this user actually keeps footage — including /Volumes/2T5-WS-01
-             and WS-02 — and without them the tag writes fail with a silent
-             EPERM. -->
+             footage is usually kept (Desktop, Documents, Downloads and
+             external drives) and without them the tag writes fail with a
+             silent EPERM. -->
         <key>NSAppleEventsUsageDescription</key>
         <string>2T5 DECK+ asks Finder which files are selected so the deck's colour buttons can tag them.</string>
         <key>NSDesktopFolderUsageDescription</key>
@@ -39,7 +39,7 @@
         <key>NSDownloadsFolderUsageDescription</key>
         <string>2T5 DECK+ applies Finder colour tags to files you select in Downloads.</string>
         <key>NSRemovableVolumesUsageDescription</key>
-        <string>2T5 DECK+ applies Finder colour tags to files you select on external volumes such as 2T5-WS-01 and 2T5-WS-02.</string>
+        <string>2T5 DECK+ applies Finder colour tags to files you select on external drives.</string>
         {{if .Info.FileAssociations}}
         <key>CFBundleDocumentTypes</key>
         <array>

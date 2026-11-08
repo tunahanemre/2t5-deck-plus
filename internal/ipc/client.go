@@ -60,7 +60,7 @@ var SendTimeout = 5 * time.Second
 // evidence: DaVinci Resolve's own scripting API goes briefly unresponsive
 // while PLAYING BACK, and the "status" op's cost also scales with timeline
 // size (see engine.go's queryStatus doc comment on the 8.3s stall) -- on the
-// user's large DODEE EP15 timeline this reliably exceeded SendTimeout a few
+// user's very large timeline this reliably exceeded SendTimeout a few
 // seconds after every Space/C1 press. Before this fix, Send treated a
 // timeout exactly like a broken connection: dropLocked() closed it, and the
 // caller (engine.go's queryStatus) treated ANY Send failure as "the sidecar

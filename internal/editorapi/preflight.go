@@ -15,7 +15,7 @@ import (
 
 // EnvProvider reports what the editor cannot learn from the store or the engine.
 type EnvProvider interface {
-	// WS01 says whether the WS-01 volume is really mounted (device differs from /
+	// WS01 says whether the external data drive is really mounted (device differs from /
 	// and the sentinel file exists), with a short detail.
 	WS01() (mounted bool, detail string)
 	// LDResolveRunning says whether the old LD-RESOLVE app is running.
@@ -84,15 +84,15 @@ func (s *server) preflight(w http.ResponseWriter, r *http.Request) {
 			add("automationFinder", "Automation permission for Finder", "unknown", "not asked yet: it is requested the first time a Finder tag key is used", "")
 		}
 	}
-	// WS-01 (only on a Mac that keeps its data there: a stranger's Mac has no such volume)
+	// data drive (only on a Mac that keeps its data on an external drive: most Macs have none)
 	if a, ok := s.d.Env.(interface{ WS01Applicable() bool }); ok && !a.WS01Applicable() {
 		// no row
 	} else if s.d.Env == nil {
-		add("ws01", "WS-01 mounted", "unknown", "this host cannot check the volume", "")
+		add("ws01", "Data drive mounted", "unknown", "this host cannot check the volume", "")
 	} else if ok, d := s.d.Env.WS01(); ok {
-		add("ws01", "WS-01 mounted", "ok", d, "")
+		add("ws01", "Data drive mounted", "ok", d, "")
 	} else {
-		add("ws01", "WS-01 mounted", "fail", d, "Mount 2T5-WS-01 (the app keeps its logs, state and presets there), then restart 2T5 DECK+")
+		add("ws01", "Data drive mounted", "fail", d, "Mount the drive that holds the app's data, then restart 2T5 DECK+")
 	}
 	// presets dir
 	ro, pid := s.d.Store.ReadOnly()

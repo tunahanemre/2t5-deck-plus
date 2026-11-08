@@ -14,7 +14,7 @@ import (
 // hue"), so it needs no entry.
 //
 // It ships with the Resolve STANDARD preset: a Resolve preset seeded from the
-// bundled default has it. A preset seeded from the owner's live ld-resolve
+// bundled default has it. A preset seeded from a user's live ld-resolve
 // bindings does NOT (their slots stay empty), and nothing ever writes it into an
 // existing preset by itself: they opt in with Store.ApplyStandardModes (the
 // editor's "Use the standard Sat / Lum mapping"). A preset with no per-mode

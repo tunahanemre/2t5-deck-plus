@@ -8,8 +8,8 @@ import (
 	"io"
 )
 
-// Version is reported to MCP clients.
-const Version = "1.0.0"
+// Version is reported to MCP clients; it follows the app version (app/version.go, checked by app/version_test.go).
+const Version = "0.1.1"
 
 var mcpVersions = []string{"2025-06-18", "2025-03-26", "2024-11-05"}
 

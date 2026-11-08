@@ -11,7 +11,7 @@ export const orderedApps = (apps) => [
 ];
 /** the app's real icon, bare at 20px; Global gets the matching neutral link glyph */
 const appIcon = (a) => (a.isGlobal ? h("span", { class: "ap-ic ap-glob" }, icon("link", 16)) : appTile(a, { size: 20, url: a.iconUrl }));
-/* no calibration warning on the app (Tunahan 2026-11-05: "i dont want that warning" · "if nothing is calibrated it should be in calibration menu"): status lives only in Mouse calibration */
+/* no calibration warning on the app: the status lives only in Mouse calibration */
 const calNeeds = () => false;
 const label = (a) => (a.isGlobal ? "Global" : a.name || a.id);
 /** plain words for the calibration warning: what it means for him and what to do */

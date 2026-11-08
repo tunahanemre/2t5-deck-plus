@@ -9,7 +9,9 @@ LIB = "/Applications/DaVinci Resolve/DaVinci Resolve.app/Contents/Libraries/Fusi
 # under a test override.
 DECKPLUS_DATA_ENV = "DECKPLUS_DATA_DIR"
 DECKPLUS_LEGACY_DATA_ENV = "LD_DECK_DATA_DIR"  # the name before the rename; read when the new one is unset
+# studio default; override with DECKPLUS_DATA_DIR
 DECKPLUS_DEFAULT_DATA_ROOT = "/Volumes/2T5-WS-01/01-APPS/2t5-deck-plus/data"
+# studio default; override with DECKPLUS_DATA_DIR
 DECKPLUS_LEGACY_DEFAULT_DATA_ROOT = "/Volumes/2T5-WS-01/01-APPS/ld-deck/data"  # before the folder is renamed
 
 
@@ -24,7 +26,7 @@ def _per_user_dir():
 
 
 def home_data_root():
-    """The data root of a Mac with no WS-01 volume (same as Go's datadir.HomeRoot)."""
+    """The data root of a Mac with no external studio drive (same as Go's datadir.HomeRoot)."""
     return os.path.join(_per_user_dir(), "data")
 
 
@@ -45,7 +47,7 @@ def data_root():
     """Resolve the data root, mirroring Go's internal/datadir.Root. Never
     creates or writes anything (it only stats and reads the marker):
       1. env, else the old env name;
-      2. the WS-01 root: the new default folder, else the old one when only
+      2. the external studio root: the new default folder, else the old one when only
          that exists, else the new default when its parent folder exists;
       3. else, if this Mac has recorded that it uses the external root (marker
          says external, or an older build's per-user folder exists without a
@@ -79,9 +81,8 @@ def ensure_data_dir(sub):
 
     The guard mirrors Go's datadir.checkReachable and exists for the same
     reason: the default root is on an external volume, and an unguarded
-    makedirs() would CREATE /Volumes/2T5-WS-01/... on the boot disk when
-    WS-01 is not mounted (that is how 162 GB landed on this Mac's internal
-    SSD on 2026-08-27). The root's parent can only exist on the real volume,
+    makedirs() would CREATE the external path on the boot disk when
+    the drive is not mounted (an unmounted mount point is just a directory). The root's parent can only exist on the real volume,
     so it serves as the mount sentinel."""
     root = data_root()
     if root != home_data_root() and not os.path.isdir(os.path.dirname(root)):

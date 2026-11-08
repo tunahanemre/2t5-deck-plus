@@ -22,7 +22,7 @@ import (
 // package-wide override possible instead.
 //
 // It matters more now than it did then: stateFilePath's default moved from
-// $HOME (local disk, private) to the WS-01 data root, which is SMB-shared and
+// $HOME (local disk, private) to the external data root, which is SMB-shared and
 // mirrored to another machine. An unisolated test run would no longer just
 // clobber the user's live app state, it would generate cross-device write
 // churn on every `go test`.

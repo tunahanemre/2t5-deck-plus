@@ -2,9 +2,7 @@
 // Custom Mode) from the engine's state.
 //
 // STATUS: UNVERIFIED ON HARDWARE, OFF BY DEFAULT. No public source documents a
-// MIDI output protocol for the Loupedeck+ lamps (see
-// Claude-v2/plans/2026-11-04-backend-developer-ld-deck-slider-modes.md, section
-// LEDs). The only convention available is the one other MIDI controllers use,
+// MIDI output protocol for the Loupedeck+ lamps (the LED section of the slider-mode design notes). The only convention available is the one other MIDI controllers use,
 // and darktable's Loupedeck profile relies on: a lamp is a note, lit with
 // note-on velocity 127 and dark with velocity 0, on the same note number the
 // button sends. That is what Plan produces. Whether the Loupedeck+ firmware

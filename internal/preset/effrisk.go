@@ -120,7 +120,7 @@ func inheritReason(own Assignment, eff map[string]any) string {
 // (2026-11-04); only these two weaken a confirmation or a guard:
 //
 //	finderTagConfirmThreshold  the selection size above which a Finder tag press asks again; negative DISABLES the question, a larger number asks later
-//	dodeeMostGuard             refuses edits while a DODEE / MOST project is open; false switches the guard off
+//	dodeeMostGuard             refuses edits while a protected project (by name) is open; false switches the guard off
 //
 // Everything else in TopLevel is a tuning value (debounce, scrub pixels, colours,
 // HUD placement, startupReset ...). settings.actionDefaults changes are judged
@@ -176,7 +176,7 @@ var guardSettings = []guardSetting{
 		}
 		return n < 0 || n > o || n > 1000
 	}},
-	{"dodeeMostGuard", "switches off the DODEE / MOST project guard", func(old, nu config.TopLevel) bool { return guardOn(old) && !guardOn(nu) }},
+	{"dodeeMostGuard", "switches off the project-name guard", func(old, nu config.TopLevel) bool { return guardOn(old) && !guardOn(nu) }},
 	{"maxScrubPx", "a larger scrub clamp lets one turn drag further", func(old, nu config.TopLevel) bool {
 		return nu.MaxScrubPx < 0 && old.MaxScrubPx >= 0 || higherIsUnsafe("maxScrubPx", float64(old.MaxScrubPx), float64(nu.MaxScrubPx))
 	}},

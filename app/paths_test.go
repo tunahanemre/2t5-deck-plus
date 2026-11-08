@@ -350,7 +350,7 @@ func stubExecutable(t *testing.T, path string) {
 
 // stubDataRoot points datadir at a per-test temp directory and returns it.
 // Every test that exercises bundle mode MUST use it: without the override
-// resolveAppDirs would resolve, create and seed the REAL WS-01 data root —
+// resolveAppDirs would resolve, create and seed the REAL external data root —
 // an SMB-shared volume mirrored to another machine, so a forgotten stub is
 // not merely untidy, it is cross-device write churn.
 func stubDataRoot(t *testing.T) string {

@@ -100,7 +100,7 @@ export function createStage({ zone, controls, info, onFit, onSelect, onHover, on
         if (!G.zw || !G.zh) return;
         if (!opts.verify) { G.adj = 0; G.kMax = null; verifyN = 0; }
         const padX = Math.max(G.zw < 760 ? 16 : 24, Math.min(40, G.zw * 0.025)); // narrow stage: the deck takes every pixel it can (its printed labels are baked into the photo)
-        G.s = 0.8 * Math.min((G.zw - 2 * padX) / VW, (G.zh - 48) / VH, 1.6); // 20% smaller than the full fit at every size (Tunahan 2026-11-05: "this is too big, we can reduce size %20 for all")
+        G.s = 0.8 * Math.min((G.zw - 2 * padX) / VW, (G.zh - 48) / VH, 1.6); // 20% smaller than the full fit at every size (the full fit read as too large)
         G.dw = VW * G.s; G.dh = VH * G.s;
         // optically centred in the free area (a hair above the middle); the live drawer / callout rows only scale it down when they would be covered
         // the resting place first (callouts off): the live drawer's room, a hair above optical centre. The photo never moves when the live drawer opens.
@@ -272,7 +272,7 @@ export function createStage({ zone, controls, info, onFit, onSelect, onHover, on
         if (!selected) { endGlide(false); lastSelGroup = null; if (coOn) updateCalloutHighlight(); return; }
         const n = nodes.get(selected);
         n.sel.getAnimations().forEach((a) => a.cancel());
-        const travel = false; // Tunahan 2026-11-04: the highlight never travels from the previous control; the old edge fades out, the new one draws in place
+        const travel = false; // the highlight never travels from the previous control; the old edge fades out, the new one draws in place
         if (travel) {
             n.g.classList.remove("sel-on");
             handOff(prev && nodes.has(prev) && prev !== selected ? rectOf(prev) : null, selected);

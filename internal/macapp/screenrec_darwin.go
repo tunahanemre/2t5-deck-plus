@@ -22,7 +22,7 @@ import "C"
 // App.RecheckPermissions()) and from tests without side effects.
 //
 // The window-title safety guard (kCGWindowName, read via
-// ResolveWindowTitle and used for the DODEE/MOST-PRODUCTION project guard)
+// ResolveWindowTitle and used for the project-name guard)
 // requires this permission on macOS 10.15+; without it, window titles read
 // back as empty strings rather than erroring.
 func ScreenRecordingTrusted() bool {
