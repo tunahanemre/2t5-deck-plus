@@ -1,0 +1,525 @@
+{
+  "_config": {
+    "hueOffsetsDeg": [
+      0,
+      45,
+      90,
+      135,
+      180,
+      225,
+      270,
+      315
+    ],
+    "coalesceWindowMs": 120,
+    "pxPerUnit": 10.0,
+    "maxScrubPx": 80.0,
+    "minScrubPx": 1.0,
+    "startupReset": "never",
+    "highlightEnabled": true,
+    "highlightColor": "Beige",
+    "releaseColor": "Blue",
+    "markerResizeFramesPerStep": 1,
+    "keyDebounceMs": 50,
+    "selectionGraceMs": 500,
+    "hud": {
+      "display": "PB287Q",
+      "edge": "bottom",
+      "heightPx": 340
+    }
+  },
+  "col": {
+    "Exposure": {
+      "type": "wheel",
+      "wheel": "lift_master",
+      "sens": 15,
+      "press": {
+        "type": "selectWheel",
+        "wheel": "lift"
+      }
+    },
+    "Blacks": {
+      "type": "wheel",
+      "wheel": "gamma_master",
+      "sens": 15,
+      "press": {
+        "type": "selectWheel",
+        "wheel": "gamma"
+      }
+    },
+    "Whites": {
+      "type": "wheel",
+      "wheel": "gain_master",
+      "sens": 15,
+      "press": {
+        "type": "selectWheel",
+        "wheel": "gain"
+      }
+    },
+    "D2": {
+      "type": "wheel",
+      "wheel": "offset_master",
+      "sens": 15,
+      "press": {
+        "type": "selectWheel",
+        "wheel": "offset"
+      }
+    },
+    "Saturation": {
+      "type": "cdl",
+      "param": "sat",
+      "ch": "master"
+    },
+    "Temperature": {
+      "type": "wheel",
+      "wheel": "temp_slider",
+      "sens": 15,
+      "press": {
+        "type": "key",
+        "key": "Cmd+Z"
+      }
+    },
+    "Tint": {
+      "type": "wheel",
+      "wheel": "tint_slider",
+      "sens": 15,
+      "press": {
+        "type": "key",
+        "key": "Cmd+Z"
+      }
+    },
+    "L1": {
+      "type": "layer",
+      "layer": 1
+    },
+    "L3": {
+      "type": "layer",
+      "layer": 3
+    },
+    "P1": {
+      "type": "balance",
+      "hue": 0,
+      "sens": 8
+    },
+    "P2": {
+      "type": "balance",
+      "hue": 1,
+      "sens": 8
+    },
+    "P3": {
+      "type": "balance",
+      "hue": 2,
+      "sens": 8
+    },
+    "P4": {
+      "type": "balance",
+      "hue": 3,
+      "sens": 8
+    },
+    "P5": {
+      "type": "balance",
+      "hue": 4,
+      "sens": 8
+    },
+    "P6": {
+      "type": "balance",
+      "hue": 5,
+      "sens": 8
+    },
+    "P7": {
+      "type": "balance",
+      "hue": 6,
+      "sens": 8
+    },
+    "P8": {
+      "type": "balance",
+      "hue": 7,
+      "sens": 8
+    },
+    "C1": {
+      "type": "key",
+      "key": "Space",
+      "label": "Play/Pause"
+    },
+    "C2": {
+      "type": "none",
+      "label": "free",
+      "key": "Alt+P"
+    },
+    "C3": {
+      "type": "key",
+      "key": "Alt+S",
+      "label": "Add serial node"
+    },
+    "L2": {
+      "type": "layer",
+      "layer": 2
+    },
+    "Undo": {
+      "type": "key",
+      "key": "Cmd+Z"
+    },
+    "Redo": {
+      "type": "key",
+      "key": "Cmd+Shift+Z"
+    },
+    "Copy": {
+      "type": "key",
+      "key": "Cmd+C"
+    },
+    "Paste": {
+      "type": "key",
+      "key": "Cmd+V",
+      "label": "Paste"
+    },
+    "C6": {
+      "type": "none",
+      "label": "free"
+    },
+    "Export": {
+      "type": "key",
+      "key": "Return",
+      "label": "Enter"
+    },
+    "Col": {
+      "type": "resetActiveWheel"
+    },
+    "CustomMode": {
+      "type": "resyncAll"
+    },
+    "ScreenMode": {
+      "type": "key",
+      "key": "Delete",
+      "label": "Delete"
+    },
+    "Hue": {
+      "type": "pmode",
+      "pmode": "hue"
+    },
+    "Sat": {
+      "type": "pmode",
+      "pmode": "sat"
+    },
+    "Lum": {
+      "type": "pmode",
+      "pmode": "lum"
+    },
+    "Tab": {
+      "type": "key",
+      "key": "Shift+Tab",
+      "label": "Next timeline tab"
+    },
+    "C4": {
+      "type": "key",
+      "key": "Alt+P",
+      "label": "Add parallel node"
+    },
+    "C5": {
+      "type": "fineModeHold"
+    },
+    "Cmd": {
+      "type": "modifierHold",
+      "modifier": "cmd",
+      "label": "Held: Cmd chord"
+    },
+    "Alt": {
+      "type": "modifierHold",
+      "modifier": "alt",
+      "label": "Held: Alt chord"
+    },
+    "Shift": {
+      "type": "modifierHold",
+      "modifier": "shift",
+      "label": "Held: Shift chord"
+    },
+    "Ctrl": {
+      "type": "modifierHold",
+      "modifier": "ctrl",
+      "label": "Held: Ctrl chord"
+    },
+    "BeforeAfter": {
+      "type": "key",
+      "key": "Escape",
+      "label": "Esc"
+    },
+    "Fn": {
+      "type": "modifierHold",
+      "modifier": "fn",
+      "label": "Held: Fn chord"
+    }
+  },
+  "col-alt": {
+    "C1": {
+      "type": "key",
+      "key": "Alt+F",
+      "label": "Alt+F (Alt chord)"
+    },
+    "Paste": {
+      "type": "key",
+      "key": "Alt+V",
+      "label": "Paste attributes"
+    }
+  },
+  "col-ctrl": {
+    "C1": {
+      "type": "key",
+      "key": "Ctrl+F",
+      "label": "Ctrl+F (Ctrl chord)"
+    },
+    "C2": {
+      "type": "key",
+      "key": "Cmd+E",
+      "label": "Cmd+E (Ctrl chord)"
+    },
+    "C6": {
+      "type": "key",
+      "key": "Ctrl+D",
+      "label": "Ctrl+D (Ctrl chord)"
+    }
+  },
+  "col-shift": {
+    "C1": {
+      "type": "key",
+      "key": "Shift+F",
+      "label": "Shift+F (Shift chord)"
+    },
+    "ScreenMode": {
+      "type": "key",
+      "key": "Alt+Z",
+      "label": "Wheels/Log toggle"
+    },
+    "BeforeAfter": {
+      "type": "key",
+      "key": "Cmd+Alt+Shift+R",
+      "label": "Render in place"
+    },
+    "Export": {
+      "type": "quickexport",
+      "label": "Quick Export"
+    },
+    "C6": {
+      "type": "none",
+      "label": "free"
+    }
+  },
+  "col-cmd": {
+    "C1": {
+      "type": "key",
+      "key": "Cmd+F",
+      "label": "Cmd+F (Cmd chord)"
+    },
+    "C2": {
+      "type": "key",
+      "key": "Cmd+S",
+      "label": "Save project (Cmd chord)"
+    }
+  },
+  "edit": {
+    "ControlDial": {
+      "type": "jog",
+      "base": 1.0,
+      "gamma": 1.0,
+      "maxDelta": 90,
+      "jogTier5Min": 999997,
+      "jogTier10Min": 999998,
+      "jogTier30Min": 999999,
+      "jogSustainMs": 999999999,
+      "jogSustainSeconds": 60
+    },
+    "C2": {
+      "type": "colorByRenderState",
+      "rendered": "Green",
+      "neutral": "Yellow",
+      "label": "Colour by render"
+    },
+    "Up": {
+      "type": "key",
+      "key": "Up",
+      "label": "Up arrow"
+    },
+    "Down": {
+      "type": "key",
+      "key": "Down",
+      "label": "Down arrow"
+    },
+    "D1": {
+      "type": "jogMinuteSnap"
+    },
+    "Left": {
+      "type": "key",
+      "key": "Left",
+      "label": "Left arrow"
+    },
+    "Right": {
+      "type": "key",
+      "key": "Right",
+      "label": "Right arrow"
+    },
+    "Exposure": {
+      "type": "property",
+      "gang": [
+        "ZoomX",
+        "ZoomY"
+      ],
+      "sens": 0.005,
+      "maxDelta": 0.1
+    },
+    "Contrast": {
+      "type": "property",
+      "property": "Pan",
+      "sens": 12.5,
+      "maxDelta": 40
+    },
+    "Clarity": {
+      "type": "property",
+      "property": "Tilt",
+      "sens": -12.5,
+      "maxDelta": 40
+    },
+    "Temperature": {
+      "type": "property",
+      "property": "CropTop",
+      "sens": 2.0,
+      "maxDelta": 40
+    },
+    "Tint": {
+      "type": "property",
+      "property": "CropRight",
+      "sens": -2.0,
+      "maxDelta": 40
+    },
+    "Vibrance": {
+      "type": "property",
+      "property": "CropLeft",
+      "sens": 2.0,
+      "maxDelta": 40
+    },
+    "Saturation": {
+      "type": "property",
+      "property": "CropBottom",
+      "sens": -2.0,
+      "maxDelta": 40
+    },
+    "C1": {
+      "type": "key",
+      "key": "Space",
+      "label": "Play/Pause",
+      "markerColor": "Blue",
+      "markerDurationSeconds": 1
+    },
+    "P1btn": {
+      "type": "markerAtPlayhead",
+      "markerColor": "Red",
+      "whenPMode": "hue"
+    },
+    "P2btn": {
+      "type": "markerAtPlayhead",
+      "markerColor": "Sand",
+      "whenPMode": "hue"
+    },
+    "P3btn": {
+      "type": "markerAtPlayhead",
+      "markerColor": "Yellow",
+      "whenPMode": "hue"
+    },
+    "P4btn": {
+      "type": "markerAtPlayhead",
+      "markerColor": "Green",
+      "whenPMode": "hue"
+    },
+    "P5btn": {
+      "type": "markerAtPlayhead",
+      "markerColor": "Cyan",
+      "whenPMode": "hue"
+    },
+    "P6btn": {
+      "type": "markerAtPlayhead",
+      "markerColor": "Blue",
+      "whenPMode": "hue"
+    },
+    "P7btn": {
+      "type": "markerAtPlayhead",
+      "markerColor": "Purple",
+      "whenPMode": "hue"
+    },
+    "P8btn": {
+      "type": "markerAtPlayhead",
+      "markerColor": "Pink",
+      "whenPMode": "hue"
+    },
+    "BeforeAfter": {
+      "type": "key",
+      "key": "Escape",
+      "label": "Esc"
+    },
+    "ScreenMode": {
+      "type": "key",
+      "key": "Delete",
+      "label": "Delete"
+    },
+    "ClrBW": {
+      "type": "key",
+      "key": "Cmd+Alt+Shift+F"
+    }
+  },
+  "edit-shift": {
+    "Up": {
+      "type": "selectClipVert"
+    },
+    "Down": {
+      "type": "selectClipVert"
+    },
+    "Left": {
+      "type": "selectClipHoriz"
+    },
+    "Right": {
+      "type": "selectClipHoriz"
+    },
+    "D1": {
+      "type": "scrollDelta",
+      "flags": "Alt",
+      "linesPerDetent": 1,
+      "label": "Timeline zoom (Alt+scroll)"
+    },
+    "ScreenMode": {
+      "type": "key",
+      "key": "Cmd+Shift+F",
+      "label": "Fullscreen"
+    },
+    "BeforeAfter": {
+      "type": "key",
+      "key": "Cmd+Alt+Shift+R",
+      "label": "Render in place"
+    }
+  },
+  "col-fn": {
+    "C1": {
+      "type": "key",
+      "key": "Cmd+Q",
+      "label": "Quit Resolve"
+    },
+    "C6": {
+      "type": "toggleHud",
+      "label": "HUD toggle"
+    },
+    "C3": {
+      "type": "key",
+      "key": "Cmd+Alt+C",
+      "label": "Clean Feed ON (PB287Q)"
+    },
+    "C4": {
+      "type": "key",
+      "key": "Cmd+Alt+Shift+X",
+      "label": "Clean Feed OFF"
+    }
+  },
+  "com.apple.finder": {
+    "P1btn": { "type": "finderTag", "tag": "Red",    "label": "Finder tag Red" },
+    "P2btn": { "type": "finderTag", "tag": "Orange", "label": "Finder tag Orange" },
+    "P3btn": { "type": "finderTag", "tag": "Yellow", "label": "Finder tag Yellow" },
+    "P4btn": { "type": "finderTag", "tag": "Green",  "label": "Finder tag Green" },
+    "P5btn": { "type": "finderTag", "tag": "Gray",   "label": "Finder tag Gray" },
+    "P6btn": { "type": "finderTag", "tag": "Blue",   "label": "Finder tag Blue" },
+    "P7btn": { "type": "finderTag", "tag": "Purple", "label": "Finder tag Purple" },
+    "P8btn": { "type": "finderTag", "tag": "",       "label": "Finder clear colour tags" }
+  }
+}

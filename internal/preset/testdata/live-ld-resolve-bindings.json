@@ -1,0 +1,515 @@
+{
+  "_config": {
+    "coalesceWindowMs": 120,
+    "highlightColor": "Beige",
+    "highlightEnabled": true,
+    "hud": {
+      "display": "PB287Q",
+      "edge": "bottom",
+      "heightPx": 340
+    },
+    "hueOffsetsDeg": [
+      0,
+      45,
+      90,
+      135,
+      180,
+      225,
+      270,
+      315
+    ],
+    "keyDebounceMs": 50,
+    "markerResizeFramesPerStep": 1,
+    "maxScrubPx": 80,
+    "minScrubPx": 1,
+    "pxPerUnit": 10,
+    "releaseColor": "Blue",
+    "selectionGraceMs": 500,
+    "startupReset": "never"
+  },
+  "col": {
+    "Alt": {
+      "type": "modifierHold",
+      "modifier": "alt",
+      "label": "Held: Alt chord"
+    },
+    "Blacks": {
+      "press": {
+        "type": "selectWheel",
+        "wheel": "gamma"
+      },
+      "sens": 15,
+      "type": "wheel",
+      "wheel": "gamma_master"
+    },
+    "C1": {
+      "key": "Space",
+      "label": "Play/Pause",
+      "type": "key"
+    },
+    "C2": {
+      "key": "Alt+P",
+      "label": "free",
+      "type": "none"
+    },
+    "C3": {
+      "key": "Alt+S",
+      "label": "Add serial node",
+      "type": "key"
+    },
+    "C4": {
+      "key": "Alt+P",
+      "label": "Add parallel node",
+      "type": "key"
+    },
+    "C5": {
+      "type": "fineModeHold"
+    },
+    "C6": {
+      "type": "none",
+      "label": "free"
+    },
+    "Cmd": {
+      "label": "Held: Cmd chord",
+      "modifier": "cmd",
+      "type": "modifierHold"
+    },
+    "Col": {
+      "type": "resetActiveWheel"
+    },
+    "Copy": {
+      "key": "Cmd+C",
+      "type": "key"
+    },
+    "Ctrl": {
+      "type": "modifierHold",
+      "modifier": "ctrl",
+      "label": "Held: Ctrl chord"
+    },
+    "CustomMode": {
+      "type": "resyncAll"
+    },
+    "D2": {
+      "press": {
+        "type": "selectWheel",
+        "wheel": "offset"
+      },
+      "sens": 15,
+      "type": "wheel",
+      "wheel": "offset_master"
+    },
+    "Export": {
+      "type": "key",
+      "key": "Return",
+      "label": "Enter"
+    },
+    "Exposure": {
+      "press": {
+        "type": "selectWheel",
+        "wheel": "lift"
+      },
+      "sens": 15,
+      "type": "wheel",
+      "wheel": "lift_master"
+    },
+    "Hue": {
+      "pmode": "hue",
+      "type": "pmode"
+    },
+    "L1": {
+      "layer": 1,
+      "type": "layer"
+    },
+    "L2": {
+      "layer": 2,
+      "type": "layer"
+    },
+    "L3": {
+      "layer": 3,
+      "type": "layer"
+    },
+    "Lum": {
+      "pmode": "lum",
+      "type": "pmode"
+    },
+    "P1": {
+      "hue": 0,
+      "sens": 8,
+      "type": "balance"
+    },
+    "P2": {
+      "hue": 1,
+      "sens": 8,
+      "type": "balance"
+    },
+    "P3": {
+      "hue": 2,
+      "sens": 8,
+      "type": "balance"
+    },
+    "P4": {
+      "hue": 3,
+      "sens": 8,
+      "type": "balance"
+    },
+    "P5": {
+      "hue": 4,
+      "sens": 8,
+      "type": "balance"
+    },
+    "P6": {
+      "hue": 5,
+      "sens": 8,
+      "type": "balance"
+    },
+    "P7": {
+      "hue": 6,
+      "sens": 8,
+      "type": "balance"
+    },
+    "P8": {
+      "hue": 7,
+      "sens": 8,
+      "type": "balance"
+    },
+    "Paste": {
+      "key": "Cmd+V",
+      "label": "Paste",
+      "type": "key"
+    },
+    "Redo": {
+      "key": "Cmd+Shift+Z",
+      "type": "key"
+    },
+    "Sat": {
+      "pmode": "sat",
+      "type": "pmode"
+    },
+    "Saturation": {
+      "ch": "master",
+      "param": "sat",
+      "type": "cdl"
+    },
+    "ScreenMode": {
+      "type": "key",
+      "key": "Delete",
+      "label": "Delete"
+    },
+    "Shift": {
+      "type": "modifierHold",
+      "modifier": "shift",
+      "label": "Held: Shift chord"
+    },
+    "Tab": {
+      "key": "Shift+Tab",
+      "label": "Next timeline tab",
+      "type": "key"
+    },
+    "Temperature": {
+      "press": {
+        "key": "Cmd+Z",
+        "type": "key"
+      },
+      "sens": 15,
+      "type": "wheel",
+      "wheel": "temp_slider"
+    },
+    "Tint": {
+      "press": {
+        "key": "Cmd+Z",
+        "type": "key"
+      },
+      "sens": 15,
+      "type": "wheel",
+      "wheel": "tint_slider"
+    },
+    "Undo": {
+      "key": "Cmd+Z",
+      "type": "key"
+    },
+    "Whites": {
+      "press": {
+        "type": "selectWheel",
+        "wheel": "gain"
+      },
+      "sens": 15,
+      "type": "wheel",
+      "wheel": "gain_master"
+    },
+    "BeforeAfter": {
+      "type": "key",
+      "key": "Escape",
+      "label": "Esc"
+    },
+    "Fn": {
+      "type": "modifierHold",
+      "modifier": "fn",
+      "label": "Held: Fn chord"
+    }
+  },
+  "col-alt": {
+    "C1": {
+      "key": "Alt+F",
+      "label": "Alt+F (Alt chord)",
+      "type": "key"
+    },
+    "Paste": {
+      "key": "Alt+V",
+      "label": "Paste attributes",
+      "type": "key"
+    }
+  },
+  "col-cmd": {
+    "C1": {
+      "key": "Cmd+F",
+      "label": "Cmd+F (Cmd chord)",
+      "type": "key"
+    },
+    "C2": {
+      "key": "Cmd+S",
+      "label": "Save project (Cmd chord)",
+      "type": "key"
+    }
+  },
+  "col-ctrl": {
+    "C1": {
+      "key": "Ctrl+F",
+      "label": "Ctrl+F (Ctrl chord)",
+      "type": "key"
+    },
+    "C2": {
+      "type": "key",
+      "key": "Cmd+E",
+      "label": "Cmd+E (Ctrl chord)"
+    },
+    "C6": {
+      "type": "key",
+      "key": "Ctrl+D",
+      "label": "Ctrl+D (Ctrl chord)"
+    }
+  },
+  "col-shift": {
+    "C1": {
+      "key": "Shift+F",
+      "label": "Shift+F (Shift chord)",
+      "type": "key"
+    },
+    "ScreenMode": {
+      "type": "key",
+      "key": "Alt+Z",
+      "label": "Wheels/Log toggle"
+    },
+    "BeforeAfter": {
+      "type": "key",
+      "key": "Cmd+Alt+Shift+R",
+      "label": "Render in place"
+    },
+    "Export": {
+      "type": "quickexport",
+      "label": "Quick Export"
+    },
+    "C6": {
+      "type": "none",
+      "label": "free"
+    }
+  },
+  "edit": {
+    "BeforeAfter": {
+      "type": "key",
+      "key": "Escape",
+      "label": "Esc"
+    },
+    "C1": {
+      "key": "Space",
+      "label": "Play/Pause",
+      "markerColor": "Blue",
+      "markerDurationSeconds": 1,
+      "type": "key"
+    },
+    "C2": {
+      "label": "Colour by render",
+      "neutral": "Yellow",
+      "rendered": "Green",
+      "type": "colorByRenderState"
+    },
+    "Clarity": {
+      "maxDelta": 40,
+      "property": "Tilt",
+      "sens": -12.5,
+      "type": "property"
+    },
+    "ClrBW": {
+      "key": "Cmd+Alt+Shift+F",
+      "type": "key"
+    },
+    "Contrast": {
+      "maxDelta": 40,
+      "property": "Pan",
+      "sens": 12.5,
+      "type": "property"
+    },
+    "ControlDial": {
+      "base": 1,
+      "gamma": 1,
+      "jogSustainMs": 999999999,
+      "jogSustainSeconds": 60,
+      "jogTier10Min": 999998,
+      "jogTier30Min": 999999,
+      "jogTier5Min": 999997,
+      "maxDelta": 90,
+      "type": "jog"
+    },
+    "D1": {
+      "type": "jogMinuteSnap"
+    },
+    "Down": {
+      "key": "Down",
+      "label": "Down arrow",
+      "type": "key"
+    },
+    "Exposure": {
+      "gang": [
+        "ZoomX",
+        "ZoomY"
+      ],
+      "maxDelta": 0.1,
+      "sens": 0.005,
+      "type": "property"
+    },
+    "Left": {
+      "key": "Left",
+      "label": "Left arrow",
+      "type": "key"
+    },
+    "P1btn": {
+      "markerColor": "Red",
+      "type": "markerAtPlayhead",
+      "whenPMode": "hue"
+    },
+    "P2btn": {
+      "markerColor": "Sand",
+      "type": "markerAtPlayhead",
+      "whenPMode": "hue"
+    },
+    "P3btn": {
+      "markerColor": "Yellow",
+      "type": "markerAtPlayhead",
+      "whenPMode": "hue"
+    },
+    "P4btn": {
+      "markerColor": "Green",
+      "type": "markerAtPlayhead",
+      "whenPMode": "hue"
+    },
+    "P5btn": {
+      "markerColor": "Cyan",
+      "type": "markerAtPlayhead",
+      "whenPMode": "hue"
+    },
+    "P6btn": {
+      "markerColor": "Blue",
+      "type": "markerAtPlayhead",
+      "whenPMode": "hue"
+    },
+    "P7btn": {
+      "markerColor": "Purple",
+      "type": "markerAtPlayhead",
+      "whenPMode": "hue"
+    },
+    "P8btn": {
+      "markerColor": "Pink",
+      "type": "markerAtPlayhead",
+      "whenPMode": "hue"
+    },
+    "Right": {
+      "key": "Right",
+      "label": "Right arrow",
+      "type": "key"
+    },
+    "Saturation": {
+      "maxDelta": 40,
+      "property": "CropBottom",
+      "sens": -2,
+      "type": "property"
+    },
+    "ScreenMode": {
+      "type": "key",
+      "key": "Delete",
+      "label": "Delete"
+    },
+    "Temperature": {
+      "maxDelta": 40,
+      "property": "CropTop",
+      "sens": 2,
+      "type": "property"
+    },
+    "Tint": {
+      "maxDelta": 40,
+      "property": "CropRight",
+      "sens": -2,
+      "type": "property"
+    },
+    "Up": {
+      "key": "Up",
+      "label": "Up arrow",
+      "type": "key"
+    },
+    "Vibrance": {
+      "maxDelta": 40,
+      "property": "CropLeft",
+      "sens": 2,
+      "type": "property"
+    }
+  },
+  "edit-shift": {
+    "D1": {
+      "type": "scrollDelta",
+      "flags": "Alt",
+      "linesPerDetent": 1,
+      "label": "Timeline zoom (Alt+scroll)"
+    },
+    "Down": {
+      "type": "selectClipVert"
+    },
+    "Left": {
+      "type": "selectClipHoriz"
+    },
+    "Right": {
+      "type": "selectClipHoriz"
+    },
+    "Up": {
+      "type": "selectClipVert"
+    },
+    "ScreenMode": {
+      "type": "key",
+      "key": "Cmd+Shift+F",
+      "label": "Fullscreen"
+    },
+    "BeforeAfter": {
+      "type": "key",
+      "key": "Cmd+Alt+Shift+R",
+      "label": "Render in place"
+    }
+  },
+  "col-fn": {
+    "C1": {
+      "type": "key",
+      "key": "Cmd+Q",
+      "label": "Quit Resolve"
+    },
+    "C6": {
+      "type": "toggleHud",
+      "label": "HUD toggle"
+    },
+    "C3": {
+      "type": "key",
+      "key": "Cmd+Alt+C",
+      "label": "Clean Feed ON (PB287Q)"
+    },
+    "C4": {
+      "type": "key",
+      "key": "Cmd+Alt+Shift+X",
+      "label": "Clean Feed OFF"
+    }
+  }
+}

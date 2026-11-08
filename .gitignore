@@ -1,0 +1,5 @@
+/2t5-deck-plus
+.DS_Store
+/dist/
+*.sock
+__pycache__/

@@ -1,0 +1,51 @@
+{
+  "templateId": "design-preview",
+  "name": "Design (CAD / PDF) in Preview",
+  "bundleId": "com.apple.Preview",
+  "summary": "Scroll the page, step pages, zoom in and out, actual size and zoom to fit on buttons. For PDFs, drawings and images in Preview. Nothing that deletes.",
+  "notes": "Page stepping uses Cmd+Down / Cmd+Up (Go > Next / Previous Page) and zoom uses Cmd+= / Cmd+- (View > Zoom In / Out). CAD apps have their own bundle ids and shortcuts; add them as separate apps.",
+  "requires": [],
+  "preset": {
+    "schema": 1,
+    "id": "com.apple.Preview",
+    "name": "Preview",
+    "packs": [
+      "generic"
+    ],
+    "banks": {
+      "base": {
+        "D1": {
+          "type": "scrollDelta",
+          "linesPerDetent": 1,
+          "detentThreshold": 1,
+          "label": "Scroll"
+        },
+        "D2": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+=",
+          "keyCCW": "Cmd+-",
+          "detentThreshold": 1,
+          "label": "Zoom in / out"
+        },
+        "Highlights": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+Down",
+          "keyCCW": "Cmd+Up",
+          "detentThreshold": 1,
+          "label": "Next / previous page"
+        },
+        "C1": {
+          "type": "key",
+          "key": "Cmd+0",
+          "label": "Actual size"
+        },
+        "C2": {
+          "type": "key",
+          "key": "Cmd+9",
+          "label": "Zoom to fit"
+        }
+      }
+    },
+    "settings": {}
+  }
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>2T5 DECK+</title>
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+<div id="app">
+
+    <nav class="tabbar" role="tablist" aria-label="Window view">
+        <button type="button" class="tab" id="tabStatus" role="tab" aria-selected="true">Status</button>
+        <button type="button" class="tab" id="tabEditor" role="tab" aria-selected="false">Editor</button>
+    </nav>
+
+    <div id="statusView">
+
+    <header class="header">
+        <div class="brand">
+            <span class="state-dot state-dot--off" id="stateDot" role="img" aria-label="Engine stopped"></span>
+            <div class="brand-copy">
+                <h1 class="wordmark">2T5 DECK+</h1>
+                <p class="subtitle" id="subtitle" role="status">Loading status&hellip;</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="banners" id="banners" aria-live="polite">
+        <div class="banner banner--critical" id="a11yBanner" hidden>
+            <div class="banner-icon" aria-hidden="true">!</div>
+            <div class="banner-body">
+                <p class="banner-title">Accessibility permission required</p>
+                <p class="banner-text">2T5 DECK+ needs Accessibility access to send mouse and keyboard input to
+                    DaVinci Resolve. Start Engine stays disabled until this is granted.</p>
+            </div>
+            <div class="banner-actions">
+                <button type="button" class="btn btn-secondary" id="a11yOpenBtn">Open Settings</button>
+                <button type="button" class="btn btn-ghost" id="a11yRecheckBtn">Recheck</button>
+            </div>
+        </div>
+
+        <div class="banner banner--warn" id="srBanner" hidden>
+            <div class="banner-icon" aria-hidden="true">!</div>
+            <div class="banner-body">
+                <p class="banner-title">Screen Recording permission missing</p>
+                <p class="banner-text">Used for the DODEE/MOST project safety guard. Without it, the guard cannot
+                    read the Resolve window title and runs degraded.</p>
+            </div>
+            <div class="banner-actions">
+                <button type="button" class="btn btn-secondary" id="srOpenBtn">Open Settings</button>
+                <button type="button" class="btn btn-ghost" id="srRecheckBtn">Recheck</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="control-section">
+        <button type="button" class="btn-toggle btn-toggle--start" id="toggleBtn" disabled>Start Engine</button>
+        <p class="control-hint" id="controlHint" hidden></p>
+        <p class="control-error" id="controlError" role="alert" hidden></p>
+        <button type="button" class="btn btn-secondary btn-hud" id="hudToggleBtn">Show HUD</button>
+    </section>
+
+    <section class="status-section">
+        <h2 class="section-label">Status</h2>
+        <div class="status-grid" id="statusGrid">
+            <div class="stat-row" id="rowEngine">
+                <span class="stat-label">Engine</span>
+                <span class="stat-value" id="statEngine">&mdash;</span>
+            </div>
+            <div class="stat-row" id="rowGate">
+                <span class="stat-label">Gate</span>
+                <span class="stat-value" id="statGate">&mdash;</span>
+            </div>
+            <div class="stat-row" id="rowWheel">
+                <span class="stat-label">Active wheel</span>
+                <span class="stat-value stat-mono" id="statWheel">&mdash;</span>
+            </div>
+            <div class="stat-row" id="rowMode">
+                <span class="stat-label">Mode</span>
+                <span class="stat-value stat-mono" id="statMode">&mdash;</span>
+            </div>
+            <div class="stat-row" id="rowActiveClip" hidden>
+                <span class="stat-label">Editing</span>
+                <span class="stat-value stat-mono" id="statActiveClip">&mdash;</span>
+            </div>
+            <div class="stat-row" id="rowMarker" hidden>
+                <span class="stat-label">Marker</span>
+                <span class="stat-value stat-mono" id="statMarker">&mdash;</span>
+            </div>
+            <div class="stat-row" id="rowProject">
+                <span class="stat-label">Project</span>
+                <span class="stat-value-group">
+                    <span class="stat-value" id="statProject">&mdash;</span>
+                    <span class="badge badge--warn" id="projectBadge" hidden>&#9888; SAFETY</span>
+                </span>
+            </div>
+            <div class="stat-row" id="rowResolve">
+                <span class="stat-label">Resolve</span>
+                <span class="stat-value" id="statResolve">&mdash;</span>
+            </div>
+            <div class="stat-row" id="rowSidecar">
+                <span class="stat-label">Sidecar</span>
+                <span class="stat-value" id="statSidecar">&mdash;</span>
+            </div>
+        </div>
+        <p class="sidecar-error" id="sidecarError" hidden></p>
+    </section>
+
+    <section class="midi-section">
+        <div class="midi-header">
+            <h2 class="section-label">Live MIDI</h2>
+            <span class="midi-current stat-mono" id="midiCurrent">&mdash;</span>
+        </div>
+        <ul class="midi-history" id="midiHistory" aria-live="off"></ul>
+    </section>
+
+    </div>
+
+    <div id="editorView" hidden>
+        <iframe id="editorFrame" title="2T5 DECK+ Editor" data-src="./editor/index.html"></iframe>
+    </div>
+
+</div>
+<script src="./src/main.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+{
+  "templateId": "adobe-illustrator",
+  "name": "Adobe Illustrator",
+  "bundleId": "com.adobe.illustrator",
+  "summary": "Illustrator: tools on the P buttons and Hue/Sat/Lum, zoom and scroll on the knobs, arrange order on the arrow buttons and the wheel, group / lock, outline view and artboard view.",
+  "notes": "The four arrow buttons are the arrange keys: Up = bring to front, Down = send to back, Left = send backward, Right = bring forward; the wheel steps forward / backward. D2 scrolls, Exposure scrolls sideways (Shift). Illustrator is not installed on this Mac; the bundle id is Adobe's standard one (check with: osascript -e 'id of app \"Adobe Illustrator\"').",
+  "requires": [],
+  "preset": {
+    "schema": 1,
+    "id": "com.adobe.illustrator",
+    "name": "Adobe Illustrator",
+    "packs": [
+      "generic"
+    ],
+    "banks": {
+      "base": {
+        "D1": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+=",
+          "keyCCW": "Cmd+-",
+          "detentThreshold": 1,
+          "label": "Zoom"
+        },
+        "D2": {
+          "type": "scrollDelta",
+          "linesPerDetent": 1,
+          "detentThreshold": 1,
+          "label": "Scroll"
+        },
+        "Exposure": {
+          "type": "scrollDelta",
+          "linesPerDetent": 1,
+          "detentThreshold": 1,
+          "label": "Scroll sideways (Shift + scroll)",
+          "flags": "Shift"
+        },
+        "ControlDial": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+]",
+          "keyCCW": "Cmd+[",
+          "detentThreshold": 2,
+          "label": "Bring forward / send backward"
+        },
+        "P1btn": {
+          "type": "key",
+          "key": "v",
+          "label": "Selection"
+        },
+        "P2btn": {
+          "type": "key",
+          "key": "a",
+          "label": "Direct selection"
+        },
+        "P3btn": {
+          "type": "key",
+          "key": "p",
+          "label": "Pen"
+        },
+        "P4btn": {
+          "type": "key",
+          "key": "t",
+          "label": "Type"
+        },
+        "P5btn": {
+          "type": "key",
+          "key": "m",
+          "label": "Rectangle"
+        },
+        "P6btn": {
+          "type": "key",
+          "key": "l",
+          "label": "Ellipse"
+        },
+        "P7btn": {
+          "type": "key",
+          "key": "b",
+          "label": "Paintbrush"
+        },
+        "P8btn": {
+          "type": "key",
+          "key": "Shift+m",
+          "label": "Shape Builder"
+        },
+        "Hue": {
+          "type": "key",
+          "key": "r",
+          "label": "Rotate"
+        },
+        "Sat": {
+          "type": "key",
+          "key": "s",
+          "label": "Scale"
+        },
+        "Lum": {
+          "type": "key",
+          "key": "o",
+          "label": "Reflect"
+        },
+        "ClrBW": {
+          "type": "key",
+          "key": "i",
+          "label": "Eyedropper"
+        },
+        "Col": {
+          "type": "key",
+          "key": "g",
+          "label": "Gradient"
+        },
+        "CustomMode": {
+          "type": "key",
+          "key": "Shift+o",
+          "label": "Artboard tool"
+        },
+        "Tab": {
+          "type": "key",
+          "key": "h",
+          "label": "Hand"
+        },
+        "C1": {
+          "type": "key",
+          "key": "Cmd+g",
+          "label": "Group"
+        },
+        "C2": {
+          "type": "key",
+          "key": "Shift+Cmd+g",
+          "label": "Ungroup"
+        },
+        "C3": {
+          "type": "key",
+          "key": "Cmd+2",
+          "label": "Lock selection"
+        },
+        "C4": {
+          "type": "key",
+          "key": "Cmd+1",
+          "label": "Actual size"
+        },
+        "C5": {
+          "type": "key",
+          "key": "Cmd+Alt+0",
+          "label": "All artboards in window"
+        },
+        "C6": {
+          "type": "key",
+          "key": "Shift+Cmd+a",
+          "label": "Deselect"
+        },
+        "BeforeAfter": {
+          "type": "key",
+          "key": "Cmd+y",
+          "label": "Outline / preview"
+        },
+        "ScreenMode": {
+          "type": "key",
+          "key": "f",
+          "label": "Screen mode"
+        },
+        "Undo": {
+          "type": "key",
+          "key": "Cmd+z",
+          "label": "Undo"
+        },
+        "Redo": {
+          "type": "key",
+          "key": "Shift+Cmd+z",
+          "label": "Redo"
+        },
+        "Copy": {
+          "type": "key",
+          "key": "Cmd+c",
+          "label": "Copy"
+        },
+        "Paste": {
+          "type": "key",
+          "key": "Cmd+v",
+          "label": "Paste"
+        },
+        "Up": {
+          "type": "key",
+          "key": "Shift+Cmd+]",
+          "label": "Bring to front"
+        },
+        "Down": {
+          "type": "key",
+          "key": "Shift+Cmd+[",
+          "label": "Send to back"
+        },
+        "Left": {
+          "type": "key",
+          "key": "Cmd+[",
+          "label": "Send backward"
+        },
+        "Right": {
+          "type": "key",
+          "key": "Cmd+]",
+          "label": "Bring forward"
+        }
+      }
+    },
+    "settings": {}
+  }
+}

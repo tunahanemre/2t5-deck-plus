@@ -1,0 +1,121 @@
+{
+ "note": "Resolve STANDARD slider-mode mapping (Sat and Lum modes of P1-P8). Hue mode is the existing col bank (Colour balance toward a hue). Needs the Hue vs Sat / Hue vs Lum curve targets calibrated; without them every turn is refused.",
+ "banks": {
+  "col-pm-sat": {
+   "P1": {
+    "type": "hueCurve",
+    "curve": "sat",
+    "hue": 0,
+    "sens": 6,
+    "label": "Hue vs Sat: Red"
+   },
+   "P2": {
+    "type": "hueCurve",
+    "curve": "sat",
+    "hue": 1,
+    "sens": 6,
+    "label": "Hue vs Sat: Orange"
+   },
+   "P3": {
+    "type": "hueCurve",
+    "curve": "sat",
+    "hue": 2,
+    "sens": 6,
+    "label": "Hue vs Sat: Yellow"
+   },
+   "P4": {
+    "type": "hueCurve",
+    "curve": "sat",
+    "hue": 3,
+    "sens": 6,
+    "label": "Hue vs Sat: Green"
+   },
+   "P5": {
+    "type": "hueCurve",
+    "curve": "sat",
+    "hue": 4,
+    "sens": 6,
+    "label": "Hue vs Sat: Cyan"
+   },
+   "P6": {
+    "type": "hueCurve",
+    "curve": "sat",
+    "hue": 5,
+    "sens": 6,
+    "label": "Hue vs Sat: Blue"
+   },
+   "P7": {
+    "type": "hueCurve",
+    "curve": "sat",
+    "hue": 6,
+    "sens": 6,
+    "label": "Hue vs Sat: Purple"
+   },
+   "P8": {
+    "type": "hueCurve",
+    "curve": "sat",
+    "hue": 7,
+    "sens": 6,
+    "label": "Hue vs Sat: Magenta"
+   }
+  },
+  "col-pm-lum": {
+   "P1": {
+    "type": "hueCurve",
+    "curve": "lum",
+    "hue": 0,
+    "sens": 6,
+    "label": "Hue vs Lum: Red"
+   },
+   "P2": {
+    "type": "hueCurve",
+    "curve": "lum",
+    "hue": 1,
+    "sens": 6,
+    "label": "Hue vs Lum: Orange"
+   },
+   "P3": {
+    "type": "hueCurve",
+    "curve": "lum",
+    "hue": 2,
+    "sens": 6,
+    "label": "Hue vs Lum: Yellow"
+   },
+   "P4": {
+    "type": "hueCurve",
+    "curve": "lum",
+    "hue": 3,
+    "sens": 6,
+    "label": "Hue vs Lum: Green"
+   },
+   "P5": {
+    "type": "hueCurve",
+    "curve": "lum",
+    "hue": 4,
+    "sens": 6,
+    "label": "Hue vs Lum: Cyan"
+   },
+   "P6": {
+    "type": "hueCurve",
+    "curve": "lum",
+    "hue": 5,
+    "sens": 6,
+    "label": "Hue vs Lum: Blue"
+   },
+   "P7": {
+    "type": "hueCurve",
+    "curve": "lum",
+    "hue": 6,
+    "sens": 6,
+    "label": "Hue vs Lum: Purple"
+   },
+   "P8": {
+    "type": "hueCurve",
+    "curve": "lum",
+    "hue": 7,
+    "sens": 6,
+    "label": "Hue vs Lum: Magenta"
+   }
+  }
+ }
+}

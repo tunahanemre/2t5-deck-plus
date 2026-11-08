@@ -1,0 +1,58 @@
+{
+  "templateId": "terminal",
+  "name": "Terminal",
+  "bundleId": "com.apple.Terminal",
+  "summary": "Scroll the output, switch tabs and change the font size. No close, no interrupt keys.",
+  "notes": "",
+  "preset": {
+    "schema": 1,
+    "id": "com.apple.Terminal",
+    "name": "Terminal",
+    "packs": [
+      "generic",
+      "browser"
+    ],
+    "banks": {
+      "base": {
+        "D1": {
+          "type": "scrollDelta",
+          "linesPerDetent": 1,
+          "detentThreshold": 1,
+          "label": "Scroll"
+        },
+        "D2": {
+          "action": "browser.tabs",
+          "label": "Switch tab"
+        },
+        "Exposure": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+=",
+          "keyCCW": "Cmd+-",
+          "detentThreshold": 1,
+          "label": "Font size"
+        },
+        "C1": {
+          "type": "key",
+          "key": "Cmd+T",
+          "label": "New tab"
+        },
+        "C2": {
+          "type": "key",
+          "key": "Cmd+0",
+          "label": "Reset font size"
+        },
+        "C3": {
+          "type": "key",
+          "key": "Cmd+Shift+]",
+          "label": "Next tab"
+        },
+        "C4": {
+          "type": "key",
+          "key": "Cmd+Shift+[",
+          "label": "Previous tab"
+        }
+      }
+    },
+    "settings": {}
+  }
+}

@@ -1,0 +1,4 @@
+# Sponsor button on the repository. The handle is the GitHub account that publishes the repo
+# (personal account, presented as 2T5). GitHub Sponsors must be enabled on that account before
+# the button appears; until then GitHub ignores this file.
+github: tunahanemre

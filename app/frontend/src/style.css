@@ -1,0 +1,554 @@
+/* 2T5 DECK+ — Status window
+   Dark, compact, pro-tool styling. Vanilla CSS, no framework, no CDN.
+   Palette follows 2T5 dark-mode tokens (--bg #1a1815-family, --ok #16a34a,
+   --error #dc2626, brand accent #b85450 reserved for the primary Start CTA). */
+
+:root {
+    --bg: #141210;
+    --surface: #1c1a16;
+    --surface-alt: #24211c;
+    --border: rgba(245, 241, 236, 0.09);
+    --border-strong: rgba(245, 241, 236, 0.16);
+
+    --text: #f5f1ec;
+    --text-dim: #cdc8c1;
+    --text-muted: #8a857e;
+
+    --accent: #b85450;
+    --accent-dim: #c97a77;
+    --accent-tint: rgba(184, 84, 80, 0.16);
+
+    --ok: #16a34a;
+    --ok-tint: rgba(22, 163, 74, 0.14);
+
+    --warn: #d97706;
+    --warn-tint: rgba(217, 119, 6, 0.16);
+
+    --error: #dc2626;
+    --error-tint: rgba(220, 38, 38, 0.16);
+
+    --gray: #565048;
+
+    --radius: 10px;
+    --radius-sm: 6px;
+    --ease: cubic-bezier(0.23, 1, 0.32, 1);
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+html {
+    background-color: var(--bg);
+}
+
+body {
+    margin: 0;
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    background: var(--bg);
+    overflow-y: auto;
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: var(--surface-alt);
+    border-radius: 10px;
+    border: 2px solid var(--bg);
+}
+
+#app {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 20px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ---------- Header ---------- */
+
+.header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.state-dot {
+    flex: 0 0 auto;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gray);
+    box-shadow: 0 0 0 4px rgba(245, 241, 236, 0.04);
+    transition: background-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.state-dot--off {
+    background: var(--gray);
+    box-shadow: 0 0 0 4px rgba(86, 80, 72, 0.12);
+}
+
+.state-dot--ok {
+    background: var(--ok);
+    box-shadow: 0 0 0 4px var(--ok-tint), 0 0 10px rgba(22, 163, 74, 0.55);
+}
+
+.state-dot--warn {
+    background: var(--warn);
+    box-shadow: 0 0 0 4px var(--warn-tint), 0 0 10px rgba(217, 119, 6, 0.5);
+}
+
+.brand-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.wordmark {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+/* ---------- Banners ---------- */
+
+.banners {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.banner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px 14px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+}
+
+/* `.banner` sets `display: grid` above, which — at equal specificity — beats
+   the UA stylesheet's `[hidden] { display: none }` rule (author styles win
+   over UA styles regardless of selector weight). Without this override, a
+   banner given the `hidden` attribute would stay visible. */
+.banner[hidden] {
+    display: none;
+}
+
+.banner--critical {
+    border-color: rgba(220, 38, 38, 0.35);
+    background: linear-gradient(0deg, var(--surface), var(--surface)), var(--error-tint);
+    background-blend-mode: normal;
+    background-color: var(--surface);
+    box-shadow: inset 0 0 0 1px rgba(220, 38, 38, 0.12);
+}
+
+.banner--warn {
+    border-color: rgba(217, 119, 6, 0.35);
+    box-shadow: inset 0 0 0 1px rgba(217, 119, 6, 0.12);
+}
+
+.banner-icon {
+    grid-row: 1 / 3;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 0.8rem;
+    background: var(--error-tint);
+    color: var(--error);
+}
+
+.banner--warn .banner-icon {
+    background: var(--warn-tint);
+    color: var(--warn);
+}
+
+.banner-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.banner-title {
+    margin: 0;
+    font-size: 0.86rem;
+    font-weight: 600;
+}
+
+.banner-text {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--text-dim);
+}
+
+.banner-actions {
+    grid-column: 2;
+    display: flex;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+    appearance: none;
+    border: 1px solid var(--border-strong);
+    background: var(--surface-alt);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.15s var(--ease), border-color 0.15s var(--ease), opacity 0.15s var(--ease);
+}
+
+.btn:hover:not(:disabled) {
+    border-color: var(--text-muted);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--text-dim);
+    border-color: var(--text-dim);
+}
+
+.btn-ghost {
+    background: transparent;
+}
+
+/* ---------- Start/Stop control ---------- */
+
+.control-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0 4px;
+}
+
+.btn-toggle {
+    appearance: none;
+    width: 100%;
+    max-width: 320px;
+    padding: 14px 20px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background-color 0.15s var(--ease), border-color 0.15s var(--ease),
+    transform 0.1s var(--ease), opacity 0.15s var(--ease);
+}
+
+.btn-toggle:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.btn-toggle:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.btn-toggle--start {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.btn-toggle--start:hover:not(:disabled) {
+    background: var(--accent-dim);
+    border-color: var(--accent-dim);
+}
+
+.btn-toggle--stop {
+    background: var(--surface-alt);
+    border-color: var(--border-strong);
+    color: var(--text);
+}
+
+.btn-toggle--stop:hover:not(:disabled) {
+    border-color: var(--text-dim);
+}
+
+.control-hint {
+    margin: 0;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.btn-hud {
+    margin-top: 4px;
+}
+
+.btn-hud--active {
+    background: var(--ok);
+    border-color: var(--ok);
+    color: var(--text);
+}
+
+.btn-hud--active:hover:not(:disabled) {
+    background: var(--ok);
+    border-color: var(--ok);
+}
+
+.control-error {
+    margin: 0;
+    max-width: 420px;
+    text-align: center;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    color: var(--error);
+    background: var(--error-tint);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+}
+
+/* ---------- Status grid ---------- */
+
+.section-label {
+    margin: 0 0 10px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.status-grid {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.stat-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.stat-row--warn {
+    background: var(--warn-tint);
+    box-shadow: inset 3px 0 0 var(--warn);
+}
+
+.stat-label {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+}
+
+.stat-value {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stat-mono {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.78rem;
+}
+
+.stat-value--ok {
+    color: var(--ok);
+}
+
+.stat-value--warn {
+    color: var(--warn);
+}
+
+.stat-value--muted {
+    color: var(--text-muted);
+}
+
+.stat-value-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.stat-value-group .stat-value {
+    min-width: 0;
+}
+
+.badge {
+    flex: 0 0 auto;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 2px 7px;
+    border-radius: 999px;
+}
+
+.badge--warn {
+    background: var(--warn-tint);
+    color: var(--warn);
+    border: 1px solid rgba(217, 119, 6, 0.4);
+}
+
+.sidecar-error {
+    margin: 8px 2px 0;
+    font-size: 0.74rem;
+    line-height: 1.5;
+    color: var(--warn);
+}
+
+/* ---------- MIDI monitor ---------- */
+
+.midi-section {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: 14px 16px 16px;
+}
+
+.midi-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.midi-header .section-label {
+    margin: 0;
+}
+
+.midi-current {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent-dim);
+}
+
+.midi-history {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 1.6rem;
+}
+
+.midi-item {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.midi-item--latest {
+    color: var(--text-dim);
+    background: var(--surface-alt);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 520px) {
+    #app {
+        padding: 16px 14px 24px;
+    }
+
+    .stat-row {
+        grid-template-columns: 108px 1fr;
+        padding: 9px 12px;
+    }
+
+    .banner {
+        grid-template-columns: auto 1fr;
+        padding: 12px;
+    }
+
+    .banner-actions {
+        flex-wrap: wrap;
+    }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition-duration: 0.001ms !important;
+    }
+}
+
+
+/* Status | Editor tab bar */
+.tabbar { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin: -4px 0 4px; }
+.tab { min-height: 40px; padding: 0 16px; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--text-muted); font: inherit; font-weight: 600; cursor: pointer; }
+.tab:hover { color: var(--text); }
+.tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+.tab:focus-visible { outline: 2px solid var(--accent-dim); outline-offset: -2px; }
+body.is-editor #app { max-width: none; padding: 0; height: 100%; gap: 0; }
+body.is-editor .tabbar { margin: 0; padding: 0 12px; flex: none; }
+body.is-editor { overflow: hidden; }
+#editorView { flex: 1; min-height: 0; }
+#editorFrame { width: 100%; height: 100%; border: 0; display: block; background: var(--bg); }
+#statusView { display: flex; flex-direction: column; gap: 18px; }
+#statusView[hidden], #editorView[hidden], .tabbar[hidden] { display: none; } /* author display:flex beat the UA [hidden] rule, so Status stayed on screen over the Editor (Tunahan 2026-11-04 "cant see editor") */

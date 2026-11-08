@@ -1,0 +1,80 @@
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>CFBundlePackageType</key>
+        <string>APPL</string>
+        <key>CFBundleName</key>
+        <string>{{.Info.ProductName}}</string>
+        <key>CFBundleExecutable</key>
+        <string>{{.OutputFilename}}</string>
+        <key>CFBundleIdentifier</key>
+        <string>com.2t5.deck-plus</string>
+        <key>CFBundleVersion</key>
+        <string>{{.Info.ProductVersion}}</string>
+        <key>CFBundleGetInfoString</key>
+        <string>{{.Info.Comments}}</string>
+        <key>CFBundleShortVersionString</key>
+        <string>{{.Info.ProductVersion}}</string>
+        <key>CFBundleIconFile</key>
+        <string>iconfile</string>
+        <key>LSMinimumSystemVersion</key>
+        <string>11.0.0</string>
+        <key>NSHighResolutionCapable</key>
+        <string>true</string>
+        <key>NSHumanReadableCopyright</key>
+        <string>{{.Info.Copyright}}</string>
+        <!-- Finder tag profile (docs/specs/2026-09-03-finder-tag-profile.md).
+             NSAppleEventsUsageDescription is MANDATORY, not cosmetic: without
+             it TCC terminates the process on the first Apple Event instead of
+             denying it gracefully. The four folder/volume keys cover where
+             this user actually keeps footage — including /Volumes/2T5-WS-01
+             and WS-02 — and without them the tag writes fail with a silent
+             EPERM. -->
+        <key>NSAppleEventsUsageDescription</key>
+        <string>2T5 DECK+ asks Finder which files are selected so the deck's colour buttons can tag them.</string>
+        <key>NSDesktopFolderUsageDescription</key>
+        <string>2T5 DECK+ applies Finder colour tags to files you select on the Desktop.</string>
+        <key>NSDocumentsFolderUsageDescription</key>
+        <string>2T5 DECK+ applies Finder colour tags to files you select in Documents.</string>
+        <key>NSDownloadsFolderUsageDescription</key>
+        <string>2T5 DECK+ applies Finder colour tags to files you select in Downloads.</string>
+        <key>NSRemovableVolumesUsageDescription</key>
+        <string>2T5 DECK+ applies Finder colour tags to files you select on external volumes such as 2T5-WS-01 and 2T5-WS-02.</string>
+        {{if .Info.FileAssociations}}
+        <key>CFBundleDocumentTypes</key>
+        <array>
+          {{range .Info.FileAssociations}}
+          <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+              <string>{{.Ext}}</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>{{.Name}}</string>
+            <key>CFBundleTypeRole</key>
+            <string>{{.Role}}</string>
+            <key>CFBundleTypeIconFile</key>
+            <string>{{.IconName}}</string>
+          </dict>
+          {{end}}
+        </array>
+        {{end}}
+        {{if .Info.Protocols}}
+        <key>CFBundleURLTypes</key>
+        <array>
+          {{range .Info.Protocols}}
+            <dict>
+                <key>CFBundleURLName</key>
+                <string>com.wails.{{.Scheme}}</string>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>{{.Scheme}}</string>
+                </array>
+                <key>CFBundleTypeRole</key>
+                <string>{{.Role}}</string>
+            </dict>
+          {{end}}
+        </array>
+        {{end}}
+    </dict>
+</plist>

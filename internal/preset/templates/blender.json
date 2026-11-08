@@ -1,0 +1,113 @@
+{
+  "templateId": "blender",
+  "name": "Blender",
+  "bundleId": "org.blenderfoundation.blender",
+  "summary": "Navigate the 3D viewport: orbit left/right and up/down on two knobs, zoom on a knob, pan with Ctrl+scroll and Shift+scroll, front/right/top views on buttons; step frames, undo and redo, play. Nothing that deletes.",
+  "notes": "Needs Preferences > Input > Emulate Numpad: the orbit knobs send the top-row digits 6/4 and 8/2 and the view buttons send 1, 3 and 7, which Blender reads as numpad keys only with that option on. Without it those keys switch collections/visibility instead. Scroll zooms the viewport; Ctrl+scroll pans sideways and Shift+scroll pans up and down. Everything is in the base bank (labelled Navigate).",
+  "preset": {
+    "schema": 1,
+    "id": "org.blenderfoundation.blender",
+    "name": "Blender",
+    "packs": [
+      "generic"
+    ],
+    "banks": {
+      "base": {
+        "D1": {
+          "type": "scrollDelta",
+          "linesPerDetent": 1,
+          "detentThreshold": 1,
+          "label": "Navigate: zoom"
+        },
+        "D2": {
+          "type": "scrollDelta",
+          "linesPerDetent": 1,
+          "detentThreshold": 1,
+          "label": "Navigate: pan sideways",
+          "flags": "Ctrl"
+        },
+        "Exposure": {
+          "type": "scrollDelta",
+          "linesPerDetent": 1,
+          "detentThreshold": 1,
+          "label": "Navigate: pan up / down",
+          "flags": "Shift"
+        },
+        "Highlights": {
+          "type": "keyDelta",
+          "keyCW": "Right",
+          "keyCCW": "Left",
+          "detentThreshold": 1,
+          "label": "Step frame"
+        },
+        "C1": {
+          "type": "key",
+          "key": "Cmd+Z",
+          "label": "Undo"
+        },
+        "C2": {
+          "type": "key",
+          "key": "Cmd+Shift+Z",
+          "label": "Redo"
+        },
+        "C3": {
+          "type": "key",
+          "key": "Tab",
+          "label": "Edit mode"
+        },
+        "C4": {
+          "type": "key",
+          "key": "Home",
+          "label": "View all"
+        },
+        "C5": {
+          "type": "key",
+          "key": "space",
+          "label": "Play"
+        },
+        "C6": {
+          "type": "key",
+          "key": "Cmd+S",
+          "label": "Save"
+        },
+        "Contrast": {
+          "type": "keyDelta",
+          "keyCW": "6",
+          "keyCCW": "4",
+          "detentThreshold": 1,
+          "label": "Navigate: orbit left / right"
+        },
+        "Saturation": {
+          "type": "keyDelta",
+          "keyCW": "8",
+          "keyCCW": "2",
+          "detentThreshold": 1,
+          "label": "Navigate: orbit up / down"
+        },
+        "P1btn": {
+          "type": "key",
+          "key": "1",
+          "label": "Navigate: front view"
+        },
+        "P2btn": {
+          "type": "key",
+          "key": "3",
+          "label": "Navigate: right view"
+        },
+        "P3btn": {
+          "type": "key",
+          "key": "7",
+          "label": "Navigate: top view"
+        }
+      }
+    },
+    "settings": {}
+  },
+  "requires": [
+    {
+      "id": "blender-emulate-numpad",
+      "label": "Needs Emulate Numpad",
+      "help": "Blender Preferences > Input > Emulate Numpad"
+    }
+  ]
+}

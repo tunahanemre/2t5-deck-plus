@@ -1,0 +1,223 @@
+{
+  "templateId": "adobe-lightroom-classic",
+  "name": "Adobe Lightroom Classic",
+  "bundleId": "com.adobe.LightroomClassicCC7",
+  "summary": "Lightroom Classic on the deck it was made for: tool buttons (white balance, crop, spot, brush, filters, masking), the targeted-adjustment tools on Hue / Sat / Lum, rating flags, undo, copy/paste settings and photo stepping. Reset-all needs a hold.",
+  "notes": "Lightroom Classic has NO default shortcut that targets one named slider, so the printed Exposure / Contrast / Whites / Highlights / Shadows / Blacks / Clarity / Vibrance / Saturation / Tint knobs cannot be mapped one to one with keys. What exists: Temperature cycles the selected Basic-panel slider (. and ,), Exposure turns that slider up and down in small steps and Contrast in large steps (Up/Down, Shift+Up/Down). The other slider knobs stay unassigned on purpose. Bundle id is Adobe's standard one; Lightroom Classic is not installed on this Mac, so check it with: osascript -e 'id of app \"Adobe Lightroom Classic\"'.",
+  "requires": [],
+  "preset": {
+    "schema": 1,
+    "id": "com.adobe.LightroomClassicCC7",
+    "name": "Adobe Lightroom Classic",
+    "packs": [
+      "generic"
+    ],
+    "banks": {
+      "base": {
+        "Exposure": {
+          "type": "keyDelta",
+          "keyCW": "Up",
+          "keyCCW": "Down",
+          "detentThreshold": 1,
+          "label": "Selected slider: fine"
+        },
+        "Contrast": {
+          "type": "keyDelta",
+          "keyCW": "Shift+Up",
+          "keyCCW": "Shift+Down",
+          "detentThreshold": 1,
+          "label": "Selected slider: coarse"
+        },
+        "Temperature": {
+          "type": "keyDelta",
+          "keyCW": ".",
+          "keyCCW": ",",
+          "detentThreshold": 1,
+          "label": "Next / previous Basic slider"
+        },
+        "Whites": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+=",
+          "keyCCW": "Cmd+-",
+          "detentThreshold": 1,
+          "label": "Zoom"
+        },
+        "Blacks": {
+          "type": "keyDelta",
+          "keyCW": "PageDown",
+          "keyCCW": "PageUp",
+          "detentThreshold": 1,
+          "label": "Scroll zoomed photo"
+        },
+        "D1": {
+          "type": "keyDelta",
+          "keyCW": "]",
+          "keyCCW": "[",
+          "detentThreshold": 1,
+          "label": "Brush size"
+        },
+        "D2": {
+          "type": "keyDelta",
+          "keyCW": "Shift+]",
+          "keyCCW": "Shift+[",
+          "detentThreshold": 1,
+          "label": "Brush feather"
+        },
+        "ControlDial": {
+          "type": "keyDelta",
+          "keyCW": "Right",
+          "keyCCW": "Left",
+          "detentThreshold": 2,
+          "label": "Next / previous photo"
+        },
+        "P1btn": {
+          "type": "key",
+          "key": "w",
+          "label": "White balance tool"
+        },
+        "P2btn": {
+          "type": "key",
+          "key": "r",
+          "label": "Crop tool"
+        },
+        "P3btn": {
+          "type": "key",
+          "key": "q",
+          "label": "Spot removal"
+        },
+        "P4btn": {
+          "type": "key",
+          "key": "k",
+          "label": "Adjustment brush"
+        },
+        "P5btn": {
+          "type": "key",
+          "key": "m",
+          "label": "Graduated filter"
+        },
+        "P6btn": {
+          "type": "key",
+          "key": "Shift+m",
+          "label": "Radial filter"
+        },
+        "P7btn": {
+          "type": "key",
+          "key": "Shift+w",
+          "label": "Masking"
+        },
+        "P8btn": {
+          "type": "key",
+          "key": "j",
+          "label": "Show clipping"
+        },
+        "Hue": {
+          "type": "key",
+          "key": "Cmd+Alt+Shift+h",
+          "label": "Targeted: Hue"
+        },
+        "Sat": {
+          "type": "key",
+          "key": "Cmd+Alt+Shift+s",
+          "label": "Targeted: Saturation"
+        },
+        "Lum": {
+          "type": "key",
+          "key": "Cmd+Alt+Shift+l",
+          "label": "Targeted: Luminance"
+        },
+        "Col": {
+          "type": "key",
+          "key": "Cmd+Alt+Shift+t",
+          "label": "Targeted: Tone curve"
+        },
+        "ClrBW": {
+          "type": "key",
+          "key": "v",
+          "label": "Convert to grayscale"
+        },
+        "BeforeAfter": {
+          "type": "key",
+          "key": "y",
+          "label": "Before / after"
+        },
+        "CustomMode": {
+          "type": "key",
+          "key": "\\",
+          "label": "Before only"
+        },
+        "ScreenMode": {
+          "type": "key",
+          "key": "f",
+          "label": "Screen mode"
+        },
+        "Export": {
+          "type": "key",
+          "key": "Cmd+Shift+e",
+          "label": "Export"
+        },
+        "Undo": {
+          "type": "key",
+          "key": "Cmd+z",
+          "label": "Undo"
+        },
+        "Redo": {
+          "type": "key",
+          "key": "Cmd+Shift+z",
+          "label": "Redo"
+        },
+        "Copy": {
+          "type": "key",
+          "key": "Cmd+Shift+c",
+          "label": "Copy settings"
+        },
+        "Paste": {
+          "type": "key",
+          "key": "Cmd+Shift+v",
+          "label": "Paste settings"
+        },
+        "C1": {
+          "type": "key",
+          "key": "Cmd+u",
+          "label": "Auto tone"
+        },
+        "C2": {
+          "type": "key",
+          "key": "Cmd+Shift+u",
+          "label": "Auto white balance"
+        },
+        "C3": {
+          "type": "key",
+          "key": "Cmd+Shift+r",
+          "label": "Reset all settings (hold)",
+          "holdMs": 800
+        },
+        "C4": {
+          "type": "key",
+          "key": "p",
+          "label": "Flag as pick"
+        },
+        "C5": {
+          "type": "key",
+          "key": "x",
+          "label": "Flag as reject"
+        },
+        "C6": {
+          "type": "key",
+          "key": "u",
+          "label": "Unflag"
+        },
+        "Left": {
+          "type": "key",
+          "key": "Left",
+          "label": "Previous photo"
+        },
+        "Right": {
+          "type": "key",
+          "key": "Right",
+          "label": "Next photo"
+        }
+      }
+    },
+    "settings": {}
+  }
+}

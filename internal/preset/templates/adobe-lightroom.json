@@ -1,0 +1,182 @@
+{
+  "templateId": "adobe-lightroom",
+  "name": "Adobe Lightroom",
+  "bundleId": "com.adobe.lightroomCC",
+  "summary": "Lightroom (cloud app): panels on the C buttons, crop / brush / healing / gradients on the P buttons, pick / unflag / reject, auto tone, zoom and brush size.",
+  "notes": "Lightroom (cloud) documents no keyboard shortcut for moving a single slider, so the Develop knobs stay unassigned. The brush size and feather rows follow Adobe's table as written (the table lists [ as increase and ] as decrease, the reverse of Lightroom Classic): if a knob feels backwards, swap its two keys in the editor. Delete and Quit exist in the table and are deliberately not bound.",
+  "requires": [],
+  "preset": {
+    "schema": 1,
+    "id": "com.adobe.lightroomCC",
+    "name": "Adobe Lightroom",
+    "packs": [
+      "generic"
+    ],
+    "banks": {
+      "base": {
+        "Whites": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+=",
+          "keyCCW": "Cmd+-",
+          "detentThreshold": 1,
+          "label": "Zoom"
+        },
+        "D1": {
+          "type": "keyDelta",
+          "keyCW": "[",
+          "keyCCW": "]",
+          "detentThreshold": 1,
+          "label": "Brush size"
+        },
+        "D2": {
+          "type": "keyDelta",
+          "keyCW": "Shift+[",
+          "keyCCW": "Shift+]",
+          "detentThreshold": 1,
+          "label": "Brush feather"
+        },
+        "P1btn": {
+          "type": "key",
+          "key": "e",
+          "label": "Edit"
+        },
+        "P2btn": {
+          "type": "key",
+          "key": "c",
+          "label": "Crop & rotate"
+        },
+        "P3btn": {
+          "type": "key",
+          "key": "b",
+          "label": "Adjustment brush"
+        },
+        "P4btn": {
+          "type": "key",
+          "key": "h",
+          "label": "Healing brush"
+        },
+        "P5btn": {
+          "type": "key",
+          "key": "l",
+          "label": "Linear gradient"
+        },
+        "P6btn": {
+          "type": "key",
+          "key": "r",
+          "label": "Radial gradient"
+        },
+        "P7btn": {
+          "type": "key",
+          "key": "w",
+          "label": "White balance sampler"
+        },
+        "P8btn": {
+          "type": "key",
+          "key": "j",
+          "label": "Clipping indicators"
+        },
+        "C1": {
+          "type": "key",
+          "key": "Cmd+1",
+          "label": "Light panel"
+        },
+        "C2": {
+          "type": "key",
+          "key": "Cmd+2",
+          "label": "Color panel"
+        },
+        "C3": {
+          "type": "key",
+          "key": "Cmd+3",
+          "label": "Effects panel"
+        },
+        "C4": {
+          "type": "key",
+          "key": "Cmd+4",
+          "label": "Detail panel"
+        },
+        "C5": {
+          "type": "key",
+          "key": "Cmd+5",
+          "label": "Optics panel"
+        },
+        "C6": {
+          "type": "key",
+          "key": "Cmd+6",
+          "label": "Geometry panel"
+        },
+        "Undo": {
+          "type": "key",
+          "key": "Cmd+z",
+          "label": "Undo"
+        },
+        "Redo": {
+          "type": "key",
+          "key": "Cmd+Shift+z",
+          "label": "Redo"
+        },
+        "Copy": {
+          "type": "key",
+          "key": "Cmd+c",
+          "label": "Copy"
+        },
+        "Paste": {
+          "type": "key",
+          "key": "Cmd+v",
+          "label": "Paste"
+        },
+        "Export": {
+          "type": "key",
+          "key": "Shift+e",
+          "label": "Export dialog"
+        },
+        "BeforeAfter": {
+          "type": "key",
+          "key": "\\",
+          "label": "Show original"
+        },
+        "ScreenMode": {
+          "type": "key",
+          "key": "f",
+          "label": "Full screen"
+        },
+        "CustomMode": {
+          "type": "key",
+          "key": "/",
+          "label": "Show / hide filmstrip"
+        },
+        "Col": {
+          "type": "key",
+          "key": "Shift+a",
+          "label": "Auto tone"
+        },
+        "Hue": {
+          "type": "key",
+          "key": "z",
+          "label": "Flag as pick"
+        },
+        "Sat": {
+          "type": "key",
+          "key": "u",
+          "label": "Remove pick flag"
+        },
+        "Lum": {
+          "type": "key",
+          "key": "x",
+          "label": "Flag as rejected"
+        },
+        "ClrBW": {
+          "type": "key",
+          "key": "Cmd+0",
+          "label": "Histogram on / off"
+        },
+        "Tab": {
+          "type": "key",
+          "key": "space",
+          "label": "Toggle zoom"
+        }
+      }
+    },
+    "settings": {}
+  }
+}

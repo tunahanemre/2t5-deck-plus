@@ -1,0 +1,224 @@
+{
+  "templateId": "adobe-photoshop",
+  "name": "Adobe Photoshop",
+  "bundleId": "com.adobe.Photoshop",
+  "summary": "Photoshop: tools on the P buttons and Hue/Sat/Lum, brush size and hardness, zoom, layer stepping, history scrub on the wheel, deselect / new layer / free transform, swap and default colours. Nothing deletes or fills.",
+  "notes": "Brush size uses [ and ], hardness Shift+[ and Shift+]. Zoom is Cmd+= / Cmd+- (Adobe's table prints the plus as Cmd + +, the same physical key). The wheel steps through the history (Step Forward / Step Backward), two clicks per step. Blacks scrolls with Option held to zoom around the cursor: that is app behaviour of the scroll wheel, not a listed shortcut, carried over from the first Photoshop preset. Arrow buttons nudge a selection by 1 px. Fill (Option+Delete) and Delete are not bound.",
+  "requires": [],
+  "preset": {
+    "schema": 1,
+    "id": "com.adobe.Photoshop",
+    "name": "Adobe Photoshop",
+    "packs": [
+      "generic"
+    ],
+    "banks": {
+      "base": {
+        "D1": {
+          "type": "keyDelta",
+          "keyCW": "]",
+          "keyCCW": "[",
+          "detentThreshold": 1,
+          "label": "Brush size"
+        },
+        "D2": {
+          "type": "keyDelta",
+          "keyCW": "Shift+]",
+          "keyCCW": "Shift+[",
+          "detentThreshold": 1,
+          "label": "Brush hardness"
+        },
+        "Exposure": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+=",
+          "keyCCW": "Cmd+-",
+          "detentThreshold": 1,
+          "label": "Zoom"
+        },
+        "Blacks": {
+          "type": "scrollDelta",
+          "linesPerDetent": 1,
+          "detentThreshold": 1,
+          "label": "Zoom at cursor (Option + scroll)",
+          "flags": "Alt"
+        },
+        "Whites": {
+          "type": "scrollDelta",
+          "linesPerDetent": 1,
+          "detentThreshold": 1,
+          "label": "Scroll"
+        },
+        "Highlights": {
+          "type": "keyDelta",
+          "keyCW": "Alt+]",
+          "keyCCW": "Alt+[",
+          "detentThreshold": 1,
+          "label": "Select layer up / down"
+        },
+        "ControlDial": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+Shift+z",
+          "keyCCW": "Cmd+Alt+z",
+          "detentThreshold": 2,
+          "label": "History: forward / back"
+        },
+        "P1btn": {
+          "type": "key",
+          "key": "v",
+          "label": "Move"
+        },
+        "P2btn": {
+          "type": "key",
+          "key": "m",
+          "label": "Marquee"
+        },
+        "P3btn": {
+          "type": "key",
+          "key": "l",
+          "label": "Lasso"
+        },
+        "P4btn": {
+          "type": "key",
+          "key": "w",
+          "label": "Quick selection / wand"
+        },
+        "P5btn": {
+          "type": "key",
+          "key": "c",
+          "label": "Crop"
+        },
+        "P6btn": {
+          "type": "key",
+          "key": "b",
+          "label": "Brush"
+        },
+        "P7btn": {
+          "type": "key",
+          "key": "e",
+          "label": "Eraser"
+        },
+        "P8btn": {
+          "type": "key",
+          "key": "g",
+          "label": "Gradient / bucket"
+        },
+        "Hue": {
+          "type": "key",
+          "key": "j",
+          "label": "Healing brush"
+        },
+        "Sat": {
+          "type": "key",
+          "key": "s",
+          "label": "Clone stamp"
+        },
+        "Lum": {
+          "type": "key",
+          "key": "o",
+          "label": "Dodge / burn"
+        },
+        "ClrBW": {
+          "type": "key",
+          "key": "i",
+          "label": "Eyedropper"
+        },
+        "Col": {
+          "type": "key",
+          "key": "t",
+          "label": "Type"
+        },
+        "CustomMode": {
+          "type": "key",
+          "key": "p",
+          "label": "Pen"
+        },
+        "Tab": {
+          "type": "key",
+          "key": "h",
+          "label": "Hand"
+        },
+        "ScreenMode": {
+          "type": "key",
+          "key": "f",
+          "label": "Screen mode"
+        },
+        "BeforeAfter": {
+          "type": "key",
+          "key": "d",
+          "label": "Default colours"
+        },
+        "Undo": {
+          "type": "key",
+          "key": "Cmd+z",
+          "label": "Undo"
+        },
+        "Redo": {
+          "type": "key",
+          "key": "Cmd+Shift+z",
+          "label": "Redo"
+        },
+        "Copy": {
+          "type": "key",
+          "key": "Cmd+c",
+          "label": "Copy"
+        },
+        "Paste": {
+          "type": "key",
+          "key": "Cmd+v",
+          "label": "Paste"
+        },
+        "C1": {
+          "type": "key",
+          "key": "Cmd+d",
+          "label": "Deselect"
+        },
+        "C2": {
+          "type": "key",
+          "key": "Cmd+j",
+          "label": "New layer via copy"
+        },
+        "C3": {
+          "type": "key",
+          "key": "Cmd+t",
+          "label": "Free transform"
+        },
+        "C4": {
+          "type": "key",
+          "key": "Cmd+0",
+          "label": "Fit on screen"
+        },
+        "C5": {
+          "type": "key",
+          "key": "Cmd+1",
+          "label": "100 percent"
+        },
+        "C6": {
+          "type": "key",
+          "key": "x",
+          "label": "Swap colours"
+        },
+        "Up": {
+          "type": "key",
+          "key": "Up",
+          "label": "Nudge up 1 px"
+        },
+        "Down": {
+          "type": "key",
+          "key": "Down",
+          "label": "Nudge down 1 px"
+        },
+        "Left": {
+          "type": "key",
+          "key": "Left",
+          "label": "Nudge left 1 px"
+        },
+        "Right": {
+          "type": "key",
+          "key": "Right",
+          "label": "Nudge right 1 px"
+        }
+      }
+    },
+    "settings": {}
+  }
+}

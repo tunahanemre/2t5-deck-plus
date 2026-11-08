@@ -1,0 +1,65 @@
+{
+  "templateId": "google-chrome-comfyui",
+  "name": "Google Chrome (ComfyUI)",
+  "bundleId": "com.google.Chrome",
+  "summary": "Chrome with a ComfyUI-friendly layout: the knobs scroll and zoom the page, undo and redo are on the C buttons. Queue and cancel are left out on purpose.",
+  "notes": "ComfyUI in Chrome: Ctrl+Enter queues the graph, Ctrl+Alt+Enter cancels it, '.' fits the view to the selection, Q opens the queue panel. These start or stop a generation, so they are not bound here. Assign them yourself if you want them. This layout and the plain Chrome one use the same app id, so only one can be added.",
+  "preset": {
+    "schema": 1,
+    "id": "com.google.Chrome",
+    "name": "Google Chrome (ComfyUI)",
+    "packs": [
+      "browser",
+      "generic"
+    ],
+    "banks": {
+      "base": {
+        "D1": {
+          "action": "browser.scroll",
+          "label": "Scroll"
+        },
+        "D2": {
+          "action": "browser.tabs",
+          "label": "Switch tab"
+        },
+        "Exposure": {
+          "action": "browser.zoom",
+          "label": "Zoom"
+        },
+        "Blacks": {
+          "action": "browser.history",
+          "label": "Back / forward"
+        },
+        "C1": {
+          "type": "key",
+          "key": "Cmd+Z",
+          "label": "Undo"
+        },
+        "C2": {
+          "type": "key",
+          "key": "Cmd+Shift+Z",
+          "label": "Redo"
+        },
+        "C3": {
+          "type": "key",
+          "key": ".",
+          "label": "Fit view"
+        },
+        "C4": {
+          "type": "key",
+          "key": "Cmd+0",
+          "label": "Reset zoom"
+        },
+        "C5": {
+          "action": "browser.reload",
+          "label": "Reload"
+        },
+        "C6": {
+          "action": "browser.newTab",
+          "label": "New tab"
+        }
+      }
+    },
+    "settings": {}
+  }
+}

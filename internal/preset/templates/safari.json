@@ -1,0 +1,61 @@
+{
+  "templateId": "safari",
+  "name": "Safari",
+  "bundleId": "com.apple.Safari",
+  "summary": "Scroll the page, switch tabs, zoom and move back / forward with the knobs; navigation on the C buttons. No close-tab or quit shortcuts.",
+  "notes": "",
+  "preset": {
+    "schema": 1,
+    "id": "com.apple.Safari",
+    "name": "Safari",
+    "packs": [
+      "browser",
+      "generic"
+    ],
+    "banks": {
+      "base": {
+        "D1": {
+          "action": "browser.scroll",
+          "label": "Scroll"
+        },
+        "D2": {
+          "action": "browser.tabs",
+          "label": "Switch tab"
+        },
+        "Exposure": {
+          "action": "browser.zoom",
+          "label": "Zoom"
+        },
+        "Blacks": {
+          "action": "browser.history",
+          "label": "Back / forward"
+        },
+        "C1": {
+          "action": "browser.back",
+          "label": "Back"
+        },
+        "C2": {
+          "action": "browser.forward",
+          "label": "Forward"
+        },
+        "C3": {
+          "action": "browser.reload",
+          "label": "Reload"
+        },
+        "C4": {
+          "action": "browser.newTab",
+          "label": "New tab"
+        },
+        "C5": {
+          "action": "browser.zoomReset",
+          "label": "Reset zoom"
+        },
+        "C6": {
+          "action": "browser.reopenTab",
+          "label": "Reopen closed tab"
+        }
+      }
+    },
+    "settings": {}
+  }
+}

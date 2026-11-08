@@ -1,0 +1,19 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "2t5-deck-plus",
+  "outputfilename": "2t5-deck-plus",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "2T5 Film",
+    "email": ""
+  },
+  "info": {
+    "companyName": "2T5 Film",
+    "productName": "2T5 DECK+",
+    "productVersion": "1.0.0",
+    "copyright": "\u00a9 2026 2T5 Film"
+  }
+}

@@ -1,0 +1,220 @@
+{
+  "templateId": "adobe-premiere-pro",
+  "name": "Adobe Premiere Pro",
+  "bundleId": "com.adobe.PremierePro.26",
+  "summary": "Premiere Pro editing: the wheel steps frames, knobs shuttle (J/L), zoom the timeline and jump edit points; V / C / B tools, mark in / out, add edit, insert / overwrite, snap. Lift and Extract need a hold.",
+  "notes": "Frames, not minutes: the wheel and Left/Right step one frame, D2 steps five. Exposure shuttles with L (forward) and J (back). Hue and Sat go to the previous / next marker. Lift (;) and Extract (') remove material, so they fire only after a 500 ms hold. Ripple Delete (Option+Delete) is deliberately not bound. Only V, C and B are listed as tool keys in Adobe's help; the other tools are left to the editor. The bundle id carries the version (…PremierePro.26): a newer Premiere release has a new id, add it as a second app and copy this preset.",
+  "requires": [],
+  "preset": {
+    "schema": 1,
+    "id": "com.adobe.PremierePro.26",
+    "name": "Adobe Premiere Pro",
+    "packs": [
+      "generic"
+    ],
+    "banks": {
+      "base": {
+        "ControlDial": {
+          "type": "keyDelta",
+          "keyCW": "Right",
+          "keyCCW": "Left",
+          "detentThreshold": 1,
+          "label": "Step 1 frame"
+        },
+        "D1": {
+          "type": "keyDelta",
+          "keyCW": "=",
+          "keyCCW": "-",
+          "detentThreshold": 1,
+          "label": "Zoom timeline"
+        },
+        "D2": {
+          "type": "keyDelta",
+          "keyCW": "Shift+Right",
+          "keyCCW": "Shift+Left",
+          "detentThreshold": 1,
+          "label": "Step 5 frames"
+        },
+        "Exposure": {
+          "type": "keyDelta",
+          "keyCW": "l",
+          "keyCCW": "j",
+          "detentThreshold": 1,
+          "label": "Shuttle"
+        },
+        "Highlights": {
+          "type": "keyDelta",
+          "keyCW": "Shift+Down",
+          "keyCCW": "Shift+Up",
+          "detentThreshold": 1,
+          "label": "Next / previous edit (any track)"
+        },
+        "Blacks": {
+          "type": "scrollDelta",
+          "linesPerDetent": 1,
+          "detentThreshold": 1,
+          "label": "Scroll timeline (Cmd + scroll)",
+          "flags": "Cmd"
+        },
+        "P1btn": {
+          "type": "key",
+          "key": "v",
+          "label": "Selection tool"
+        },
+        "P2btn": {
+          "type": "key",
+          "key": "c",
+          "label": "Razor tool"
+        },
+        "P3btn": {
+          "type": "key",
+          "key": "b",
+          "label": "Ripple edit tool"
+        },
+        "P4btn": {
+          "type": "key",
+          "key": "m",
+          "label": "Add marker"
+        },
+        "P5btn": {
+          "type": "key",
+          "key": "i",
+          "label": "Mark in"
+        },
+        "P6btn": {
+          "type": "key",
+          "key": "o",
+          "label": "Mark out"
+        },
+        "P7btn": {
+          "type": "key",
+          "key": "x",
+          "label": "Mark clip"
+        },
+        "P8btn": {
+          "type": "key",
+          "key": "Cmd+k",
+          "label": "Add edit"
+        },
+        "C1": {
+          "type": "key",
+          "key": ",",
+          "label": "Insert"
+        },
+        "C2": {
+          "type": "key",
+          "key": ".",
+          "label": "Overwrite"
+        },
+        "C3": {
+          "type": "key",
+          "key": ";",
+          "label": "Lift (hold)",
+          "holdMs": 500
+        },
+        "C4": {
+          "type": "key",
+          "key": "'",
+          "label": "Extract (hold)",
+          "holdMs": 500
+        },
+        "C5": {
+          "type": "key",
+          "key": "s",
+          "label": "Snap on / off"
+        },
+        "C6": {
+          "type": "key",
+          "key": "d",
+          "label": "Select clip at playhead"
+        },
+        "Hue": {
+          "type": "key",
+          "key": "Shift+Cmd+m",
+          "label": "Previous marker"
+        },
+        "Sat": {
+          "type": "key",
+          "key": "Shift+m",
+          "label": "Next marker"
+        },
+        "Lum": {
+          "type": "key",
+          "key": "q",
+          "label": "Ripple trim previous edit to playhead"
+        },
+        "ClrBW": {
+          "type": "key",
+          "key": "w",
+          "label": "Ripple trim next edit to playhead"
+        },
+        "Col": {
+          "type": "key",
+          "key": "f",
+          "label": "Match frame"
+        },
+        "CustomMode": {
+          "type": "key",
+          "key": "k",
+          "label": "Shuttle stop"
+        },
+        "ScreenMode": {
+          "type": "key",
+          "key": "`",
+          "label": "Maximise frame under cursor"
+        },
+        "Export": {
+          "type": "key",
+          "key": "Cmd+m",
+          "label": "Export media"
+        },
+        "Undo": {
+          "type": "key",
+          "key": "Cmd+z",
+          "label": "Undo"
+        },
+        "Redo": {
+          "type": "key",
+          "key": "Cmd+Shift+z",
+          "label": "Redo"
+        },
+        "Copy": {
+          "type": "key",
+          "key": "Cmd+c",
+          "label": "Copy"
+        },
+        "Paste": {
+          "type": "key",
+          "key": "Cmd+v",
+          "label": "Paste"
+        },
+        "Up": {
+          "type": "key",
+          "key": "Up",
+          "label": "Previous edit point"
+        },
+        "Down": {
+          "type": "key",
+          "key": "Down",
+          "label": "Next edit point"
+        },
+        "Left": {
+          "type": "key",
+          "key": "Left",
+          "label": "Step back 1 frame"
+        },
+        "Right": {
+          "type": "key",
+          "key": "Right",
+          "label": "Step forward 1 frame"
+        },
+        "Tab": {
+          "type": "key",
+          "key": "Space",
+          "label": "Play / stop"
+        }
+      }
+    },
+    "settings": {}
+  }
+}

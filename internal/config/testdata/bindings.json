@@ -1,0 +1,23 @@
+{
+  "_config": {
+    "hueOffsetsDeg": [0, 45, 105, 165, 225, 270, 300, 330],
+    "coalesceWindowMs": 120,
+    "pxPerUnit": 10.0,
+    "maxScrubPx": 80.0,
+    "minScrubPx": 1.0
+  },
+  "col": {
+    "Saturation": {"param": "sat",    "ch": "master"},
+    "P1":         {"param": "offset", "ch": "master"},
+    "D1":         {"method": "wheel", "wheel": "lift_master", "sens": 20},
+    "D2":         {"type": "wheel",   "wheel": "gamma_master", "sens": 15, "maxDrag": 30.0},
+    "L1":         {"type": "click", "point": "mode_wheels", "mode": "wheels"},
+    "L2":         {"type": "click", "point": "mode_bars",   "mode": "bars"},
+    "L3":         {"type": "click", "point": "mode_log",    "mode": "log"},
+    "Undo":       {"type": "key",   "key": "Cmd+Z"},
+    "Temp":       {"type": "wheel", "wheel": "temp_slider",  "press": {"type": "key",   "key": "Cmd+Z"}},
+    "Tint":       {"type": "wheel", "wheel": "tint_slider",  "press": {"type": "none"}},
+    "WheelClick": {"type": "wheel", "wheel": "gain_master",  "press": {"type": "click", "point": "gain_reset"}},
+    "CDLKey":     {"type": "cdl",   "param": "slope", "ch": "master", "press": {"type": "key", "key": "Ctrl+Z"}}
+  }
+}

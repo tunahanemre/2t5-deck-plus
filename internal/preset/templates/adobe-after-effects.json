@@ -1,0 +1,198 @@
+{
+  "templateId": "adobe-after-effects",
+  "name": "Adobe After Effects",
+  "bundleId": "com.adobe.AfterEffects",
+  "summary": "After Effects: the wheel steps frames, knobs jump keyframes, step 10 frames and zoom the timeline; tools on the P buttons; position / scale / rotation / opacity / anchor reveal keys; preview, easy ease and split layer.",
+  "notes": "Frames, not minutes: the wheel steps one frame (Page Down / Page Up), D1 ten frames. Exposure goes to the next / previous keyframe (K / J). C2-C6 and Col are the property reveal keys (P, S, R, T, U, A) which act on the selected layer with the Composition or Timeline panel focused. Easy Ease is F9, which macOS may reserve for Mission Control: if it does nothing, free that system shortcut. After Effects is not installed on this Mac; the bundle id is Adobe's standard one (check with: osascript -e 'id of app \"Adobe After Effects 2026\"').",
+  "requires": [],
+  "preset": {
+    "schema": 1,
+    "id": "com.adobe.AfterEffects",
+    "name": "Adobe After Effects",
+    "packs": [
+      "generic"
+    ],
+    "banks": {
+      "base": {
+        "ControlDial": {
+          "type": "keyDelta",
+          "keyCW": "PageDown",
+          "keyCCW": "PageUp",
+          "detentThreshold": 1,
+          "label": "Step 1 frame"
+        },
+        "D1": {
+          "type": "keyDelta",
+          "keyCW": "Shift+PageDown",
+          "keyCCW": "Shift+PageUp",
+          "detentThreshold": 1,
+          "label": "Step 10 frames"
+        },
+        "D2": {
+          "type": "keyDelta",
+          "keyCW": "=",
+          "keyCCW": "-",
+          "detentThreshold": 1,
+          "label": "Zoom timeline"
+        },
+        "Exposure": {
+          "type": "keyDelta",
+          "keyCW": "k",
+          "keyCCW": "j",
+          "detentThreshold": 1,
+          "label": "Next / previous keyframe"
+        },
+        "Highlights": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+Down",
+          "keyCCW": "Cmd+Up",
+          "detentThreshold": 1,
+          "label": "Next / previous layer"
+        },
+        "Blacks": {
+          "type": "keyDelta",
+          "keyCW": "Cmd+Alt+Shift+Right",
+          "keyCCW": "Cmd+Alt+Shift+Left",
+          "detentThreshold": 1,
+          "label": "Next / previous layer In/Out point"
+        },
+        "P1btn": {
+          "type": "key",
+          "key": "v",
+          "label": "Selection"
+        },
+        "P2btn": {
+          "type": "key",
+          "key": "h",
+          "label": "Hand"
+        },
+        "P3btn": {
+          "type": "key",
+          "key": "z",
+          "label": "Zoom"
+        },
+        "P4btn": {
+          "type": "key",
+          "key": "w",
+          "label": "Rotation"
+        },
+        "P5btn": {
+          "type": "key",
+          "key": "q",
+          "label": "Shape / mask tools"
+        },
+        "P6btn": {
+          "type": "key",
+          "key": "Cmd+t",
+          "label": "Type tools"
+        },
+        "P7btn": {
+          "type": "key",
+          "key": "g",
+          "label": "Pen"
+        },
+        "P8btn": {
+          "type": "key",
+          "key": "y",
+          "label": "Pan behind"
+        },
+        "C1": {
+          "type": "key",
+          "key": "space",
+          "label": "Preview start / stop"
+        },
+        "C2": {
+          "type": "key",
+          "key": "p",
+          "label": "Position"
+        },
+        "C3": {
+          "type": "key",
+          "key": "s",
+          "label": "Scale"
+        },
+        "C4": {
+          "type": "key",
+          "key": "r",
+          "label": "Rotation property"
+        },
+        "C5": {
+          "type": "key",
+          "key": "t",
+          "label": "Opacity"
+        },
+        "C6": {
+          "type": "key",
+          "key": "u",
+          "label": "Keyframed properties"
+        },
+        "Col": {
+          "type": "key",
+          "key": "a",
+          "label": "Anchor point"
+        },
+        "Hue": {
+          "type": "key",
+          "key": "i",
+          "label": "Go to layer In point"
+        },
+        "Sat": {
+          "type": "key",
+          "key": "o",
+          "label": "Go to layer Out point"
+        },
+        "Lum": {
+          "type": "key",
+          "key": "d",
+          "label": "Scroll to current time"
+        },
+        "ClrBW": {
+          "type": "key",
+          "key": "F9",
+          "label": "Easy ease"
+        },
+        "CustomMode": {
+          "type": "key",
+          "key": "Cmd+Shift+d",
+          "label": "Split layer"
+        },
+        "Tab": {
+          "type": "key",
+          "key": "Cmd+Shift+c",
+          "label": "Precompose"
+        },
+        "BeforeAfter": {
+          "type": "key",
+          "key": "\\",
+          "label": "Composition / timeline focus"
+        },
+        "ScreenMode": {
+          "type": "key",
+          "key": "`",
+          "label": "Maximise panel under pointer"
+        },
+        "Undo": {
+          "type": "key",
+          "key": "Cmd+z",
+          "label": "Undo"
+        },
+        "Redo": {
+          "type": "key",
+          "key": "Cmd+Shift+z",
+          "label": "Redo"
+        },
+        "Left": {
+          "type": "key",
+          "key": "Home",
+          "label": "Go to start"
+        },
+        "Right": {
+          "type": "key",
+          "key": "End",
+          "label": "Go to end"
+        }
+      }
+    },
+    "settings": {}
+  }
+}

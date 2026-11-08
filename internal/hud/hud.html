@@ -1,0 +1,1134 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root{
+    /* the 2T5 DECK+ editor's own tokens (editor.css :root), copied so the HUD and the editor read as one app */
+    --s0:#0E0E10; --s1:#141417; --s2:#1B1B1F; --s3:#242429;
+    --hl-1:rgba(255,255,255,.06); --hl-2:rgba(255,255,255,.10); --hl-3:rgba(255,255,255,.18); --hl-top:rgba(255,255,255,.07);
+    --t1:#F2F1EE; --t2:#B3B2AD; --t3:#908F8A;
+    --accent:#5FB4E8; --accent-hi:#8CCBF0; --accent-ink:#06141D; --accent-wash:rgba(95,180,232,.12); --accent-40:rgba(95,180,232,.40); --accent-60:rgba(95,180,232,.60); /* the editor's default (blue) accent */
+    --ok:#5BD6A0; --warn:#E6B85C; --danger:#F2566F;
+    --r-xs:4px; --r-sm:8px; --r-md:12px; --r-pill:999px;
+    --font-ui:"SF Pro Text","SF Pro",-apple-system,BlinkMacSystemFont,"Helvetica Neue",system-ui,sans-serif;
+    --font-mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    /* names the layout rules below already use, now answered by those tokens */
+    --ink:var(--s0); --panel:var(--s1); --panel-2:var(--s1); --line:var(--hl-1);
+    --text:var(--t1); --muted:var(--t3); --faint:rgba(242,241,238,.40);
+    --signal:var(--accent); --off:#4A4A50; --crit:var(--danger);
+    --mono:var(--font-mono); --ui:var(--font-ui);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:transparent;color:var(--text);
+    font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow:hidden}
+
+  /* ---- the HUD panel itself (productionized from hud-mockup.html's .hud) --- */
+  .hud{width:300px;background:var(--s1);
+    border:1px solid var(--hl-2);border-radius:var(--r-md);
+    box-shadow:0 0 0 1px var(--hl-2), 0 1px 0 var(--hl-top) inset, 0 20px 48px -8px rgba(0,0,0,.65), 0 8px 16px -4px rgba(0,0,0,.45);
+    overflow:hidden;font-family:var(--ui);
+    -webkit-user-select:none;user-select:none}
+  .hud .strip{height:2px;background:linear-gradient(90deg,var(--accent),transparent 60%);opacity:.8}
+  .hud.off .strip{background:linear-gradient(90deg,var(--warn),transparent 60%)}
+
+  .hrow{display:flex;align-items:center;gap:9px;padding:11px 13px 10px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);
+    box-shadow:0 0 0 3px rgba(91,214,160,.14);flex:none}
+  .off .dot{background:var(--warn);box-shadow:0 0 0 3px rgba(230,184,92,.14)}
+  /* stale (2026-08-24): the sidecar IS connected (LED stays green -- .off
+     never applies here) but this tick's numbers are carried forward from
+     a moment ago because DaVinci Resolve's own scripting API is busy,
+     typically mid-playback -- see engine.Status.SidecarStale's doc
+     comment. A slow opacity pulse on the SAME green dot, not a color
+     change (color is already spoken for by .off's connectivity meaning,
+     and re-using it here would make a merely-busy tick look like a
+     connectivity problem, which is the exact live bug this fixes) --
+     "this is current-ish, not frozen-as-live", never "something is wrong".
+     Never applies together with .off (stale is only ever set while the
+     sidecar answers a dedicated liveness probe -- see queryStatus). */
+  .stale .dot{animation:hud-stale-pulse 1.4s ease-in-out infinite}
+  @keyframes hud-stale-pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .wordmark{display:inline-flex;align-items:center;gap:8px;font:700 13px/1 var(--font-ui);letter-spacing:.04em;color:var(--t1)}
+  .wordmark img{display:block;height:1.55em;width:auto}
+  .hrow .spacer{flex:1}
+  .pagebadge{font:600 11px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--accent);padding:5px 9px;border-radius:var(--r-pill)}
+  .off .pagebadge{background:var(--s3);color:var(--t2);box-shadow:inset 0 0 0 1px var(--hl-2)}
+  .gate{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
+  .gate .g{color:var(--ok)} .gate .g.closed{color:var(--faint)}
+
+  .divide{height:1px;background:var(--line)}
+
+  .tc{padding:9px 13px 11px}
+  .tc .big{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:27px;
+    letter-spacing:.01em;font-weight:500;color:var(--text);line-height:1}
+  .off .tc .big{color:var(--faint)}
+  .tc .sub{font-size:11px;color:var(--muted);margin-top:5px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .knobs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+  .knob{background:var(--panel);padding:8px 12px 9px;display:flex;flex-direction:column;gap:3px;justify-content:center;min-height:34px}
+  .knob .k{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-family:var(--mono)}
+  .knob.active{background:var(--accent-wash);box-shadow:inset 0 0 0 1px var(--accent-40)}
+  .knob.active .k{color:var(--signal)}
+  .knob .v{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--text);display:none}
+  .knob .v.show{display:block}
+  .knob .meter{height:2px;margin-top:3px;border-radius:2px;background:var(--s3);overflow:hidden}
+  .knob.active .meter i{display:block;height:100%;background:var(--signal);width:62%}
+
+  /* Edit-page target-clip name row, shown just above the knob map --
+     see app/format.go's hudEditClipName / hud.HUDModel.EditClip. Hidden
+     entirely off the Edit page (state.editClip is "" there). */
+  .editclip{padding:0 13px 7px;font-family:var(--mono);font-size:11px;
+    color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:none}
+  .editclip.show{display:block}
+
+  .ctx{display:flex;align-items:center;gap:9px;padding:9px 13px}
+  .ctx.empty{display:none}
+  .swatch{width:11px;height:11px;border-radius:var(--r-xs);flex:none;box-shadow:0 0 0 1px rgba(0,0,0,.4) inset}
+  .ctx .lab{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+  .ctx .val{font-family:var(--mono);font-size:12.5px;color:var(--text)}
+  .ctx .spacer{flex:1}
+  .ctx .clip{font-family:var(--mono);font-size:11px;color:var(--muted);
+    max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .foot{display:flex;align-items:center;gap:8px;padding:8px 13px 10px;background:var(--s0);
+    border-top:1px solid var(--hl-1);font-family:var(--mono);font-size:10.5px;color:var(--faint)}
+  .foot .chip{color:var(--muted)}
+  .off .foot .chip.hideOffline{display:none}
+  .foot .spacer{flex:1}
+  .foot .act{color:var(--signal)}
+  .foot .act.warn{color:var(--warn)}
+  .pulse{width:5px;height:5px;border-radius:50%;background:var(--signal);flex:none;
+    box-shadow:0 0 6px var(--signal);animation:p 1.6s ease-in-out infinite}
+  .off .pulse{background:var(--warn);box-shadow:0 0 6px var(--warn)}
+  @keyframes p{0%,100%{opacity:.35}50%{opacity:1}}
+  @media(prefers-reduced-motion:reduce){.pulse{animation:none}}
+
+  .errline{padding:9px 13px 11px;font-size:11.5px;color:var(--warn);line-height:1.4;
+    font-family:var(--mono);white-space:pre-line;display:none}
+  .errline.show{display:block}
+
+  /* ---- Compact corner card (< 900 px: the card on the main screen, 300 px) ----
+     The four-box timecode grid, the layer and P-row slabs and the LED strip were only ever styled for the two
+     broadcast layouts below; on the 300 px card they fell out unstyled. Same markup and ids, editor surfaces. */
+  @media (max-width:899px){
+    .hud{display:grid;grid-template-columns:1fr 1fr}
+    .hud > *{grid-column:1 / -1;min-width:0}
+    .hud > .tally{grid-column:1;display:flex;align-items:center;gap:8px;padding:9px 6px 9px 13px;border-top:1px solid var(--hl-1)}
+    .hud > .pslab{grid-column:2;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:9px 13px 9px 6px;border-top:1px solid var(--hl-1)}
+    .hud > .errline.show{order:0}
+    .layerchip,.pchip{display:inline-flex;align-items:center;height:20px;padding:0 9px;border-radius:var(--r-pill);
+      font:700 11px/16px var(--font-ui);letter-spacing:.04em;border:1px solid transparent}
+    .layerchip{color:#0A0908}
+    .pchip{border-color:var(--pmode-accent)}
+    .pslab-lab{font:600 10px/1 var(--font-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+
+    .tcgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hl-1);border-radius:var(--r-sm);overflow:hidden;box-shadow:0 0 0 1px var(--hl-1)}
+    .tc{padding:10px 13px 12px}
+    .tcbox{display:flex;flex-direction:column;gap:2px;min-width:0;padding:8px 10px 9px;background:var(--s1);position:relative}
+    .tcbox::before{font:600 10px/1 var(--font-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:3px}
+    .tcgrid > .tcbox:nth-child(1)::before{content:"Playhead"}
+    .tcgrid > .tcbox:nth-child(2)::before{content:"Timeline"}
+    .tcgrid > .tcbox:nth-child(3)::before{content:"Clip in"}
+    .tcgrid > .tcbox:nth-child(4)::before{content:"Clip out"}
+    .tcgrid > .tcbox:nth-child(1){grid-column:1 / -1;padding:10px 12px 11px}
+    .tcgrid > .tcbox:nth-child(2){grid-column:1 / -1}
+    .tcval{order:2;font:500 14px/18px var(--font-mono);font-variant-numeric:tabular-nums;color:var(--t1);white-space:nowrap}
+    .tcval.big{font-size:27px;line-height:30px;letter-spacing:.01em}
+    .off .tcval{color:var(--faint)}
+    .tclab{order:3;font:400 11px/14px var(--font-ui);color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+    .tclab:empty{display:none}
+    .tclab.clab::before{content:"";display:inline-block;vertical-align:-1px;width:6px;height:6px;margin-right:6px;border-radius:50%;background:var(--warn)}
+    .tclab.clab[data-r="1"]::before{background:var(--ok)}
+    .hnd{order:4;font:400 10.5px/14px var(--font-mono);color:var(--t3)}
+    .hnd:empty{display:none}
+
+    .knobs{border-top:1px solid var(--hl-1)}
+    .knob{background:var(--s1)}
+    .knob .k{font-family:var(--font-ui);font-weight:600;letter-spacing:.08em}
+    .knob.active .meter i{background:var(--accent)}
+
+    .foot{flex-wrap:wrap;row-gap:6px;border-top:1px solid var(--hl-1)}
+    .foot .chip{white-space:nowrap}
+    #chipcensus{flex:1 1 100%}
+    .leds{flex:1 1 100%;position:relative;display:flex;flex-direction:column;gap:2px;padding:1px 0 3px}
+    .ledrow{position:relative;height:5px;border-radius:2px;background:rgba(255,255,255,.05)}
+    .led{position:absolute;top:0;bottom:0;min-width:2px;border-radius:2px;background:var(--warn)}
+    .led-r{background:var(--ok)} .led-off{background:var(--danger)}
+    .ledph{position:absolute;top:0;bottom:3px;width:2px;margin-left:-1px;background:var(--accent-hi);border-radius:1px;pointer-events:none}
+    .leds:empty{display:none}
+    .pulse{box-shadow:none}
+    .off .pulse{box-shadow:none}
+    .foot .act{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:100%}
+  }
+
+  /* ---- Landscape full-panel mode (1280x720 virtual display) ----
+     Scoped to min-width:900px so this NEVER activates for the everyday
+     compact HUD (~300-320px window, top-right of the main display) --
+     that path is untouched, same markup/CSS as before. 900px sits with
+     wide margin between the compact window (~320px) and the landscape
+     target (1280px) -- zero risk of cross-activation either direction.
+
+     Supersedes the earlier 720x1280 PORTRAIT scale-up (transform:scale
+     on the unmodified 300px card, see git history) -- the on-set
+     monitor is now LANDSCAPE 1280x720, wide and short, so this is a
+     real reflow into columns/zones via CSS Grid on .hud's existing 9
+     direct children (each assigned a named grid-area -- no DOM/JS
+     changes, same ids/classes render() already binds to).
+
+     Design principles carried over from the portrait spec, re-applied
+     for landscape:
+     - Timecode is the dominant glanceable element: huge, left column.
+     - State lives on SOLID FILLS (top strip, dot, pagebadge, swatch,
+       knob active bg), never on colored text -- H.264 4:2:0 chroma
+       subsampling smears thin colored strokes/text first, so every
+       piece of text stays neutral (near-white/muted, matching the
+       compact card's own convention already).
+     - Every hairline (.strip, .divide, .knob .meter) is thickened to a
+       solid multi-px fill band -- 1px rules don't survive compression.
+     - Every text rule below gets an explicit font-weight >=600 -- most
+       base rules don't set a weight at all (inherits 400), which is
+       fine on a compact desktop card and illegible at a <1s glance on
+       a 5in panel from 40-70cm.
+     - .hud fills the viewport edge-to-edge (border/radius/shadow
+       stripped -- that's floating-card chrome that makes no sense
+       full-bleed) with an OPAQUE flat --panel background, no gradient:
+       the base two-stop gradient is unnoticeable on a 300px card but
+       becomes exactly the "large gradient" the brief warns against
+       once stretched across 720px of height.
+     - Row tracks are fixed px except the hero row (1fr), so total
+       height is always exactly 720px whether or not the conditional
+       editclip/ctx content is present. .errline is pulled OUT of grid
+       flow (position:absolute, full-width bottom overlay) so a rare
+       app error can never reflow/clip the rest of the HUD -- it
+       replaces the knobs band with a solid amber FILL banner instead
+       of the compact card's colored-text-on-dark treatment. */
+  /* UPPER BOUND ADDED 2026-07-29: this query was unbounded, so at 3840px BOTH
+     it and the wide/lower-third block below applied at once and their grid
+     definitions fought -- children landed in implicit rows, the knob strip
+     collapsed to 8px and content overflowed a 170px viewport by 290px.
+     Flagged in review before it shipped; this is the fix. The landscape
+     virtual screen is 1280px wide, so 1599 bounds it safely. */
+  @media (min-width:900px) and (max-width:1599px){
+    html,body{height:100%;margin:0;background:var(--panel)}
+
+    .hud{
+      width:100%;height:100%;position:relative;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 420px;
+      grid-template-rows:8px 100px 4px 1fr 76px 220px;
+      grid-template-areas:
+        "strip strip"
+        "header header"
+        "divide divide"
+        "tc ctx"
+        "editclip foot"
+        "knobs knobs";
+      background:var(--panel);
+      border:none;border-radius:0;box-shadow:none;
+    }
+
+    /* top state strip: solid fill, no fade-to-transparent gradient */
+    .hud .strip{grid-area:strip;height:100%;background:var(--signal);opacity:1}
+    .hud.off .strip{background:var(--warn)}
+
+    .hrow{grid-area:header;padding:0 44px;gap:20px}
+    .dot{width:30px;height:30px;box-shadow:0 0 0 6px rgba(91,214,160,.14)}
+    .off .dot{box-shadow:0 0 0 6px rgba(230,184,92,.14)}
+    .wordmark{font-size:26px;letter-spacing:.06em;gap:16px}
+    .pagebadge{font-size:22px;padding:10px 22px;border-radius:var(--r-pill);letter-spacing:.08em}
+    .gate{font-size:24px;font-weight:600;gap:8px}
+
+    .divide{grid-area:divide;height:100%}
+
+    .tc{grid-area:tc;display:flex;flex-direction:column;justify-content:center;
+      padding:0 56px;font-weight:600;overflow:hidden}
+    .tc .big{font-size:100px;font-weight:700;white-space:nowrap}
+    .tc .sub{font-size:26px;margin-top:14px}
+
+    .editclip{grid-area:editclip;padding:0 56px;font-size:24px;font-weight:600}
+    .editclip.show{display:flex;align-items:center;height:100%}
+
+    .ctx{grid-area:ctx;flex-direction:column;align-items:flex-start;
+      justify-content:center;padding:0 40px;gap:12px;font-weight:600}
+    .swatch{width:30px;height:30px;border-radius:6px}
+    .ctx .lab{font-size:18px;letter-spacing:.1em}
+    .ctx .val{font-size:30px}
+    .ctx .clip{font-size:20px;max-width:100%}
+
+    .knobs{grid-area:knobs;height:100%;grid-template-columns:repeat(4,1fr);gap:3px}
+    .knob{padding:26px 32px;gap:10px;min-height:100%;font-weight:600}
+    .knob .k{font-size:20px;letter-spacing:.1em}
+    .knob .v{font-size:28px}
+    .knob .meter{height:8px;margin-top:6px;border-radius:4px}
+
+    .foot{grid-area:foot;padding:0 40px;font-size:19px;font-weight:600;
+      flex-wrap:wrap;row-gap:10px;column-gap:16px;align-content:center}
+    .foot .spacer{flex:0 0 100%;height:0}
+    .foot .act{max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .pulse{width:18px;height:18px;box-shadow:0 0 14px var(--signal)}
+    .off .pulse{box-shadow:0 0 14px var(--warn)}
+
+    /* pulled out of grid flow: full-width overlay so a rare error can
+       never change the fixed 720px layout geometry. Solid fill, not
+       colored text -- swaps the compact card's amber-text-on-dark
+       treatment for an amber FILL band with dark text at this size. */
+    .errline{position:absolute;left:0;right:0;bottom:0;height:220px;z-index:5;
+      margin:0;padding:0 56px;background:var(--warn);color:#1a1206;
+      font-size:30px;font-weight:700;line-height:1.35}
+    .errline.show{display:flex;align-items:center}
+  }
+
+  /* ---- Layer accent (L1 red, L2 green, L3 blue -- RGB in order) ----
+     A colour is pre-attentive; a digit is something you stop and read. On a
+     console with fixed engraving and no key screens, the layer must be
+     recognisable from peripheral vision, so it drives an accent rather than
+     living only in a text chip. --layer-accent is a single custom property so
+     future elements can opt in without touching this logic. */
+  /* Tally tokens. --layer-accent is the saturated rail; --layer-field is the
+     same hue driven far down into near-black for the panel surface; --layer-dim
+     is a light tint for secondary text. Primary text never takes the tint --
+     white stays white so the payload survives a saturated surround. */
+  :root                 { --layer-accent:#FF3B3F; --layer-field:#1C0709; --layer-dim:#FFB3B5; }
+  :root[data-layer="2"] { --layer-accent:#22C55E; --layer-field:#06170F; --layer-dim:#9BEFC4; }
+  :root[data-layer="3"] { --layer-accent:#3B82F6; --layer-field:#080F22; --layer-dim:#A9C8FF; }
+
+  .layerchip{
+    background:var(--layer-accent);
+    color:#0a0908;
+    font-weight:800;
+    border-color:var(--layer-accent);
+  }
+  /* A hairline of accent along the top edge, visible even when the chip
+     itself is outside the eye's focus. */
+  .hud{ border-top:3px solid var(--layer-accent); }
+
+  /* ---- P-row mode (Hue/Sat/Lum) ---- distinct from the layer accent so the
+     two indicators can never be confused for one another at a glance. */
+  :root                    { --pmode-accent:#C77DFF; }  /* hue */
+  :root[data-pmode="sat"]  { --pmode-accent:#F2A93B; }  /* sat */
+  :root[data-pmode="lum"]  { --pmode-accent:#9AA4AD; }  /* lum */
+  .pchip{
+    background:transparent;
+    color:var(--pmode-accent);
+    border-color:var(--pmode-accent);
+    font-weight:800;
+  }
+
+  /* ==========================================================================
+     WIDE / LOWER-THIRD MODE  (>=1600px)  -- the tally band
+     ==========================================================================
+     3840x340 at 1x on a 28" 4K panel, read from across a grading suite.
+
+     The governing rule, learned the hard way: EVERY ZONE FILLS THE FULL BAND
+     HEIGHT and structures itself internally as eyebrow / payload / foot. The
+     previous pass centred short content in tall columns, which left the top
+     40% of the band empty and made it read as scattered text in a void.
+
+     1x panel, so subpixel-antialiased (sharper here than the antialiased set
+     globally for the Retina corner card) and weights >=700 throughout. */
+  @media (min-width:1600px){
+    html,body{height:100%;margin:0;background:var(--layer-field);overflow:hidden}
+
+    .hud,.hud *{
+      font-family:"SF Compact Display","SF Compact Text",-apple-system,system-ui,sans-serif;
+      -webkit-font-smoothing:subpixel-antialiased;
+    }
+
+    .hud{
+      width:100%;height:100%;box-sizing:border-box;
+      border-radius:0;box-shadow:none;
+      border:clamp(4px,2.4vh,13px) solid var(--layer-accent);
+      background:var(--layer-field);
+      display:grid;
+      grid-template-columns:
+        /* Hard 50/50 split. The timecode block ends EXACTLY at the midpoint
+           and the knob grid starts there, so the band has a fixed spine
+           instead of columns that resize as content changes length. */
+        clamp(110px,40vh,180px)                        /* SLAB              */
+        calc(50% - clamp(110px,40vh,180px))            /* TIMECODE -> 50%   */
+        auto                                            /* KNOBS from 50%   */
+        minmax(0,1fr)                                   /* STATUS           */
+        auto;                                           /* PAGE + gate      */
+      grid-template-rows:1fr 1fr;
+      grid-template-areas:
+        "tally tc knobs status ident"
+        "pslab tc knobs status ident";
+      align-items:stretch;
+      gap:0;
+    }
+
+    .strip,.divide,.hud > .editclip,.hud .spacer{display:none}
+
+    /* Shared zone frame: every column is a full-height flex stack with an
+       eyebrow at the top, so the band has one continuous baseline grid
+       instead of five independently floating blocks. */
+    .hud > .knobs,.hud > .tc,.hud > .foot,.hud > .hrow{
+      display:flex;flex-direction:column;min-width:0;
+      padding:clamp(5px,2.2vh,15px) clamp(8px,2.6vh,20px);
+      border-left:clamp(1px,.5vh,3px) solid rgba(255,255,255,.09);
+    }
+    /* Eyebrow labels, drawn via ::before so no DOM change is needed. */
+    .hud > .knobs::before,.hud > .tc::before,.hud > .foot::before,.hud > .hrow::before{
+      font-size:clamp(9px,5.2vh,19px);font-weight:800;letter-spacing:.18em;
+      color:var(--layer-accent);text-transform:uppercase;
+      margin-bottom:clamp(4px,2.4vh,14px);flex:0 0 auto;
+    }
+    .hud > .knobs::before{content:none;display:none}
+    .hud > .tc::before    {content:none;display:none}
+    .hud > .foot::before  {content:"Status"}
+    .hud > .hrow::before  {content:"Page"}
+
+    /* ---- TALLY SLAB (signature) ---------------------------------------- */
+    .hud > .tally{
+      grid-area:tally;background:var(--layer-accent);
+      display:flex;align-items:center;justify-content:center;
+      min-width:0;padding:0;overflow:hidden;
+    }
+    .hud > .tally > #chiplayer{
+      background:transparent;border:none;padding:0;margin:0;
+      /* Sized off the column, not the band height -- at 34vh the glyph was
+         wider than the slab and overflow:hidden clipped it on both edges. */
+      color:#0A0908;font-size:clamp(36px,24vh,84px);
+      font-weight:900;line-height:1;letter-spacing:-.02em;
+      padding:0 .12em;max-width:100%;
+    }
+
+    /* ---- P-ROW SLAB ----------------------------------------------------
+       A peer of the layer tally, not a line buried in the status list: this
+       changes what all sixteen P controls do, and the console's engraving
+       cannot say which of the three is live. Its own palette so it can never
+       be mistaken for the layer accent. */
+    .hud > .pslab{
+      grid-area:pslab;min-width:0;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:clamp(2px,1.4vh,9px);
+      padding:0 clamp(8px,3vh,22px);
+      /* Solid fill, like the layer slab above it: the P-row mode changes what
+         all sixteen P controls do, so it earns a block of colour rather than
+         coloured text on a dark field. The two stack as a single colour column
+         -- layer on top, P-row beneath -- readable from across the suite. */
+      background:var(--pmode-accent);
+    }
+    .pslab .pslab-lab{
+      font-size:clamp(8px,4.6vh,17px);font-weight:800;letter-spacing:.18em;
+      color:#0A0908;opacity:.62;text-transform:uppercase;
+    }
+    .hud > .pslab > #chippmode{
+      background:transparent;border:none;padding:0 .1em;margin:0;max-width:100%;
+      color:#0A0908;
+      /* 3 glyphs at weight 900 need ~1.9em of column; sized so HUE/SAT/LUM
+         all clear the slab rather than being cut by its own border. */
+      font-size:clamp(22px,15vh,52px);font-weight:900;line-height:1;
+      letter-spacing:0;
+    }
+    .hud > .pslab > #chippmode::before{content:none}
+
+    /* ---- KNOB MAP ------------------------------------------------------ */
+    /* The base stylesheet paints .knobs with --line and each .knob with
+       --panel: a 1px-gap hairline-divider trick for the corner card. In this
+       mode the gaps are real and the cells are bordered, so those backgrounds
+       only showed through as a grey slab that did not match the tinted field. */
+    .hud > .knobs{grid-area:knobs;background:transparent}
+    .knobs .knob{background:transparent}
+    .knobs > .knob{display:none}          /* re-shown below as a grid child */
+    .hud > .knobs{
+      display:grid !important;
+      grid-template-columns:repeat(2,auto);
+      grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+      height:100%;
+      gap:clamp(4px,2vh,14px);
+      align-content:stretch;justify-content:center;
+    }
+    .knobs > .knob{
+      display:flex !important;flex-direction:column;justify-content:space-between;
+      border:clamp(2px,.8vh,4px) solid var(--layer-accent);
+      border-radius:clamp(4px,1.6vh,12px);
+      padding:clamp(4px,1.6vh,11px) clamp(6px,2vh,14px);
+      min-width:0;min-height:0;gap:clamp(2px,1vh,6px);
+      /* Sized off the ROW: height:100% takes the full row, aspect-ratio
+         supplies the width. 1.6:1 rather than square -- a signed 3-decimal
+         value like "-1920.000" is 9 monospace characters, and fitting that in
+         a square would force the value type down to ~21px, which defeats the
+         point of a band read from across the room.
+         overflow:hidden is the real guard: a long value must clip inside its
+         own cell rather than bleeding across into the status column. */
+      height:100%;aspect-ratio:1.6 / 1;width:auto;overflow:hidden;
+    }
+    .knobs .knob .k{
+      font-size:clamp(11px,8vh,30px);font-weight:800;letter-spacing:.03em;
+      color:var(--layer-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      flex:0 0 auto;
+    }
+    .knobs .knob .v{
+      font-size:clamp(15px,11vh,40px);font-weight:800;color:#FFFFFF;line-height:1;
+      overflow:hidden;text-overflow:ellipsis;max-width:100%;
+      font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;
+      white-space:nowrap;flex:1 1 auto;display:flex;align-items:center;
+    }
+    /* An unbound knob shows an em-dash rather than nothing, so an empty cell
+       reads as "nothing mapped here" instead of "the HUD failed to draw". */
+    .knobs .knob .v:empty::before{content:"—";color:var(--layer-dim);opacity:.55}
+    /* Meter bars removed: the tool cannot read a knob's real value, so the
+       bar had nothing truthful to show and read as decoration. */
+    .knobs .knob .meter{display:none}
+    .knobs .knob .meter i{background:var(--layer-accent);display:block;height:100%;
+                          min-width:0}
+    /* With no reading to show, the meter is an empty track, not a full-width
+       accent bar implying a value at maximum. */
+    .knobs .knob .v:empty ~ .meter i{width:0 !important}
+    /* EDIT PAGE ONLY: Pos X and Pos Y are a pair and belong side by side, so
+       the bottom row holds them together and Scale/Crop take the top. Scoped
+       to the Edit page because on Color these same four cells are
+       Lift -> Gamma -> Gain -> Offset, an order that carries real meaning
+       (shadows -> mids -> highlights -> global) and must not be shuffled. */
+    :root[data-page="edit"] .knobs .knob[data-i="0"]{order:1}  /* Scale */
+    :root[data-page="edit"] .knobs .knob[data-i="3"]{order:2}  /* Crop  */
+    :root[data-page="edit"] .knobs .knob[data-i="1"]{order:3}  /* Pos X */
+    :root[data-page="edit"] .knobs .knob[data-i="2"]{order:4}  /* Pos Y */
+
+    .knobs .knob.active{background:var(--layer-accent);border-color:var(--layer-accent)}
+    .knobs .knob.active .k{color:rgba(10,9,8,.7)}
+    .knobs .knob.active .v{color:#0A0908}
+    .knobs .knob.active .meter{background:rgba(0,0,0,.3)}
+    .knobs .knob.active .meter i{background:#0A0908}
+
+    /* Handle beneath the timecode it describes: head is how far the IN point
+       can move back, tail how far the OUT point can move on. Small, because
+       it qualifies the number above rather than competing with it. */
+    .tc .hnd{
+      position:absolute;right:clamp(6px,2.2vh,18px);bottom:clamp(2px,1vh,8px);
+      font-size:clamp(9px,4.6vh,18px);font-weight:800;
+      color:var(--layer-dim);white-space:nowrap;line-height:1;
+      font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;
+    }
+    .tc .hnd:empty{display:none}
+
+    /* ---- (retired) HANDLES column --------------------------------------
+       Signed frame counts, not timecodes: a handle is a trim quantity, and
+       "-225" says how far the in point can move far more directly than a
+       position would. */
+    .hud > .handles{
+      grid-area:handles;min-width:0;
+      display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+      gap:clamp(4px,2vh,14px);
+      padding:clamp(5px,2.2vh,15px) clamp(8px,2.6vh,20px);
+    }
+    .handles .hbox{
+      display:flex;flex-direction:column;justify-content:center;
+      gap:clamp(2px,1vh,6px);min-width:0;overflow:hidden;
+      border:clamp(2px,.8vh,4px) solid var(--layer-accent);
+      border-radius:clamp(4px,1.6vh,12px);
+      padding:clamp(4px,1.6vh,11px) clamp(8px,2.4vh,18px);
+    }
+    .handles .hlab{
+      font-size:clamp(9px,6vh,22px);font-weight:800;letter-spacing:.1em;
+      color:var(--layer-dim);text-transform:uppercase;white-space:nowrap;
+    }
+    .handles .hval{
+      font-size:clamp(14px,11vh,40px);font-weight:800;color:#FFFFFF;line-height:1;
+      font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+
+    /* ---- TIMECODE ------------------------------------------------------ */
+    .hud > .tc{grid-area:tc;justify-content:space-between}
+
+    /* Project and timeline share one horizontal line beneath the four
+       timecode boxes, spanning the whole column -- they are the same kind of
+       fact (where am I working) and belong together. */
+    .tc .sub{
+      flex:0 0 auto;font-size:clamp(11px,7vh,27px);font-weight:800;
+      color:#FFFFFF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      margin:0;padding-top:clamp(2px,1vh,6px);
+      border-top:1px solid rgba(255,255,255,.10);
+    }
+    .foot .sub{display:flex;align-items:baseline;justify-content:flex-start;
+               gap:clamp(8px,3vh,26px);width:100%;
+               border-top:none;border-bottom:1px solid rgba(255,255,255,.10);
+               padding:0 0 clamp(2px,1.2vh,7px)}
+    .foot .sub .proj,.foot .sub .tlname{
+      min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+      font-size:clamp(12px,8vh,30px);font-weight:800;
+    }
+    .foot .sub .proj{color:var(--layer-dim);flex:0 1 auto}
+    .foot .sub .proj::before{
+      content:"Project ";opacity:.7;font-size:.74em;font-weight:800;
+      letter-spacing:.1em;text-transform:uppercase;
+    }
+    .foot .sub .tlname{display:none}
+    .foot .sub .tlname::before{
+      content:"Timeline ";color:var(--layer-dim);opacity:.7;font-size:.74em;
+      font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    }
+
+    /* Four timecodes, four boxes: playhead, timeline length, clip in, clip
+       out. One oversized hero number wasted the column and answered only one
+       question; four equal readings answer the ones actually asked while
+       editing -- where am I, how long is it, and how much room does this clip
+       have left. */
+    .hud > .tc{display:flex;flex-direction:column;gap:clamp(3px,1.6vh,10px)}
+    .tc .tcgrid{
+      flex:1 1 auto;min-height:0;
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+      grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+      gap:clamp(4px,2vh,14px);
+    }
+    /* Each box titles itself in the top-left, small and quiet: the big label
+       beneath now carries a NAME (timeline / clip), so the box still needs to
+       say which reading it is. */
+    .tc .tcbox::before{
+      font-size:clamp(7px,4.2vh,15px);font-weight:800;letter-spacing:.16em;
+      color:var(--layer-dim);opacity:.75;text-transform:uppercase;
+      align-self:flex-start;line-height:1;
+    }
+    .tc .tcgrid > .tcbox:nth-child(1)::before{content:"Playhead"}
+    .tc .tcgrid > .tcbox:nth-child(2)::before{content:"Timeline"}
+    .tc .tcgrid > .tcbox:nth-child(3)::before{content:"Clip in"}
+    .tc .tcgrid > .tcbox:nth-child(4)::before{content:"Clip out"}
+
+    .tc .tcbox{
+      display:flex;flex-direction:column;justify-content:center;
+      gap:clamp(1px,.8vh,5px);min-width:0;min-height:0;
+      border:clamp(2px,.8vh,4px) solid var(--layer-accent);
+      border-radius:clamp(4px,1.6vh,12px);
+      padding:clamp(3px,1.4vh,10px) clamp(10px,3.4vh,28px);
+      position:relative;
+    }
+    .tc .tclab:empty{display:none}
+    .tc .tclab{
+      font-size:clamp(9px,6vh,22px);font-weight:800;letter-spacing:.1em;
+      color:var(--layer-dim);text-transform:uppercase;white-space:nowrap;
+      overflow:hidden;text-overflow:ellipsis;max-width:100%;
+    }
+    /* The timeline name replaces a generic label, so it gets the accent and a
+       touch more size -- it is a real value, not a caption. */
+    #tclabph,#tclabtl,.tc .clab{color:var(--layer-accent);letter-spacing:.04em;
+             font-size:clamp(9px,6.6vh,25px)}
+    /* Lamp in front of the active clip's name, same convention as the status
+       strip: green = this clip's name marks it rendered, yellow = it does not.
+       Drawn with ::before so setting textContent cannot wipe it. */
+    .tc .clab::before{
+      content:"";display:inline-block;vertical-align:middle;
+      width:clamp(6px,3.4vh,14px);height:clamp(6px,3.4vh,14px);
+      border-radius:50%;margin-right:.45em;
+      background:var(--warn);box-shadow:0 0 0 1px rgba(0,0,0,.45) inset;
+    }
+    .tc .clab[data-r="1"]::before{background:var(--ok)}
+
+    .tc .tcval{
+      font-size:clamp(18px,19vh,72px);font-weight:800;color:#FFFFFF;line-height:1;
+      font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;
+      white-space:nowrap;letter-spacing:-.02em;
+    }
+    /* All four share one size: they are a single set of readings and an
+       odd one out just looked like a mistake. The playhead is distinguished
+       by position and by keeping pure white against the timeline's dim. */
+    /* All four values are white: they are one set of readings, and dimming
+       one made it look like a different kind of thing. */
+    .tc .tctotal{color:#FFFFFF}
+
+    /* superseded by the boxes above */
+
+
+    /* Selected clip in / out / length -- a row of monospaced pairs so the
+       numbers line up and can be compared at a glance. */
+
+    .foot .cr{
+      display:block;text-align:left;
+      font-size:clamp(11px,7vh,26px);font-weight:800;color:#FFFFFF;
+      font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+    .cliprange .cr:empty{display:none}
+
+    /* ---- STATUS: a real label/value table, not a ragged list ------------ */
+    /* The base .foot is painted #0f151a -- a blue-grey chrome bar for the
+       corner card. In this mode the whole band is one tinted field, so the
+       status column must not carry its own colour. */
+    .hud > .foot{grid-area:status;background:transparent;justify-content:flex-start;
+                 gap:clamp(3px,2.2vh,14px);
+                 padding-bottom:clamp(6px,3vh,20px)}
+    .hud > .foot .chip,.hud > .foot .act{flex:0 0 auto}
+    .hud > .foot .chip,.hud > .foot .act{
+      display:block;width:100%;box-sizing:border-box;
+      background:transparent;border:none;padding:0;margin:0;
+      font-size:clamp(13px,9vh,34px);font-weight:800;letter-spacing:.01em;
+      color:#FFFFFF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      padding-bottom:clamp(1px,.9vh,5px);
+    }
+    .hud > .foot .chip::before{
+      content:attr(data-lab);display:inline-block;
+      min-width:5.2em;color:var(--layer-dim);opacity:.8;
+      font-size:.72em;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    }
+    .hud > .foot #chiptarget{color:var(--layer-accent)}
+    .hud > .foot #chippmode{color:var(--pmode-accent)}
+    .hud > .foot #chipnode,.hud > .foot #chipfine{color:var(--layer-dim);
+                 font-size:clamp(10px,6vh,23px);font-weight:700}
+    .hud > .foot .act{border-bottom:none;color:var(--layer-dim);
+                      font-size:clamp(10px,5.6vh,21px);font-weight:700}
+    .hud > .foot .pulse{display:none}
+
+    /* LED strip -- a miniature of the timeline itself: one row per video
+       track, highest first, with each bar placed and sized by the clip's real
+       position, plus the playhead across all of them.
+
+       Colours match what Edit C6 paints INTO the timeline, so the strip and
+       the edit never disagree: green = the clip's name contains "render",
+       yellow = it does not, red = the media is offline. Capped at 512 clips
+       by the sidecar; the census line above still reports the true total, so
+       a truncated strip is legible as such. */
+    .hud > .foot .leds{
+      position:relative;display:flex;flex-direction:column;
+      gap:clamp(1px,.7vh,4px);width:100%;
+      padding-bottom:clamp(2px,1.2vh,7px);
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .foot .ledrow{
+      position:relative;width:100%;
+      height:clamp(5px,3.4vh,14px);
+      background:rgba(255,255,255,.05);
+      border-radius:clamp(2px,1vh,4px);
+    }
+    .foot .led{
+      position:absolute;top:0;bottom:0;min-width:2px;
+      border-radius:clamp(2px,1vh,4px);
+      background:var(--warn);                                   /* not rendered */
+      box-shadow:0 0 0 1px rgba(0,0,0,.45) inset;
+    }
+    .foot .led-r{background:var(--ok)}                        /* rendered     */
+    .foot .led-off{background:var(--danger)}                      /* OFFLINE      */
+    /* Playhead: spans every track, the one thing here that is a position
+       rather than a state, so it gets the only warm colour on the strip. */
+    .foot .ledph{
+      position:absolute;top:0;bottom:clamp(2px,1.2vh,7px);
+      width:clamp(3px,1.4vh,6px);margin-left:clamp(-3px,-.7vh,-1px);
+      background:var(--accent-hi);border-radius:1px;pointer-events:none;
+      box-shadow:0 0 clamp(2px,1vh,5px) rgba(255,154,77,.55);
+    }
+    .foot .leds:empty{display:none}
+    .hud > .foot #chipcensus{color:#FFFFFF}
+
+    /* ---- PAGE / gate / clip -------------------------------------------- */
+    .hud > .hrow{grid-area:ident;justify-content:space-between;align-items:center;
+                 gap:clamp(3px,1.8vh,11px);min-width:0}
+    .hud > .hrow .pagebadge{margin:auto 0}
+    /* Dot + gate read as one status line under the badge rather than an
+       orphaned dot floating above it. */
+    .hud > .hrow .dot{order:3;margin-top:clamp(2px,1vh,6px)}
+    .hud > .hrow .gate{order:4}
+    .hrow .wordmark{display:none}
+    .hrow .dot{width:clamp(9px,5vh,20px);height:clamp(9px,5vh,20px);border-radius:50%;
+               background:var(--layer-accent);flex:0 0 auto}
+    .hrow .pagebadge{
+      font-size:clamp(20px,17vh,64px);font-weight:900;letter-spacing:0;line-height:1;
+      padding:.04em .3em;border:clamp(2px,.9vh,5px) solid var(--layer-accent);
+      border-radius:.2em;color:#FFFFFF;background:transparent;
+    }
+    .hrow .gate{font-size:clamp(10px,6vh,23px);font-weight:800;color:var(--layer-dim)}
+    .hud > .hrow .clip,.ctx .clip{
+      font-size:clamp(10px,5.6vh,21px);font-weight:700;color:var(--layer-dim);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+    }
+
+    /* ctx is folded away -- its clip/marker content now lives in the two
+       columns above; keeping it visible produced a sixth ragged column. */
+    /* .ctx itself stays folded (it produced a ragged sixth column), but the
+       CLIP NAME is genuinely wanted, so #editclip is pulled out of the flow
+       and placed in the status column instead of being hidden with it. */
+    .hud > .ctx{display:none}
+    .foot .editclip{
+      display:block;text-align:left;font-size:clamp(12px,8vh,30px);
+      font-size:clamp(10px,5.6vh,21px);font-weight:700;color:#FFFFFF;
+      padding:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
+    }
+    .foot .editclip::before{
+      content:"Clip ";color:var(--layer-dim);opacity:.8;
+      font-size:.78em;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    }
+    .foot .editclip:empty{display:none}
+
+    .errline.show{
+      grid-area:1 / 1 / 3 / 6;
+      font-size:clamp(16px,13vh,48px);font-weight:800;
+      display:flex;align-items:center;padding:0 clamp(12px,4vh,40px);
+      background:var(--warn);color:#0A0908;
+    }
+  }
+
+  /* ==========================================================================
+     2T5 DECK+ EDITOR SKIN (applied last, so it wins over the layout rules above)
+     The wide strip and the landscape card were drawn in a saturated per-layer
+     palette: the layer accent (L1 red / L2 green / L3 blue) painted every border,
+     the slabs and the label colours, the layer-field tint filled the band, and a
+     message (.errline, e.g. "Waiting for DaVinci Resolve.") filled the WHOLE band
+     with the amber --warn colour. Here the surfaces are the editor's dark ones with
+     hairlines and the blue accent. The state signals stay, but small and quiet:
+     the layer digit and the P-row word keep their colour as TEXT, the connection
+     state is a dot plus a slim banner in its own row, never a fill.
+     Markup, ids and behaviour are unchanged.
+     ========================================================================== */
+  :root                 { --layer-hue:#F2566F; --layer-accent:var(--accent); --layer-field:var(--s0); --layer-dim:var(--t2); }
+  :root[data-layer="2"] { --layer-hue:#5BD6A0; }
+  :root[data-layer="3"] { --layer-hue:#5FB4E8; }
+  :root                 { --pmode-accent:var(--t1); }
+  :root[data-pmode="sat"],:root[data-pmode="lum"] { --pmode-accent:var(--t1); }
+  .hud{ border-top:1px solid var(--hl-2); }
+  .layerchip{ color:var(--layer-hue); background:var(--s2); border-color:var(--hl-2); }
+  .pchip{ color:var(--t1); border-color:var(--hl-3); }
+
+  /* the message row, compact card and landscape card: a quiet card with a state dot */
+  .errline.show{ display:flex; align-items:center; gap:9px; color:var(--t1); background:var(--s2); box-shadow:inset 0 0 0 1px var(--hl-2); border-radius:var(--r-sm); font-family:var(--font-ui); }
+  .errline.show::before{ content:""; flex:none; width:8px; height:8px; border-radius:50%; background:var(--warn); box-shadow:0 0 0 3px rgba(230,184,92,.14); }
+  @media (max-width:899px){ .hud > .errline.show{ margin:9px 13px 4px; padding:8px 11px; font-size:11.5px; font-family:var(--font-ui); white-space:normal; } }
+  @media (min-width:900px) and (max-width:1599px){
+    .hud .strip{ background:linear-gradient(90deg,var(--accent),transparent 60%); height:100%; opacity:.9 }
+    .hud.off .strip{ background:linear-gradient(90deg,var(--warn),transparent 60%) }
+    .errline{ left:44px; right:44px; bottom:auto; top:118px; height:auto; min-height:64px; padding:14px 22px; font-size:26px; font-weight:600; background:var(--s2); color:var(--t1) }
+  }
+
+  @media (min-width:1600px){
+    html,body{ background:var(--s0); }
+    .hud,.hud *{ font-family:var(--font-ui); }
+    .hud{ background:var(--s0); border:0; box-shadow:inset 0 0 0 1px var(--hl-2); }
+    .hud > .knobs,.hud > .tc,.hud > .foot,.hud > .hrow{ border-left:1px solid var(--hl-1); }
+    .hud > .foot::before,.hud > .hrow::before{ color:var(--t3); font-weight:600; letter-spacing:.14em; }
+
+    /* slabs: dark cards. The layer digit keeps its hue as text; the P-row word is plain. */
+    .hud > .tally{ background:var(--s1); }
+    .hud > .tally > #chiplayer{ color:var(--layer-hue); font-weight:700; }
+    .hud > .pslab{ background:var(--s2); border-top:1px solid var(--hl-1); }
+    .pslab .pslab-lab{ color:var(--t3); opacity:1; font-weight:600; }
+    .hud > .pslab > #chippmode{ color:var(--t1); font-weight:700; }
+
+    /* boxes: surface + hairline instead of a heavy coloured outline */
+    .tc .tcbox,.knobs > .knob,.handles .hbox{ background:var(--s1); border:1px solid var(--hl-2); border-radius:clamp(4px,1.6vh,10px); }
+    .tc .tcbox::before{ color:var(--t3); opacity:1; font-weight:600; }
+    .tc .tclab{ color:var(--t2); font-weight:600; }
+    #tclabph,#tclabtl,.tc .clab{ color:var(--accent-hi); font-weight:600; }
+    .tc .tcval{ font-family:var(--font-mono); font-weight:600; color:var(--t1); letter-spacing:-.01em; }
+    .tc .tctotal{ color:var(--t1); }
+    .tc .hnd{ color:var(--t3); font-weight:600; }
+    .tc .sub{ color:var(--t1); border-top-color:var(--hl-1); }
+    .knobs .knob .k{ color:var(--t2); font-weight:600; }
+    .knobs .knob .v{ color:var(--t1); font-weight:600; }
+    .knobs .knob .v:empty::before{ color:var(--t3); opacity:.7; }
+    .knobs .knob.active{ background:var(--accent-wash); border-color:var(--accent); box-shadow:0 0 0 1px var(--accent-40); }
+    .knobs .knob.active .k{ color:var(--accent-hi); }
+    .knobs .knob.active .v{ color:var(--t1); }
+
+    /* status column */
+    .hud > .foot .chip,.hud > .foot .act{ color:var(--t1); font-weight:600; border-bottom-color:var(--hl-1); }
+    .hud > .foot .chip::before{ color:var(--t3); opacity:1; font-weight:600; }
+    .hud > .foot #chiptarget{ color:var(--accent-hi); }
+    .hud > .foot #chippmode{ color:var(--t1); }
+    .hud > .foot #chipnode,.hud > .foot #chipfine{ color:var(--t2); }
+    .hud > .foot .act{ color:var(--t2); }
+    .hud > .foot .act.warn{ color:var(--warn); }
+    .hud > .foot .leds{ border-bottom-color:var(--hl-1); }
+    .foot .ledrow{ background:var(--hl-1); }
+    .foot .ledph{ background:var(--accent-hi); box-shadow:0 0 clamp(2px,1vh,5px) var(--accent-60); }
+
+    /* page badge + connection dot */
+    .hrow .pagebadge{ color:var(--t1); background:var(--accent-wash); border:1px solid var(--accent-60); border-radius:var(--r-sm); font-weight:700; }
+    .off .hrow .pagebadge{ background:var(--s2); border-color:var(--hl-3); color:var(--t2); }
+    .hrow .dot{ background:var(--ok); }
+    .off .hrow .dot{ background:var(--warn); }
+    .hrow .gate{ color:var(--t2); font-weight:600; }
+    .hud > .hrow .clip,.ctx .clip{ color:var(--t2); }
+    .off .tcval{ color:var(--t3); }
+
+    /* waiting / error message: its OWN row across the top of the band, nothing underneath it */
+    .hud:has(> .errline.show){
+      grid-template-rows:clamp(30px,13vh,48px) 1fr 1fr;
+      grid-template-areas:
+        "msg msg msg msg msg"
+        "tally tc knobs status ident"
+        "pslab tc knobs status ident";
+    }
+    .errline.show{
+      grid-area:msg; position:static; height:auto; margin:0;
+      padding:0 clamp(12px,4vh,32px); font-size:clamp(12px,7.4vh,26px); font-weight:600;
+      color:var(--t1); background:var(--s2); border-radius:0; box-shadow:inset 0 -1px 0 var(--hl-2);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .errline.show::before{ width:clamp(8px,3.6vh,14px); height:clamp(8px,3.6vh,14px); }
+  }
+</style>
+</head>
+<body>
+<div class="hud" id="hud">
+  <div class="strip"></div>
+  <div class="hrow">
+    <span class="dot" id="dot"></span>
+    <span class="wordmark" aria-label="2T5 DECK+"><img alt="" draggable="false" src="data:image/png;base64,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"><span>DECK+</span></span>
+    <span class="spacer"></span>
+    <span class="pagebadge" id="pagebadge">—</span>
+    <span class="gate">gate <span class="g" id="gatemark">○</span></span>
+  </div>
+  <div class="divide"></div>
+  <div class="tc">
+    <div class="tcgrid">
+      <div class="tcbox"><span class="tclab" id="tclabph">Timeline</span><span class="tcval big" id="timecode">--:--:--:--</span></div>
+      <div class="tcbox"><span class="tclab" id="tclabtl">Timeline</span><span class="tcval tctotal" id="tctotal">--:--:--:--</span></div>
+      <div class="tcbox"><span class="tclab clab" id="tclabin">Clip in</span><span class="tcval" id="clipin">--:--:--:--</span><span class="hnd" id="hhead"></span></div>
+      <div class="tcbox"><span class="tclab clab" id="tclabout">Clip out</span><span class="tcval" id="clipout">--:--:--:--</span><span class="hnd" id="htail"></span></div>
+    </div>
+  </div>
+  <div class="knobs" id="knobs">
+    <div class="knob" data-i="0"><span class="k"></span><span class="v"></span><span class="meter"><i></i></span></div>
+    <div class="knob" data-i="1"><span class="k"></span><span class="v"></span><span class="meter"><i></i></span></div>
+    <div class="knob" data-i="2"><span class="k"></span><span class="v"></span><span class="meter"><i></i></span></div>
+    <div class="knob" data-i="3"><span class="k"></span><span class="v"></span><span class="meter"><i></i></span></div>
+  </div>
+  <div class="ctx" id="ctx">
+    <span class="swatch" id="swatch" style="visibility:hidden"></span>
+    <span class="lab" id="ctxlab"></span><span class="val" id="ctxval"></span>
+    <span class="spacer"></span>
+    <span class="clip" id="clip"></span>
+  </div>
+  <div class="errline" id="errline"></div>
+  <div class="tally"><span class="chip layerchip" id="chiplayer">L1</span></div>
+  <div class="pslab"><span class="pslab-lab">P-ROW</span><span class="chip pchip" id="chippmode" data-lab="P-row">HUE</span></div>
+  <div class="foot">
+    <span class="chip" id="chipcensus" data-lab="Clips"></span>
+    <div class="leds" id="leds"></div>
+    <span class="chip hideOffline" id="chipnode" data-lab="Node">node 1</span>
+    <span class="chip" id="chiptarget" data-lab="Resets">—</span>
+    <span class="chip hideOffline" id="chipfine" data-lab="Fine">fine off</span>
+    <span class="spacer"></span>
+    <span class="pulse" id="pulse"></span>
+    <span class="act" id="lastaction"></span>
+  </div>
+</div>
+<script>
+// Known Resolve marker color names -> swatch hex. Fixed, small enum --
+// mirrors config/bindings.json's P1btn..P8btn markerColor values exactly
+// (Blue/Cyan/Green/Yellow/Red/Pink/Purple/Fuchsia). Purely cosmetic (the
+// ctx row's swatch box); an unrecognized/future color name just renders
+// with no swatch color rather than erroring.
+var MARKER_SWATCH = {
+  Blue: "#2b6fe0", Cyan: "#28c2c2", Green: "#3fae4a", Yellow: "#e0c22b",
+  Red: "#d94f4f", Pink: "#e07fc0", Purple: "#8a5fd6", Fuchsia: "#c23fa0"
+};
+
+function paintKnobs(knobs) {
+  var cells = document.querySelectorAll("#knobs .knob");
+  for (var i = 0; i < cells.length; i++) {
+    var cell = cells[i];
+    var k = (knobs && knobs[i]) || { label: "", active: false, value: "" };
+    cell.querySelector(".k").textContent = k.label || "";
+    cell.classList.toggle("active", !!k.active);
+    var v = cell.querySelector(".v");
+    v.textContent = k.value || "";
+    v.classList.toggle("show", !!k.value);
+  }
+}
+
+function paintContext(state) {
+  var ctx = document.getElementById("ctx");
+  var lab = document.getElementById("ctxlab");
+  var val = document.getElementById("ctxval");
+  var swatch = document.getElementById("swatch");
+  var hasContext = !!(state.contextLabel || state.contextValue);
+  ctx.classList.toggle("empty", !hasContext);
+  lab.textContent = state.contextLabel || "";
+  val.textContent = state.contextValue || "";
+  if (state.contextLabel === "Marker" && state.contextValue) {
+    var parts = state.contextValue.split(" ");
+    var colorName = parts[parts.length - 1];
+    var hex = MARKER_SWATCH[colorName];
+    if (hex) {
+      swatch.style.background = hex;
+      swatch.style.visibility = "visible";
+    } else {
+      swatch.style.visibility = "hidden";
+    }
+  } else {
+    swatch.style.visibility = "hidden";
+  }
+}
+
+// postHeight measures the .hud card's actual rendered height and posts it
+// to the native side via the "hudResize" message handler (see
+// hud_darwin.m's LDHUDResizeHandler) so the NSPanel can resize to fit --
+// see hud_darwin.m's top-of-file CHANGE 3 doc comment. Called at the END
+// of render(), after every DOM mutation for this paint is already applied,
+// so offsetHeight (which forces a synchronous layout) reflects the FINAL
+// state (context row shown/hidden, error line shown/hidden, etc), never an
+// intermediate one. Guarded the same defensive way as every other
+// window.* access in this file (window.hud/window.webkit) -- a no-op if
+// this ever runs outside a WKWebView with the handler registered.
+function postHeight() {
+  if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.hudResize) {
+    var hud = document.getElementById("hud");
+    window.webkit.messageHandlers.hudResize.postMessage(hud.offsetHeight);
+  }
+}
+
+// render paints the whole HUD from a JSON state model built by the Go
+// side's formatHUD (app/format.go) -- this function contains NO business
+// logic of its own beyond straightforward DOM binding (which field goes in
+// which node, an "off" state-class toggle for CSS); every label/format
+// decision (page name, knob map, active-wheel highlight, the mandatory
+// 3-way context branch, dashes-when-disconnected) is already baked into
+// the state object by the time it gets here.
+function render(state) {
+  var hud = document.getElementById("hud");
+  hud.classList.toggle("off", state.led !== "green");
+  // See the .stale CSS rule's doc comment: a pulse, not a color change --
+  // this tick's numbers are a moment old (Resolve busy, e.g. playback),
+  // not a connectivity problem.
+  hud.classList.toggle("stale", !!state.stale);
+
+  document.getElementById("pagebadge").textContent = state.page || "—";
+  var gatemark = document.getElementById("gatemark");
+  gatemark.textContent = state.gateOpen ? "●" : "○";
+  gatemark.classList.toggle("closed", !state.gateOpen);
+
+  document.getElementById("timecode").textContent = state.timecode || "--:--:--:--";
+  // Project left, timeline right -- two separate spans so neither is
+  // truncated by the other and both stay readable.
+  // The timeline box labels itself with the actual timeline name -- its
+  // position already says what the number is, so the label can carry
+  // something you cannot otherwise see.
+  var _tlab = document.getElementById("tclabtl");
+  if (_tlab) _tlab.textContent = state.timeline || "Timeline";
+  // The playhead is a position WITHIN a timeline, so it names it too.
+  var _phl = document.getElementById("tclabph");
+  if (_phl) _phl.textContent = state.timeline || "Timeline";
+  // Clip in/out label themselves with the clip name, same idea as the
+  // timeline box. IN/OUT is supplied by CSS so the pair stays unambiguous
+  // when both carry the same name.
+  var _cn = state.editClip || state.clip || "";
+  var _li = document.getElementById("tclabin"), _lo = document.getElementById("tclabout");
+  // Same lamp convention as the strip: green when this clip's own name marks
+  // it as rendered, blue when it does not. Set as a data attribute so the
+  // lamp survives the textContent assignment below.
+  var _isR = /render/i.test(_cn) ? "1" : "0";
+  if (_li) { _li.textContent = _cn || "Clip in";  _li.dataset.r = _isR; }
+  if (_lo) { _lo.textContent = _cn || "Clip out"; _lo.dataset.r = _isR; }
+  var _pj = document.getElementById("hudproj"), _tl = document.getElementById("hudtl");
+  if (_pj && _tl) {
+    _pj.textContent = state.project || "";
+    _tl.textContent = "";
+    if (!state.project && !state.timeline) _pj.textContent = state.timecodeSub || "";
+  } else {
+    var _sub = document.getElementById("tcsub");
+    if (_sub) _sub.textContent = state.timecodeSub || "";
+  }
+
+  // Guarded: this node is absent in the wide/lower-third layout (the clip
+  // name lives in the clip in/out box labels there). An unguarded deref
+  // threw and aborted render() partway, freezing everything below this line
+  // -- knobs, context, census, LED strip -- while the timecode above it kept
+  // updating, which is exactly what "only the playhead timecode works"
+  // looked like.
+  var editclip = document.getElementById("editclip");
+  if (editclip) {
+    editclip.textContent = state.editClip || "";
+    editclip.classList.toggle("show", !!state.editClip);
+  }
+
+  paintKnobs(state.knobs);
+  paintContext(state);
+
+  document.getElementById("clip").textContent = state.clip || "";
+
+  var errline = document.getElementById("errline");
+  errline.textContent = state.errorMessage || "";
+  errline.classList.toggle("show", !!state.errorMessage);
+
+  document.getElementById("chipnode").textContent = "node " + (state.node || 0);
+  // Layer is the single most safety-critical fact on this surface: misreading
+  // it mis-fires every knob at once. So it is coded TWICE -- as a chip you can
+  // read, and as an accent colour you cannot miss (L1 red, L2 green, L3 blue,
+  // RGB in order). The class goes on <html> so any rule can key off it.
+  var _layer = state.layer || 1;
+  document.documentElement.setAttribute("data-layer", String(_layer));
+  document.getElementById("chiplayer").textContent = "L" + _layer;
+  document.getElementById("chiptarget").textContent = state.target || "—";
+  // Second timecode: the timeline's total length, so the running position
+  // always has a denominator.
+  document.getElementById("tctotal").textContent = state.timelineDuration || "--:--:--:--";
+  // Selected clip's in / out / length -- what tells you how far it can be
+  // extended before trimming.
+  var _dash = "--:--:--:--";
+  document.getElementById("clipin").textContent  = state.clipIn  || _dash;
+  document.getElementById("clipout").textContent = state.clipOut || _dash;
+  // Timeline census + LED strip: one lamp per clip, green when the clip's
+  // name contains "render", blue when it does not. Reads the whole edit at a
+  // glance without naming a single file.
+  var _cs = document.getElementById("chipcensus");
+  if (_cs) {
+    var _t = state.clipTotal || 0, _r = state.clipRendered || 0, _m = state.markerCount || 0;
+    _cs.textContent = _t + " clips · " + _r + " rendered · " + _m + " markers";
+  }
+  var _ledbox = document.getElementById("leds");
+  if (_ledbox) {
+    var _s = state.leds || "";
+    if (_ledbox.dataset.sig !== _s) {      // only rebuild when it actually changes
+      _ledbox.dataset.sig = _s;
+      _ledbox.textContent = "";
+      // "<playhead>;start:width:state,... | next track", all per-mille -- see
+      // the sidecar's timeline_clip_map. One row per video track, highest
+      // first; state 0 plain, 1 rendered, 2 offline.
+      var _head = _s.indexOf(";"), _ph = -1;
+      if (_head >= 0) { _ph = parseInt(_s.slice(0, _head), 10); _s = _s.slice(_head + 1); }
+      var rows = _s ? _s.split("|") : [];
+      for (var r = 0; r < rows.length; r++) {
+        var row = document.createElement("div");
+        row.className = "ledrow";
+        var bars = rows[r] ? rows[r].split(",") : [];
+        for (var i = 0; i < bars.length; i++) {
+          var f = bars[i].split(":");
+          if (f.length !== 3) continue;
+          var d = document.createElement("span");
+          d.className = "led" + (f[2] === "1" ? " led-r" : f[2] === "2" ? " led-off" : "");
+          d.style.left = (f[0] / 10) + "%";
+          d.style.width = (f[1] / 10) + "%";
+          row.appendChild(d);
+        }
+        _ledbox.appendChild(row);
+      }
+      // The playhead rides on top of every track, so the strip answers "where
+      // am I" as well as "what is rendered".
+      if (_ph >= 0 && rows.length) {
+        var ph = document.createElement("div");
+        ph.className = "ledph";
+        ph.style.left = (_ph / 10) + "%";
+        _ledbox.appendChild(ph);
+      }
+    }
+  }
+  var _cd = document.getElementById("clipdur");
+  // Handles live in their own boxes beside the knobs -- they are trim
+  // quantities you act on, so they belong with the edit controls rather than
+  // buried in a status line.
+  var _hh = document.getElementById("hhead"), _ht = document.getElementById("htail");
+  if (_hh) _hh.textContent = state.clipHead ? state.clipHead + " f handle" : "";
+  if (_ht) _ht.textContent = state.clipTail ? state.clipTail + " f handle" : "";
+  // P-row mode (Hue/Sat/Lum): its own indicator because it changes what all
+  // sixteen P controls do, and the console's engraving cannot say which of
+  // the three is live.
+  document.documentElement.setAttribute("data-page", (state.page || "").toLowerCase());
+  var _pm = (state.pmode || "hue");
+  document.documentElement.setAttribute("data-pmode", _pm);
+  document.getElementById("chippmode").textContent = _pm.toUpperCase();
+  document.getElementById("chipfine").textContent = "fine " + (state.fine ? "on" : "off");
+
+  var act = document.getElementById("lastaction");
+  act.textContent = state.lastAction || "";
+  act.classList.toggle("warn", state.led !== "green");
+
+  postHeight();
+}
+
+window.hud = { render: render };
+</script>
+</body>
+</html>

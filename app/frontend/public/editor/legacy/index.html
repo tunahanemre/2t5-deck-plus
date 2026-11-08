@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
+<title>2T5 DECK+ Editor</title>
+<link rel="stylesheet" href="./editor.css">
+</head>
+<body>
+<div id="shell">
+  <header class="top">
+    <div class="top-title"><span class="logo-dot"></span><b>Deck Editor</b><span class="muted" id="lastChange" aria-live="polite"></span></div>
+    <div class="top-actions">
+      <button type="button" class="btn" id="undoBtn" title="Undo last change">&#8630; Undo</button>
+      <button type="button" class="btn" id="redoBtn" title="Redo">Redo &#8631;</button>
+      <label class="switch" title="Dim editing and spotlight the live view"><input type="checkbox" id="testSwitch" role="switch"><span class="sw-track"></span><span>Test mode</span></label>
+    </div>
+  </header>
+
+  <div class="api-banner" id="apiBanner" role="alert" hidden>
+    <span id="apiBannerText">Can't reach the 2T5 DECK+ engine API.</span>
+    <button type="button" class="btn" id="retryBtn">Retry</button>
+  </div>
+
+  <main class="panes">
+    <aside class="pane apps" aria-label="Apps">
+      <div class="pane-h"><h2>Apps</h2><span class="muted" id="liveApp"></span></div>
+      <ul class="app-list" id="appList"></ul>
+      <div class="add-wrap">
+        <button type="button" class="btn btn-block" id="addAppBtn" aria-expanded="false">+ Add app</button>
+        <div class="popover" id="addPop" hidden>
+          <button type="button" class="btn btn-accent btn-block" id="captureBtn">Capture current app</button>
+          <div class="pop-sep">or pick a running app</div>
+          <input type="search" id="runFilter" placeholder="Filter running apps" aria-label="Filter running apps">
+          <ul class="run-list" id="runList"></ul>
+          <div class="pop-sep">or type a bundle id</div>
+          <div class="manual">
+            <input type="text" id="manId" placeholder="com.vendor.App" aria-label="Bundle id" spellcheck="false">
+            <input type="text" id="manName" placeholder="Name (optional)" aria-label="App name">
+            <button type="button" class="btn" id="manAdd">Add</button>
+          </div>
+          <p class="err" id="addErr" role="alert" hidden></p>
+        </div>
+      </div>
+    </aside>
+
+    <section class="pane stage" aria-label="Deck">
+      <div class="stage-bar">
+        <div class="banks" id="banks" role="tablist" aria-label="Bank"></div>
+        <label class="switch small"><input type="checkbox" id="inhSwitch" role="switch" checked><span class="sw-track"></span><span>Show inherited</span></label>
+      </div>
+      <div class="deck-host" id="deckHost"><div class="loading">Loading deck&hellip;</div></div>
+      <div class="legend"><i class="lg own"></i>Set in this app <i class="lg inh"></i>Inherited from Global <i class="lg none"></i>Unassigned</div>
+      <div class="readout" id="readout" aria-live="off">
+        <div class="ro-head"><b>Live test</b><span class="muted">Turn a knob or press a button on the deck</span></div>
+        <div class="ro-empty">Waiting for input&hellip;</div>
+      </div>
+    </section>
+
+    <aside class="pane panel" id="panel" aria-label="Assignment">
+      <div class="loading">Loading&hellip;</div>
+    </aside>
+  </main>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
