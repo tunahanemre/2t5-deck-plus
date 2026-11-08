@@ -1,4 +1,4 @@
-// hotspots.js: one authored shape per control on the deck image (assets/deck-cutout.png, 1500x1500).
+// hotspots.js: one authored shape per control on the real Loupedeck+ photo (assets/deck-cutout.png, 1500x1500).
 // The same shape drives the hit area and the edge-light, so the line sits on the part's real rim.
 // Row format: [cx, cy, w, h, shape, rx]   (photo pixels; shape = circle | rrect | stadium)
 // Calibrate with ?calib=1 (draws every candidate outline as a 1px magenta stroke; check at 2x zoom).
